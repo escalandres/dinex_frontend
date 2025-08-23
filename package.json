@@ -10,8 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-oauth/google": "^0.12.2",
+    "jwt-decode": "^4.0.0",
+    "prop-types": "^15.8.1",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "react-router-dom": "^7.8.2",
+    "sweetalert2": "^11.22.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
