@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { alerta, showLoader, hideLoader } from './js/general';
+import { alerta, showLoader, hideLoader } from '../js/utils';
 import GoogleAuth from './components/auth/GoogleAuth';
 import GitHubAuth from './components/auth/GitHubAuth';
 
