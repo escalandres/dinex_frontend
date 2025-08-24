@@ -1,5 +1,5 @@
 // router.js
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 import Dinex from '../pages/dinex/Dinex';
 import P404 from '../pages/extras/P404';
 import SignUp from '../pages/login/SignUp';
@@ -55,6 +55,11 @@ const Router = createBrowserRouter(
         path: "/auth/github",
         element: <GithubAuthorize/>,
       },
+
+      {
+        path: "*",
+        element: <Navigate to="/page-not-found" replace />
+      }
     ]
   );
 
