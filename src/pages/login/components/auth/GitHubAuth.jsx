@@ -1,5 +1,5 @@
 
-const GithubAuth = () => {
+const GithubAuth = ({ oauthClass }) => {
 
 
     const handleAuthGithub = async (e) => {
@@ -8,7 +8,7 @@ const GithubAuth = () => {
     };
 
     return(
-        <button className="h-10 flex items-center justify-center py-2.5 border-2 border-gray-100 rounded-lg hover:bg-gray-50 duration-150 active:bg-gray-100"
+        <button className={`${oauthClass} h-10 flex items-center justify-center py-2.5 border-2 border-gray-100 rounded-lg hover:bg-gray-50 duration-150 active:bg-gray-100`}   
             onClick={handleAuthGithub}
         >
             <svg className="w-5 h-5" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -1,0 +1,9 @@
+.oauth-button{
+    background-color: light-dark(#fff, #2A313C);
+    border: 1px solid light-dark(#154D71, #2A313C);
+}
+
+.oauth-button:hover{
+    background-color: light-dark(#F9FAFB, #2f3b4e);
+    border-color: light-dark(#0E3A57, #1E293B);
+}

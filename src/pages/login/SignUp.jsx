@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { alerta, showLoader, hideLoader } from '../js/utils';
 import GoogleAuth from './components/auth/GoogleAuth';
 import GitHubAuth from './components/auth/GitHubAuth';
+import "./login.css";
 
 const SignUp = () => {
     document.title = 'Registro | Cosmos';
@@ -58,12 +59,12 @@ const SignUp = () => {
     };
 
     return (
-        <main className="w-full h-screen flex flex-col items-center justify-center bg-gray-10 dark:bg-gray-50 sm:px-4">
+        <main className="w-full h-screen flex flex-col items-center justify-center bg-gray-10 sm:px-4">
             <div className="w-full space-y-6 text-gray-600 sm:max-w-md md:max-w-lg lg:max-w-2xl">
-                <div className="bg-white shadow p-4 py-6 space-y-8 sm:p-8 sm:rounded-lg">
+                <div className="shadow p-4 py-6 space-y-8 sm:p-8 sm:rounded-lg">
                     <div className="text-center">
                         <a href="/login">
-                            <img src="/icons/dark-favicon.svg"  width={80} className="mx-auto" />
+                            <img src="/icons/logo.png" alt="Dinex icon" width={80} className="mx-auto" />
                         </a>
                         <div className="mt-5 space-y-2">
                             <h3 className="text-gray-800 text-2xl font-bold sm:text-2xl">Crea tu cuenta</h3>
@@ -71,12 +72,12 @@ const SignUp = () => {
                         </div>
                     </div>
                     <div className="grid grid-cols-3 gap-x-3">
-                        <GoogleAuth />
-                        <GitHubAuth />
+                        <GoogleAuth oauthClass="oauth-button" />
+                        <GitHubAuth oauthClass="oauth-button" />
                     </div>
                     <div className="relative">
-                        <span className="block w-full h-px bg-gray-300"></span>
-                        <p className="inline-block w-fit text-sm bg-white px-2 absolute -top-2 inset-x-0 mx-auto">O continua con</p>
+                        <span className="block w-full h-px"></span>
+                        <p className="inline-block w-fit text-sm px-2 absolute -top-2 inset-x-0 mx-auto">O continua con</p>
                     </div>
                     <form
                         onSubmit={handleSignUp}

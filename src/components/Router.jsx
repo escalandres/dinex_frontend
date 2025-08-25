@@ -25,15 +25,19 @@ const Router = createBrowserRouter(
         path: "/registro",
         element: <SignUp/>,
         errorElement: <P404/>
-    },
-    {
-        path: '/app',
-        element: (
-            <ProtectedRoute>
-                <Dinex />
-            </ProtectedRoute>
-        ),
-    },
+      },
+      {
+          path: '/app',
+          element: (
+              <ProtectedRoute>
+                  <Dinex />
+              </ProtectedRoute>
+          ),
+      },
+      {
+        path: "/dinex",
+        element: <Dinex/>
+      },
       {
         path: "/recuperacion",
         element: <ForgotPassword/>
