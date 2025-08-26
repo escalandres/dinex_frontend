@@ -3,6 +3,7 @@ import { alerta, showLoader, hideLoader } from '../js/utils';
 import { jwtDecode } from 'jwt-decode'; // Esto puede ser incorrecto, asegúrate de que la importación es correcta
 
 import { Navbar } from './components/Navbar';
+import { Sidebar } from "./components/Sidebar";
 
 const Dinex = () => {
     // const token = localStorage.getItem('token');
@@ -10,8 +11,13 @@ const Dinex = () => {
 
     return (
         <div className='flex flex-col h-screen'>
-            <Navbar />
-            <div className='flex-grow p-4 bg-gray-50 dark:bg-gray-900'>Hola</div>
+            <Sidebar />
+            <main className='flex-grow p-4 bg-gray-50 dark:bg-gray-900'>
+                <Navbar />
+                <div className="mb-4">
+                    <h1 className='text-2xl font-bold mb-4 text-gray-800 dark:text-gray-200'>Bienvenido a Dinex</h1>
+                </div>
+            </main>
         </div>
     );
 };

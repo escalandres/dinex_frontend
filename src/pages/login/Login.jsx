@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { alerta, showLoader, hideLoader } from '../js/utils.js';
 import GoogleAuth from './components/auth/GoogleAuth';
 import GitHubAuth from './components/auth/GitHubAuth';
-import "./login.css";
 
 const Login = () => {
     document.title = 'Iniciar sesión | Cosmos';
@@ -62,8 +61,8 @@ const Login = () => {
                         </div>
                     </div>
                     <div className="grid grid-cols-3 gap-x-3">
-                        <GoogleAuth oauthClass="oauth-button" />
-                        <GitHubAuth oauthClass="oauth-button" />
+                        <GoogleAuth oauthClass="dark-button" />
+                        <GitHubAuth oauthClass="dark-button" />
                     </div>
                     <div className="relative">
                         <span className="block w-full h-px bg-gray-300 dark:bg-black-100"></span>

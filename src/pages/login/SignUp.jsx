@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { alerta, showLoader, hideLoader } from '../js/utils';
 import GoogleAuth from './components/auth/GoogleAuth';
 import GitHubAuth from './components/auth/GitHubAuth';
-import "./login.css";
 
 const SignUp = () => {
     document.title = 'Registro | Cosmos';
@@ -72,12 +71,12 @@ const SignUp = () => {
                         </div>
                     </div>
                     <div className="grid grid-cols-3 gap-x-3">
-                        <GoogleAuth oauthClass="oauth-button" />
-                        <GitHubAuth oauthClass="oauth-button" />
+                        <GoogleAuth oauthClass="dark-button" />
+                        <GitHubAuth oauthClass="dark-button" />
                     </div>
                     <div className="relative">
-                        <span className="block w-full h-px"></span>
-                        <p className="inline-block w-fit text-sm px-2 absolute -top-2 inset-x-0 mx-auto">O continua con</p>
+                        <span className="block w-full h-px bg-gray-300 dark:bg-black-100"></span>
+                        <p className="inline-block w-fit text-sm bg-white px-2 absolute -top-2 inset-x-0 mx-auto dark:bg-[#121212]">O continua con</p>
                     </div>
                     <form
                         onSubmit={handleSignUp}

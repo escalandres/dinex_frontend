@@ -18,6 +18,38 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
+.dark-button{
+  background-color: light-dark(#fff, #2A313C);
+  border: 1px solid light-dark(#154D71, #2A313C);
+}
+
+.dark-button:hover{
+  background-color: light-dark(#F9FAFB, #3D4750);
+  border-color: light-dark(#0E3A57, #1E293B);
+}
+
+.nav-button{
+  background-color: light-dark(#fff, #191D21);
+  border: 1px solid light-dark(#154D71, #191D21);
+}
+.nav-button:hover{
+  background-color: light-dark(#F9FAFB, #3D4750);
+  border-color: light-dark(#0E3A57, #1E293B);
+}
+
+nav > a {
+  color: white;
+}
+
+.menu-a {
+  font-weight: 500;
+  color: light-dark(#2362EB, #fff)!important;
+  text-decoration: inherit;
+}
+.menu-a:hover {
+  color: light-dark(#1e54b7, #f9f9f9)!important;
+}
+
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
