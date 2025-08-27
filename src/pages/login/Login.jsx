@@ -60,7 +60,7 @@ const Login = () => {
                             <p className="">¿No tienes una cuenta? <a href="/registro" className="">Regístrate gratis</a></p>
                         </div>
                     </div>
-                    <div className="grid grid-cols-3 gap-x-3">
+                    <div className="grid grid-cols-2 gap-x-3">
                         <GoogleAuth oauthClass="dark-button" />
                         <GitHubAuth oauthClass="dark-button" />
                     </div>

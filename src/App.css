@@ -1,3 +1,10 @@
+/* :root {
+
+  --blue: #2365EA;
+  --blue-hover: #1e54b7;
+  --blue-active: #1a4a9e;
+} */
+
 #root {
   max-width: 100%;
   margin: 0 auto;
@@ -21,6 +28,7 @@
 .dark-button{
   background-color: light-dark(#fff, #2A313C);
   border: 1px solid light-dark(#154D71, #2A313C);
+  color: light-dark(var(--blue), #909aa1);
 }
 
 .dark-button:hover{
@@ -37,8 +45,12 @@
   border-color: light-dark(#0E3A57, #1E293B);
 }
 
-nav > a {
-  color: white;
+.element a, .element span {
+  color: light-dark(var(--blue), #fff);
+}
+
+.element a:hover, .element span:hover {
+  color: light-dark(#fff, #ecebeb);
 }
 
 .menu-a {
