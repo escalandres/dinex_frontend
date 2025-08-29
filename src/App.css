@@ -38,11 +38,12 @@
 
 .nav-button{
   background-color: light-dark(#fff, #191D21);
-  border: 1px solid light-dark(#154D71, #191D21);
+  /* border: 1px solid light-dark(#154D71, #191D21); */
+  color: light-dark(var(--blue), #fff);
 }
 .nav-button:hover{
-  background-color: light-dark(#F9FAFB, #3D4750);
-  border-color: light-dark(#0E3A57, #1E293B);
+  background-color: light-dark(#e6e8eb, #3D4750);
+  border-color: transparent;
 }
 
 .element a, .element span {
@@ -50,7 +51,7 @@
 }
 
 .element a:hover, .element span:hover {
-  color: light-dark(#fff, #ecebeb);
+  color: light-dark(var(--blue), #ecebeb);
 }
 
 .menu-a {

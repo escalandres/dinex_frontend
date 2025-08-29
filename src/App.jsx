@@ -13,7 +13,7 @@ function App() {
     if (!temaGuardado) {
       const temaSistema = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
       localStorage.theme = temaSistema;
-      document.documentElement.style.colorScheme = temaSistema;
+      // document.documentElement.style.colorScheme = temaSistema;
       temaGuardado = temaSistema;
     }
 
