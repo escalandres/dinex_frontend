@@ -4,7 +4,7 @@ export const UserMenu = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <div className="relative inline-block text-left mx-2">
+        <div id="user-menu" className="relative inline-block text-left mx-2">
             <button
                 id="dropdownInformationButton"
                 onClick={() => setIsOpen(!isOpen)}
@@ -31,7 +31,7 @@ export const UserMenu = () => {
 
             {isOpen && (
                 <div
-                className="absolute right-0 mt-2 z-10 bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600"
+                className="user-menu absolute right-0 mt-2 z-10 divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:divide-gray-600"
                 role="menu"
                 >
                 <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">

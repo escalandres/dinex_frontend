@@ -1,0 +1,52 @@
+
+
+
+nav{
+    background-color: light-dark(#ffffff, #191D21 );
+    border-bottom: 1px solid light-dark(#E5E7EB, #4B5563);
+}
+
+.user-menu{
+    background-color: light-dark(#ffffff, #364153 );
+}
+
+.main-content{
+    background-color: light-dark(#F9FAFB, #1F2937);
+}
+
+#default-sidebar{
+    background-color: light-dark(#fff, #242A2E);
+    color: light-dark(var(--blue), #fff);
+    border-right: 1px solid light-dark(#E5E7EB, #4B5563);
+}
+
+#default-sidebar a, #default-sidebar span{
+    color: light-dark(var(--blue),#ecebeb);
+}
+
+#default-sidebar a:hover{
+    background-color: light-dark(#2365EA, #364153);
+}
+#default-sidebar a:hover span{
+    color: light-dark(#fff,#ecebeb);
+}
+
+#user-menu a{
+    color: light-dark(var(--blue),#ecebeb);
+}
+#user-menu a:hover{
+    background-color: light-dark(#2365EA, #4a5565);
+    color: #fff!important;
+}
+
+.element{
+    border-right: 1px solid light-dark(#E5E7EB, #4B5563);
+}
+
+/* .element a, .element span {
+  color: light-dark(var(--blue), #fff);
+}
+
+.element a:hover, .element span:hover {
+  color: light-dark(var(--blue), #ecebeb);
+} */

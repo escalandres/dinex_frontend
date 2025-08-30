@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+/* @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *)); */
 /* @custom-variant light (&:where([data-theme=light], [data-theme=light] *)); */
 
 :root {
@@ -71,3 +71,15 @@ button:focus-visible {
 input:hover, input:focus {
   border-color: light-dark(var(--blue), var(--blue-hover));
 }
+
+/* CSS - Solo color-scheme */
+/* @media (prefers-color-scheme: light) {
+  :root { color-scheme: light; }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root { color-scheme: dark; }
+}
+
+[data-theme="light"] { color-scheme: light !important; }
+[data-theme="dark"] { color-scheme: dark !important; } */

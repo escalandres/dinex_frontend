@@ -46,14 +46,6 @@
   border-color: transparent;
 }
 
-.element a, .element span {
-  color: light-dark(var(--blue), #fff);
-}
-
-.element a:hover, .element span:hover {
-  color: light-dark(var(--blue), #ecebeb);
-}
-
 .menu-a {
   font-weight: 500;
   color: light-dark(#2362EB, #fff)!important;
