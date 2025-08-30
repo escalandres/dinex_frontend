@@ -11,6 +11,8 @@ import ForgotPassword from '../pages/extras/ForgotPassword';
 import ChangePassword from '../pages/extras/ChangePassword';
 import GithubAuthorize from '../pages/login/components/auth/GithubAuthMiddleware';
 
+import Ahorros from '../pages/dinex/pages/Ahorros';
+
 const Router = createBrowserRouter(
     [
       {
@@ -37,6 +39,10 @@ const Router = createBrowserRouter(
       {
         path: "/dinex",
         element: <Dinex/>
+      },
+      {
+        path: "/app/ahorros",
+        element: <Ahorros/>
       },
       {
         path: "/recuperacion",

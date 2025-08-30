@@ -1,14 +1,14 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { alerta, showLoader, hideLoader } from '../js/utils';
+import { alerta, showLoader, hideLoader } from '../../js/utils';
 import { jwtDecode } from 'jwt-decode'; // Esto puede ser incorrecto, asegúrate de que la importación es correcta
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import { Navbar } from './components/Navbar';
-import { Sidebar } from "./components/Sidebar";
+import { Navbar } from '../components/Navbar';
+import { Sidebar } from "../components/Sidebar";
 
-import "./dinex.css";
+import "../dinex.css";
 
-const Dinex = () => {
+const Ahorros = () => {
     // const token = localStorage.getItem('token');
     // const decoded = jwtDecode(token);
 
@@ -18,11 +18,11 @@ const Dinex = () => {
                 <main className='flex-grow p-4 bg-gray-50 dark:bg-gray-900'>
                     <Navbar />
                     <div className='mt-16'>
-                        <h1 className='text-2xl font-bold mb-4'>Bienvenido a Dinex</h1> 
+                        <h1 className='text-2xl font-bold mb-4'>Bienvenido a Ahorros</h1> 
                     </div>
                 </main>
             </div>
     );
 };
 
-export default Dinex;
+export default Ahorros;

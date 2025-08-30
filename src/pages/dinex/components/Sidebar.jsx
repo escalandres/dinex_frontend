@@ -35,7 +35,7 @@ export const Sidebar = () => {
                 </div>
                 <ul className="space-y-2 font-medium">
                     <li>
-                        <a href="#" className="flex items-center gap-7 p-2 text-gray-900 rounded-lg  group">
+                        <a href="/app" className="flex items-center gap-7 p-2 text-gray-900 rounded-lg  group">
                         <span className="flex items-center justify-center w-5 h-5">
                             <i className="fa-solid fa-chart-pie text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
                         </span>
@@ -43,7 +43,7 @@ export const Sidebar = () => {
                         </a>
                     </li>
                     <li>
-                        <a href="#" className="flex items-center gap-7 p-2 text-gray-900 rounded-lg  group">
+                        <a href="/app/instrumentos" className="flex items-center gap-7 p-2 text-gray-900 rounded-lg  group">
                         <span className="flex items-center justify-center w-5 h-5">
                             <i className="fa-solid fa-wallet text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
                         </span>
@@ -51,7 +51,7 @@ export const Sidebar = () => {
                         </a>
                     </li>
                     <li>
-                        <a href="#" className="flex items-center gap-7 p-2 text-gray-900 rounded-lg  group">
+                        <a href="/app/ingresos" className="flex items-center gap-7 p-2 text-gray-900 rounded-lg  group">
                         <span className="flex items-center justify-center w-5 h-5">
                             {/* <i className="fa-solid fa-hand-holding-dollar text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i> */}
                             <i className="fa-solid fa-money-bill-1-wave text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
@@ -60,7 +60,7 @@ export const Sidebar = () => {
                         </a>
                     </li>
                     <li>
-                        <a href="#" className="flex items-center gap-7 p-2 text-gray-900 rounded-lg  group">
+                        <a href="/app/ahorros" className="flex items-center gap-7 p-2 text-gray-900 rounded-lg  group">
                         <span className="flex items-center justify-center w-5 h-5">
                             <i className="fa-solid fa-piggy-bank text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
                         </span>
@@ -68,7 +68,7 @@ export const Sidebar = () => {
                         </a>
                     </li>
                     <li>
-                        <a href="#" className="flex items-center gap-7 p-2 text-gray-900 rounded-lg  group">
+                        <a href="/app/gastos" className="flex items-center gap-7 p-2 text-gray-900 rounded-lg  group">
                         <span className="flex items-center justify-center w-5 h-5">
                             <i className="fa-solid fa-credit-card text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
                         </span>
@@ -77,7 +77,7 @@ export const Sidebar = () => {
                     </li>
                     <li>
                         <a
-                            href="#"
+                            href="/app/inversiones"
                             className="flex items-center gap-7 p-2 text-gray-900 rounded-lg  group"
                             >
                             <span className="flex items-center justify-center w-5 h-5">

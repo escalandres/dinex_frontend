@@ -68,8 +68,12 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+input{
+  border: 0;
+}
+
 input:hover, input:focus {
-  border-color: light-dark(var(--blue), var(--blue-hover));
+  border-color: 10px solid light-dark(var(--blue), var(--blue-hover));
 }
 
 /* CSS - Solo color-scheme */

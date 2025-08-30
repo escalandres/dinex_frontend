@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { alerta, showLoader, hideLoader } from '../js/utils.js';
 import GoogleAuth from './components/auth/GoogleAuth';
 import GitHubAuth from './components/auth/GitHubAuth';
@@ -9,6 +9,13 @@ const Login = () => {
     const [password, setPassword] = useState('');
 
     const [showPassword, setShowPassword] = useState(false);
+
+    const [isDarkMode, setIsDarkMode] = useState(false);
+    
+    useEffect(() => {
+        const theme = localStorage.theme;
+        setIsDarkMode(theme === 'dark');
+    }, []);
 
     // Función para alternar la visibilidad de la contraseña
     const togglePasswordVisibility = () => {
@@ -61,12 +68,12 @@ const Login = () => {
                         </div>
                     </div>
                     <div className="grid grid-cols-2 gap-x-3">
-                        <GoogleAuth oauthClass="dark-button" />
-                        <GitHubAuth oauthClass="dark-button" />
+                        <GoogleAuth oauthClass="dark-button" isDarkMode={isDarkMode} />
+                        <GitHubAuth oauthClass="dark-button" isDarkMode={isDarkMode} />
                     </div>
                     <div className="relative">
                         <span className="block w-full h-px bg-gray-300 dark:bg-black-100"></span>
-                        <p className="inline-block w-fit text-sm bg-white px-2 absolute -top-2 inset-x-0 mx-auto dark:bg-[#121212]">O continua con</p>
+                        <p className={`inline-block w-fit text-sm ${isDarkMode ? 'text-white bg-[#121212]' : 'bg-[#FBF9FA] text-black'} px-2 absolute -top-2 inset-x-0 mx-auto`}>O continua con</p>
                     </div>
                     <form
                         onSubmit={handleLogin}
@@ -99,7 +106,7 @@ const Login = () => {
                                     className="w-full px-3 py-2 text-gray-500 bg-transparent outline-none border shadow-sm rounded-lg pr-10"
                                 />
                                 <i 
-                                    className={`fa-solid ${showPassword ? 'fa-eye-slash' : 'fa-eye'} absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer`}
+                                    className={`eye-icon fa-solid ${showPassword ? 'fa-eye-slash' : 'fa-eye'} absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer`}
                                     onClick={togglePasswordVisibility}
                                 ></i>
                             </div>

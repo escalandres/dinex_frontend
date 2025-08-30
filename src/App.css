@@ -12,6 +12,15 @@
   text-align: center;
 }
 
+.eye-icon{
+  font-size: 1.2em;
+  color: #5A677A;
+}
+
+.eye-icon:hover{
+  color: var(--blue-hover);
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -27,13 +36,14 @@
 
 .dark-button{
   background-color: light-dark(#fff, #2A313C);
-  border: 1px solid light-dark(#154D71, #2A313C);
+  /* border: 1px solid light-dark(#154D71, #2A313C); */
+  box-shadow: 0 2px 10px light-dark(#00000009, #00000040);
   color: light-dark(var(--blue), #909aa1);
 }
 
 .dark-button:hover{
   background-color: light-dark(#F9FAFB, #3D4750);
-  border-color: light-dark(#0E3A57, #1E293B);
+  /* border-color: light-dark(#0E3A57, #1E293B); */
 }
 
 .nav-button{
