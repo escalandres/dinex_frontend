@@ -11,6 +11,8 @@ import "../navbar.css";
 
 import { UserMenu } from "../components/UserMenu";
 import { Notification } from "../components/Notification";
+import { AgregarInstrumentos } from "./pages-components/instrumentos/AgregarInstrumentos";
+
 export const Navbar = () => {
 
     return (
@@ -29,10 +31,7 @@ export const Navbar = () => {
                     <UserMenu />
                 </div>
                 <div className="ml-16 items-center justify-between w-full md:flex md:w-auto md:order-1 grid grid-cols-2 gap-x-3" id="navbar-sticky">
-                    <button className="block py-2 px-3 rounded-sm md:bg-transparent" aria-current="page">
-                        <i className="fas fa-plus mr-2"></i>
-                        Agregar instrumento
-                    </button>
+                    <AgregarInstrumentos />
                 </div>
             </div>
         </nav>

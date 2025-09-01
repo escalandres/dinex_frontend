@@ -10,3 +10,12 @@ nav button:hover {
     background-color: light-dark(var(--light-blue-hover), #24292e);
     border-color: transparent;
 }
+
+.modal{
+    background-color: light-dark(#fff, #2C3339);
+    border-radius: 0.5rem;
+}
+
+.modal h2, .modal p, .modal input {
+    color: light-dark(var(--light-blue), #fff);
+}
