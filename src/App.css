@@ -1,8 +1,8 @@
 /* :root {
 
-  --blue: #2365EA;
-  --blue-hover: #1e54b7;
-  --blue-active: #1a4a9e;
+  --light-blue: #2365EA;
+  --light-blue-hover: #1e54b7;
+  --light-blue-active: #1a4a9e;
 } */
 
 #root {
@@ -18,7 +18,7 @@
 }
 
 .eye-icon:hover{
-  color: var(--blue-hover);
+  color: var(--light-blue-hover);
 }
 
 .logo {
@@ -38,7 +38,7 @@
   background-color: light-dark(#fff, #2A313C);
   /* border: 1px solid light-dark(#154D71, #2A313C); */
   box-shadow: 0 2px 10px light-dark(#00000009, #00000040);
-  color: light-dark(var(--blue), #909aa1);
+  color: light-dark(var(--light-blue), #909aa1);
 }
 
 .dark-button:hover{
@@ -49,7 +49,7 @@
 .nav-button{
   background-color: light-dark(#fff, #191D21);
   /* border: 1px solid light-dark(#154D71, #191D21); */
-  color: light-dark(var(--blue), #fff);
+  color: light-dark(var(--light-blue), #fff);
 }
 .nav-button:hover{
   background-color: light-dark(#e6e8eb, #3D4750);

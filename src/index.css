@@ -16,9 +16,9 @@
   padding: 0;
   margin: 0;
 
-  --blue: #2365EA;
-  --blue-hover: #1e54b7;
-  --blue-active: #1a4a9e;
+  --light-blue: #2365EA;
+  --light-blue-hover: #1e54b7;
+  --light-blue-active: #1a4a9e;
 }
 
 a {
@@ -60,8 +60,8 @@ button {
   transition: border-color 0.25s;
 }
 button:hover {
-  background-color: var(--blue-hover);
-  border-color: var(--blue-hover);
+  background-color: var(--light-blue-hover);
+  border-color: var(--light-blue-hover);
 }
 button:focus,
 button:focus-visible {
@@ -73,7 +73,7 @@ input{
 }
 
 input:hover, input:focus {
-  border-color: 10px solid light-dark(var(--blue), var(--blue-hover));
+  border-color: 10px solid light-dark(var(--light-blue), var(--light-blue-hover));
 }
 
 /* CSS - Solo color-scheme */

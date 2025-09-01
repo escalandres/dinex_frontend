@@ -16,12 +16,12 @@ nav{
 
 #default-sidebar{
     background-color: light-dark(#fff, #242A2E);
-    color: light-dark(var(--blue), #fff);
+    color: light-dark(var(--light-blue), #fff);
     border-right: 1px solid light-dark(#E5E7EB, #4B5563);
 }
 
 #default-sidebar a, #default-sidebar span{
-    color: light-dark(var(--blue),#ecebeb);
+    color: light-dark(var(--light-blue),#ecebeb);
 }
 
 #default-sidebar a:hover{
@@ -32,7 +32,7 @@ nav{
 }
 
 #user-menu a{
-    color: light-dark(var(--blue),#ecebeb);
+    color: light-dark(var(--light-blue),#ecebeb);
 }
 #user-menu a:hover{
     background-color: light-dark(#2365EA, #4a5565);
@@ -44,9 +44,9 @@ nav{
 }
 
 /* .element a, .element span {
-  color: light-dark(var(--blue), #fff);
+  color: light-dark(var(--light-blue), #fff);
 }
 
 .element a:hover, .element span:hover {
-  color: light-dark(var(--blue), #ecebeb);
+  color: light-dark(var(--light-blue), #ecebeb);
 } */

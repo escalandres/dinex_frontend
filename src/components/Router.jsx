@@ -12,6 +12,8 @@ import ChangePassword from '../pages/extras/ChangePassword';
 import GithubAuthorize from '../pages/login/components/auth/GithubAuthMiddleware';
 
 import Ahorros from '../pages/dinex/pages/Ahorros';
+import Gastos from '../pages/dinex/pages/Gastos';
+import Instrumentos from '../pages/dinex/pages/Instrumentos';
 
 const Router = createBrowserRouter(
     [
@@ -43,6 +45,14 @@ const Router = createBrowserRouter(
       {
         path: "/app/ahorros",
         element: <Ahorros/>
+      },
+      {
+        path: "/app/gastos",
+        element: <Gastos/>
+      },
+      {
+        path: "/app/instrumentos",
+        element: <Instrumentos/>
       },
       {
         path: "/recuperacion",

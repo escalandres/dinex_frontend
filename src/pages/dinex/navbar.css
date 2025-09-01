@@ -1,0 +1,12 @@
+
+
+nav button {
+    color: white;
+    background-color: light-dark(var(--light-blue), #2C3339);
+}
+
+nav button:hover {
+    color: white;
+    background-color: light-dark(var(--light-blue-hover), #24292e);
+    border-color: transparent;
+}

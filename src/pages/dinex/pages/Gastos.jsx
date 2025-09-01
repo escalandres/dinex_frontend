@@ -1,9 +1,28 @@
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { alerta, showLoader, hideLoader } from '../../js/utils';
+import { jwtDecode } from 'jwt-decode'; // Esto puede ser incorrecto, asegúrate de que la importación es correcta
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
+import { Navbar } from '../components/Navbar';
+import { Sidebar } from "../components/Sidebar";
 
-export const Gastos = () => {
+import "../dinex.css";
+
+const Gastos = () => {
+    // const token = localStorage.getItem('token');
+    // const decoded = jwtDecode(token);
+
     return (
-        <div>
-            <h1>Gastos</h1>
-        </div>
+            <div className='flex flex-col h-screen'>
+                <Sidebar />
+                <main className='flex-grow p-4 bg-gray-50 dark:bg-gray-900'>
+                    <Navbar />
+                    <div className='mt-16'>
+                        <h1 className='text-2xl font-bold mb-4'>Bienvenido a Gastos</h1> 
+                    </div>
+                </main>
+            </div>
     );
 };
+
+export default Gastos;
