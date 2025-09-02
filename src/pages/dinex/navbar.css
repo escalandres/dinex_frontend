@@ -16,6 +16,10 @@ nav button:hover {
     border-radius: 0.5rem;
 }
 
-.modal h2, .modal p, .modal input {
+.modal h2{
     color: light-dark(var(--light-blue), #fff);
+}
+
+.modal p, .modal input {
+    color: light-dark(#2C3339, #fff);
 }

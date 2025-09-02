@@ -69,11 +69,28 @@ button:focus-visible {
 }
 
 input{
-  border: 0;
+  background-color: light-dark(#f9fafb, #374151);         /* bg-gray-50 */
+  border: 1px solid light-dark(#d1d5db, #4b5563);         /* border + border-gray-300 */
+  color: light-dark(#111827, #ffffff);                    /* text-gray-900 */
+  font-size: 0.875rem;               /* text-sm */
+  border-radius: 0.5rem;             /* rounded-lg */
+  display: block;                    /* block */
+  width: 100%;                       /* w-full */
+  padding: 0.625rem;                 /* p-2.5 */
 }
 
-input:hover, input:focus {
-  border-color: 10px solid light-dark(var(--light-blue), var(--light-blue-hover));
+input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); /* focus:ring-blue-500 */
+  border-color: light-dark(var(--light-blue), var(--light-blue-hover));                        /* focus:border-blue-500 */
+}
+
+input::placeholder {
+  color: #9ca3af;                  /* dark:placeholder-gray-400 */
+}
+
+label{
+  color: light-dark(var(--light-blue), #fff);
 }
 
 /* CSS - Solo color-scheme */

@@ -3,12 +3,44 @@ import * as Dialog from "@radix-ui/react-dialog";
 import PropTypes from 'prop-types';
 import { alerta, showLoader, hideLoader } from '../../../../js/utils';
 
+const catalogos = {
+    tipoInstrumentos: [
+        { id: 1, descripcion: 'Tipo 1' },
+        { id: 2, descripcion: 'Tipo 2' },
+        { id: 3, descripcion: 'Tipo 3' },
+    ],
+    subtipoInstrumentos: [
+        { id: 1, id_tipo_instrumento: 1, descripcion: 'Subtipo 1' },
+        { id: 2, id_tipo_instrumento: 1, descripcion: 'Subtipo 2' },
+        { id: 3, id_tipo_instrumento: 2, descripcion: 'Subtipo 3' },
+    ],
+};
+
 export const AgregarInstrumentos = ({ token }) => {
-    const [tracker, setTracker] = useState('');
+    const [descripcion, setDescripcion] = useState('');
+    const [tipoInstrumentos, setTipoInstrumentos] = useState({});
+    const [subtipoInstrumentos, setSubtipoInstrumentos] = useState({});
+    const [diaCorte, setDiaCorte] = useState(1);
+    const [diaPago, setDiaPago] = useState(1);
+    const [subtipos, setSubtipos] = useState([]);
+    const [isSelectedTipo, setIsSelectedTipo] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false); // Estado para controlar si ya se ha enviado el formulario
     const [isOpen, setIsOpen] = useState(false); // Estado para controlar la apertura y cierre del modal
 
-    const handleLinkTracker = async (e) => {
+    const handleTipoInstrumentosChange = (event) => { 
+        const tipoInstrumento = event.target.value;
+        //alert(companyName);
+        setTipoInstrumentos(tipoInstrumento); 
+        console.log('Selected tipo instrumento:', tipoInstrumento);
+        console.log("tipo instrumentos", catalogos.tipoInstrumentos);
+
+        const subtipos = catalogos.subtipoInstrumentos.filter((subtipoInstrumento) => subtipoInstrumento.id_tipo_instrumento == tipoInstrumento);
+        console.log("selected",subtipos);
+        setIsSelectedTipo(true);
+        setSubtipos(subtipos ? subtipos : []);
+    };
+
+    const handleAgregarInstrumento = async (e) => {
         e.preventDefault();
 
         if (isSubmitting) {
@@ -82,41 +114,83 @@ export const AgregarInstrumentos = ({ token }) => {
                                 Agregar instrumento
                             </Dialog.Title>
                             <Dialog.Description className=" text-sm text-gray-600">
-                                <p>
                                     Registra un nuevo instrumento para gestionar sus finanzas.
-                                </p>
                             </Dialog.Description>
-                            <fieldset className="Fieldset relative">
-                                <svg 
-                                    className="w-6 h-6 text-gray-400 absolute left-3 inset-y-0 my-auto fill-none stroke-gray-400"
-                                    version="1.1" 
-                                    id="Icons" 
-                                    xmlns="http://www.w3.org/2000/svg" 
-                                    xmlnsXlink="http://www.w3.org/1999/xlink" 
-                                    viewBox="0 0 24 24" 
-                                    xmlSpace="preserve"
+                            <div className="relative mt-8 mb-4">
+                                <fieldset className="Fieldset relative">
+                                    <label htmlFor="tipoInstrumentos" className="block mb-2 text-sm font-medium dark:text-gray-900 text-white text-left">Tipo de instrumento *</label>
+                                    <input
+                                        className="w-full pl-12 pr-3 py-2 text-gray-500 bg-transparent outline-none border   rounded-lg"
+                                        value={descripcion}
+                                        onChange={(e) => setDescripcion(e.target.value)}
+                                        placeholder="Ingrese el nombre de su instrumento"
+                                        required
+                                    />
+                                </fieldset>
+                            </div>
+                            <div className="grid grid-cols-2 gap-x-3 my-4">
+                                <fieldset className="Fieldset relative text-left">
+                                    <label htmlFor="tipoInstrumentos" className="block mb-2 text-sm font-medium dark:text-gray-900 text-white">Tipo de instrumento *</label>
+                                    <select id="tipoInstrumentos" className="bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 text-sm rounded-lg dark:bg-gray-50 border dark:border-gray-300 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500 block w-full p-2.5 "
+                                        onChange={handleTipoInstrumentosChange}
+                                        required
+                                    >
+                                        <option value="">Seleccione un tipo de instrumento</option>
+                                        {
+                                            catalogos.tipoInstrumentos && catalogos.tipoInstrumentos.length > 0 && catalogos.tipoInstrumentos.map((tipo, index) => (
+                                                <option key={index} value={tipo.id}>{tipo.descripcion}</option>
+                                            ))
+                                        }
+                                    </select>
+                                </fieldset>
+                                <fieldset className="Fieldset relative text-left">
+                                    <label htmlFor="subtipoInstrumentos" className="block mb-2 text-sm font-medium dark:text-gray-900 text-white">Subtipo de instrumento *</label>
+                                    <select id="subtipoInstrumentos" className="bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 text-sm rounded-lg dark:bg-gray-50 border dark:border-gray-300 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500 block w-full p-2.5 "
+                                        disabled={!isSelectedTipo}
+                                        onChange={(e) => setSubtipoInstrumentos(e.target.value)}
+                                        required
+                                    >
+                                        <option value="">Seleccione un servicio</option>
+                                        {
+                                            subtipos && subtipos.length > 0 && subtipos.map((subtipo, index) => (
+                                                <option key={index} value={subtipo.id}>{subtipo.descripcion}</option>
+                                            ))
+                                        }
+                                    </select>
+                                </fieldset>
+                            </div>
+                            <div className="grid grid-cols-2 gap-x-3">
+                                <fieldset className="Fieldset relative text-left">
+                                    <label htmlFor="tipoInstrumentos" className="block mb-2 text-sm font-medium dark:text-gray-900 text-white">Dia de corte</label>
+                                    <input
+                                        type="number"
+                                        min={1}
+                                        max={31}
+                                        className="w-full pl-12 pr-3 py-2 text-gray-500 bg-transparent outline-none border  rounded-lg"
+                                        value={diaCorte}
+                                        onChange={(e) => setDiaCorte(e.target.value)}
+                                    />
+                                </fieldset>
+                                <fieldset className="Fieldset relative text-left">
+                                    <label htmlFor="subtipoInstrumentos" className="block mb-2 text-sm font-medium dark:text-gray-900 text-white">Día limite de pago</label>
+                                    <input
+                                        type="number"
+                                        min={1}
+                                        max={31}
+                                        className="w-full pl-12 pr-3 py-2 text-gray-500 bg-transparent outline-none border   rounded-lg"
+                                        value={diaPago}
+                                        onChange={(e) => setDiaPago(e.target.value)}
+                                    />
+                                </fieldset>
+                            </div>
+
+                            <Dialog.Close asChild>
+                                <button className=" w-full mt-3 py-3 px-4 font-medium text-sm text-center text-white bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 rounded-lg ring-offset-2 ring-indigo-600 focus:ring-2"
+                                    onClick={handleAgregarInstrumento}
                                 >
-                                    <path d="M8 8L8 16" />
-                                    <path d="M12 8L12 16" />
-                                    <path d="M16 8L16 16" />
-                                    <path d="M8.976 21C4.05476 21 3 19.9453 3 15.024" />
-                                    <path d="M20.9999 15.024C20.9999 19.9453 19.9452 21 15.0239 21" />
-                                    <path d="M15.0239 3C19.9452 3 20.9999 4.05476 20.9999 8.976" />
-                                    <path d="M3 8.976C3 4.05476 4.05476 3 8.976 3" />
-                                </svg>
-                                <input
-                                    className="w-full pl-12 pr-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
-                                    value={tracker}
-                                    onChange={(e) => setTracker(e.target.value)}
-                                    placeholder="Ingrese el código del rastreador"
-                                />
-                            </fieldset>
-                            <button
-                                className="w-full mt-3 py-3 px-4 font-medium text-sm text-center text-white bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 rounded-lg ring-offset-2 ring-indigo-600 focus:ring-2"
-                                onClick={handleLinkTracker}
-                            >
-                                Vincular rastreador
-                            </button>
+                                    Registrar nuevo envío
+                                </button>
+                            </Dialog.Close>
                         </div>
                     </div>
                 </Dialog.Content>
