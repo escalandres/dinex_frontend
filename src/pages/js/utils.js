@@ -68,3 +68,24 @@ export const hideLoader = () => {
     const loader = document.getElementById('panel');
     loader.style.display = 'none';
 }
+
+export const obtenerColorBadge = (tipo, item) => {
+    const coloresTipoInstrumentos = {
+        'Ahorro': 'bg-blue-400',
+        'Gasto': 'bg-red-600',
+        'Inversión': 'bg-green-600'
+    };
+    const coloresSubtipoInstrumentos = {
+        'Cuenta de ahorro': 'bg-yellow-500',
+        'Cuenta corriente': 'bg-gray-500',
+        'Efectivo para ahorro': 'bg-purple-400',
+        'TDC - Tarjeta de crédito': 'bg-orange-600',
+        'TDD - Tarjeta de débito': 'bg-indigo-600',
+        'Efectivo para gastos': 'bg-gray-800',
+        'Cuenta de inversión': 'bg-green-600'
+    };
+    if (tipo === 'tipoInstrumento') {
+        return coloresTipoInstrumentos[item] || 'bg-gray-500';
+    }
+    return coloresSubtipoInstrumentos[item] || 'bg-gray-500';
+}
