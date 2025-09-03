@@ -2,12 +2,12 @@
 
 
 nav{
-    background-color: light-dark(#ffffff, #191D21 );
+    background-color: light-dark(#ffffff, #191D21);
     border-bottom: 1px solid light-dark(#E5E7EB, #4B5563);
 }
 
 .user-menu{
-    background-color: light-dark(#ffffff, #364153 );
+    background-color: light-dark(#ffffff, #364153);
 }
 
 .main-content{
@@ -41,6 +41,27 @@ nav{
 
 .element{
     border-right: 1px solid light-dark(#E5E7EB, #4B5563);
+}
+
+.content-window{
+    background-color: light-dark(#F9FAFB, #1F2937);
+}
+
+thead{
+    background-color: light-dark(#fff, #191D21);
+    color: light-dark(#000, #fff);
+}
+
+th, td{
+    color: light-dark(#000, #fff);
+}
+
+tbody{
+    background-color: light-dark(#fff, #101828);
+}
+
+tbody tr:hover{
+    background-color: light-dark(#ecedee, #374151);
 }
 
 /* .element a, .element span {

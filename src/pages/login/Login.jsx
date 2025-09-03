@@ -112,7 +112,7 @@ const Login = () => {
                             </div>
                         </div>
                         <button
-                            className="w-full px-4 py-2 text-white font-mediumrounded-lg duration-150"
+                            className="w-full px-4 py-2 text-white font-mediumrounded-lg duration-150 bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 "
                             type="submit"
                         >
                             Iniciar sesión

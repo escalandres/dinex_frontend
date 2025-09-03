@@ -19,15 +19,19 @@
   --light-blue: #2365EA;
   --light-blue-hover: #1e54b7;
   --light-blue-active: #1a4a9e;
+
+  --light-indigo: #4f46e5;
+  --light-indigo-hover: #4338ca;
+  --light-indigo-active: #3730a3;
 }
 
 a {
   font-weight: 500;
-  color: #2362EB;
+  color: var(--light-indigo);
   text-decoration: inherit;
 }
 a:hover {
-  color: #1e54b7 !important;
+  color: var(--light-indigo-hover) !important;
 }
 
 body {
@@ -55,20 +59,16 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #2365EA;
   cursor: pointer;
   transition: border-color 0.25s;
 }
-button:hover {
-  background-color: var(--light-blue-hover);
-  border-color: var(--light-blue-hover);
-}
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-input{
+input, select{
   background-color: light-dark(#f9fafb, #374151);         /* bg-gray-50 */
   border: 1px solid light-dark(#d1d5db, #4b5563);         /* border + border-gray-300 */
   color: light-dark(#111827, #ffffff);                    /* text-gray-900 */
@@ -79,13 +79,13 @@ input{
   padding: 0.625rem;                 /* p-2.5 */
 }
 
-input:focus {
+input:focus, select:focus {
   outline: none;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); /* focus:ring-blue-500 */
   border-color: light-dark(var(--light-blue), var(--light-blue-hover));                        /* focus:border-blue-500 */
 }
 
-input::placeholder {
+input::placeholder, select::placeholder {
   color: #9ca3af;                  /* dark:placeholder-gray-400 */
 }
 
