@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { alerta, showLoader, hideLoader } from '../../../js/utils.js';
+import { alerta, showLoader, hideLoader } from '../../../assets/js/utils.js';
 
 const GithubAuthorize = () => {
     const [code, setCode] = useState(null);
