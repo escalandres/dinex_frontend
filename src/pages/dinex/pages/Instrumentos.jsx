@@ -1,8 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { alerta, showLoader, hideLoader, obtenerColorBadge } from '../../js/utils';
-import { jwtDecode } from 'jwt-decode'; // Esto puede ser incorrecto, asegúrate de que la importación es correcta
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-// import { Navbar } from '../components/Navbar';
+import { alerta, showLoader, hideLoader, obtenerColorBadge } from '../../assets/js/utils';
+import { jwtDecode } from 'jwt-decode'; 
 import { Sidebar } from "../components/Sidebar";
 
 import "../dinex.css";
@@ -158,16 +156,16 @@ const Instrumentos = () => {
         } else { console.log('Solicitud en progreso, no se ejecuta la función'); return respuesta; }
     }, [token]);
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         const results = await cargarInstrumentos();
-    //         console.log('results', results);
-    //         setInstrumentos(results.instrumentos);
-    //         setCatalogos(results.catalogos);
-    //     };
+    useEffect(() => {
+        const fetchData = async () => {
+            const results = await cargarInstrumentos();
+            console.log('results', results);
+            setInstrumentos(results.instrumentos);
+            setCatalogos(results.catalogos);
+        };
 
-    //     fetchData();
-    // }, [cargarInstrumentos]);
+        fetchData();
+    }, [cargarInstrumentos]);
 
     return (
         <div className="content-window flex h-screen w-full bg-gray-50 dark:bg-gray-900">

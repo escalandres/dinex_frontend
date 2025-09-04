@@ -1,8 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { alerta, showLoader, hideLoader } from '../js/utils';
+import { alerta, showLoader, hideLoader } from '../assets/js/utils';
 import { jwtDecode } from 'jwt-decode'; // Esto puede ser incorrecto, asegúrate de que la importación es correcta
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
 import { Navbar } from './components/Navbar';
 import { Sidebar } from "./components/Sidebar";
 
