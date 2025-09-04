@@ -1,0 +1,26 @@
+
+.sidebar{
+    background-color: light-dark(#fff, #242A2E);
+    color: light-dark(var(--light-blue), #fff);
+    border-right: 1px solid light-dark(#E5E7EB, #4B5563);
+    text-align: left;
+}
+
+.sidebar a, .sidebar span{
+    color: light-dark(var(--light-blue),#ecebeb)!important;
+}
+
+.sidebar a:hover{
+    background-color: light-dark(#2365EA, #364153)!important;
+}
+.sidebar a:hover span{
+    color: light-dark(#fff,#ecebeb)!important;
+}
+
+.main-content{
+    background-color: light-dark(#F9FAFB, #1F2937);
+}
+
+.content-window{
+    background-color: light-dark(#F9FAFB, #1F2937);
+}
