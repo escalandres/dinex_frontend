@@ -1,4 +1,4 @@
-import { alerta, showLoader, hideLoader } from '../../../js/utils';
+import { alerta, showLoader, hideLoader } from '../../../assets/js/utils';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { useGoogleLogin } from '@react-oauth/google';
 

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { alerta, showLoader, hideLoader } from '../js/utils';
+import { alerta, showLoader, hideLoader } from '../assets/js/utils';
 
 const ForgotPassword = () => {
     document.title = 'Recuperar cuenta | Cosmos';
