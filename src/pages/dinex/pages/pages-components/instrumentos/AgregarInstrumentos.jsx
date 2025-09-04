@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import * as Dialog from "@radix-ui/react-dialog";
 import PropTypes from 'prop-types';
-import { alerta, showLoader, hideLoader } from '../../../../js/utils';
+import { alerta, showLoader, hideLoader } from '../../../../assets/js/utils';
 
 const catalogos = {
     tipoInstrumentos: [
@@ -51,18 +51,25 @@ export const AgregarInstrumentos = ({ token }) => {
 
         try {
             showLoader();
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/app/link-tracker`, {
+            const _instrumento = {
+                descripcion: descripcion.trim(),
+                id_tipo_instrumento: tipoInstrumentos,
+                id_subtipo_instrumento: subtipoInstrumentos,
+                dia_corte: diaCorte,
+                dia_pago: diaPago
+            };
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/app/instrumentos`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ trackerID: tracker.trim() }),
+                body: JSON.stringify({ instrumento: _instrumento }),
             });
             hideLoader();
 
             if (!response.ok) {
-                alerta.autoError('Error al vincular el rastreador. Inténtelo nuevamente.');
+                alerta.autoError('Error al agregar el instrumento. Inténtelo nuevamente.');
             } else {
                 const data = await response.json();
                 data.success ? alerta.autoSuccess(data.message) : alerta.autoError(data.message);
@@ -150,7 +157,7 @@ export const AgregarInstrumentos = ({ token }) => {
                                         onChange={(e) => setSubtipoInstrumentos(e.target.value)}
                                         required
                                     >
-                                        <option value="">Seleccione un servicio</option>
+                                        <option value="">Seleccione un subtipo de instrumento</option>
                                         {
                                             subtipos && subtipos.length > 0 && subtipos.map((subtipo, index) => (
                                                 <option key={index} value={subtipo.id}>{subtipo.descripcion}</option>
