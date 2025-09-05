@@ -1,5 +1,10 @@
 import Swal from 'sweetalert2';
 
+export const VARIABLES = {
+    icons: {
+        flags: '/icons/flags/',
+    }
+};
 
 export const isAuthenticated = () => {
     // Verifica si existe el token en el localStorage

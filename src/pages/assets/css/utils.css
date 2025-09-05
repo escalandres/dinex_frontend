@@ -21,6 +21,20 @@
     background-color: light-dark(#F9FAFB, #1F2937);
 }
 
-.content-window{
+.content{
     background-color: light-dark(#F9FAFB, #1F2937);
+}
+
+.content button{
+    background-color: light-dark(var(--light-blue), #364153);
+    color: light-dark(#fff, #ecebeb);
+}
+
+.content button:hover{
+    background-color: light-dark(var(--light-blue-hover), #455164);
+}
+
+.eye-icon{
+    background-color: transparent!important;
+    color: light-dark(#99a1af, white)!important;
 }
