@@ -276,7 +276,7 @@ export default function UserSettings() {
               <div className="relative" ref={selectRef}>
                 <button
                   onClick={() => setIsOpen(!isOpen)}
-                  className={`w-full px-4 py-4 bg-gray-800 border border-gray-700 rounded-xl text-left text-white hover:border-gray-600 focus:outline-none focus:border-gray-600 transition-all duration-200 flex items-center justify-between ${
+                  className={`country-select w-full px-4 py-4 border border-gray-700 rounded-xl text-left text-white hover:border-gray-600 focus:outline-none focus:border-gray-600 transition-all duration-200 flex items-center justify-between ${
                     isOpen ? 'border-gray-600' : ''
                   }`}
                 >
@@ -298,7 +298,7 @@ export default function UserSettings() {
                       <button
                         key={option.id}
                         onClick={() => handleOptionClick(option)}
-                        className={`w-full px-4 py-3 text-left hover:bg-gray-700 transition-colors duration-150 flex items-center space-x-3 ${
+                        className={`country-select w-full px-4 py-3 text-left hover:bg-gray-700 transition-colors duration-150 flex items-center space-x-3 ${
                           selectedOption.id === option.id
                             ? 'bg-gray-700 text-blue-400'
                             : 'text-white'
@@ -309,12 +309,11 @@ export default function UserSettings() {
                         }`}
                       >
 
-                      <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center overflow-hidden p-0.5">
-                        <img src={VARIABLES.icons.flags + option.emoji_bandera} alt={option.nombre} 
-                          className="w-full h-full object-contain"
-                        />
-                      </div>
-                        <span className="text-base">{option.nombre}</span>
+                        <div className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden p-0.5">
+                          <img className="w-6 h-6 object-cover rounded-full" src={VARIABLES.icons.flags + option.emoji_bandera} alt={option.nombre} />
+                        </div>
+                        <span className="text-base font-medium">{option.nombre}</span>
+
                       </button>
                     ))}
                   </div>
