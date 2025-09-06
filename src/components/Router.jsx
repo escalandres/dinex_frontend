@@ -14,7 +14,7 @@ import GithubAuthorize from '../pages/login/components/auth/GithubAuthMiddleware
 import Ahorros from '../pages/dinex/pages/Ahorros';
 import Gastos from '../pages/dinex/pages/Gastos';
 import Instrumentos from '../pages/dinex/pages/Instrumentos';
-import UserSettings from '../pages/account_settings/UserSettings';
+import UserSettings from '../pages/dinex/pages/UserSettings';
 
 const Router = createBrowserRouter(
     [
