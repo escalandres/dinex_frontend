@@ -41,12 +41,39 @@
 
 .country-select{
     background-color: light-dark(#f9fafb, #374151)!important;         /* bg-gray-50 */
-    border: 1px solid light-dark(#d1d5db, #4b5563)!important;         /* border + border-gray-300 */
+    border: 1px solid light-dark(#d1d5db, #4b5563)!important;
     color: light-dark(#424857, #ffffff)!important;
 }
 
 .country-select:hover{
-    background-color: light-dark(#ecedee, #374151);
+    background-color: light-dark(#ecedee, #4b5563)!important;
+}
+
+.menu-item{
+    background-color: transparent!important;
+}
+
+.menu-item:hover{
+    background-color: light-dark(var(--light-blue), #455164)!important;
+}
+
+.menu-item:hover span, .menu-item:hover svg{
+    color: #fff!important;
+}
+
+
+
+/* .menu-item span:hover, .menu-item svg:hover{
+    color: light-dark(#fff, #fff)!important;
+} */
+
+.active-menu-item{
+    background-color: light-dark(#2365EA, #364153)!important;
+    color: light-dark(#fff,#ecebeb)!important;
+}
+
+.active-menu-item span, .active-menu-item svg{
+    color: light-dark(#fff,#ecebeb)!important;
 }
 
 /* .invisible{

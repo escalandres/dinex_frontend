@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Upload, X } from 'lucide-react';
+import { Upload, CircleX } from 'lucide-react';
 
 export const DragDropZone = () => {
   const [isDragOver, setIsDragOver] = useState(false);
@@ -125,7 +125,7 @@ export const DragDropZone = () => {
             onClick={() => handleRemoveFile(index)}
             className="text-red-400 hover:text-red-600 text-sm font-medium"
           >
-            <X className="w-4 h-4" />
+            <CircleX className="w-4 h-4" />
           </button>
         </div>
       ))}
