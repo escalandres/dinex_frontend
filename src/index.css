@@ -93,6 +93,10 @@ label{
   color: light-dark(var(--light-blue), #fff);
 }
 
+p{
+  color: light-dark(#4b4a4a, #d1d5db);
+}
+
 /* CSS - Solo color-scheme */
 /* @media (prefers-color-scheme: light) {
   :root { color-scheme: light; }

@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { User, Key, Bell, CreditCard, Users, Eye, EyeOff, House, ChevronDown } from 'lucide-react';
 import { alerta, VARIABLES } from '../../assets/js/utils';
-import "../assets/css/utils.css";
 import { ThemeToggle } from "../components/ThemeToggle";
 import { DragDropZone } from '../components/DragDropZone';
+
+import "../../assets/css/utils.css";
 
 const Sidebar = () => {
   return (
