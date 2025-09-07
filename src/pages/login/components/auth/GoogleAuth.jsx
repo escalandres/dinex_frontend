@@ -2,7 +2,7 @@ import { alerta, showLoader, hideLoader } from '../../../assets/js/utils';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { useGoogleLogin } from '@react-oauth/google';
 
-const GoogleA = ({ oauthClass }) => {
+const GoogleButton = ({ oauthClass }) => {
     const login = useGoogleLogin({
         // onSuccess: tokenResponse => console.log(tokenResponse),
         onSuccess: tokenResponse => handleLoginSuccess(tokenResponse),
@@ -77,7 +77,7 @@ const GoogleAuth = ({ oauthClass }) => {
     return (
         <>
             <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-                <GoogleA oauthClass={oauthClass} />
+                <GoogleButton oauthClass={oauthClass} />
             </GoogleOAuthProvider>
         </>
     );

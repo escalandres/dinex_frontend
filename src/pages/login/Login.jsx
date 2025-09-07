@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Eye, EyeOff } from 'lucide-react';
 import { alerta, showLoader, hideLoader } from '../assets/js/utils';
 import GoogleAuth from './components/auth/GoogleAuth';
 import GitHubAuth from './components/auth/GitHubAuth';

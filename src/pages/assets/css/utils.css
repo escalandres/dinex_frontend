@@ -76,6 +76,20 @@
     color: light-dark(#fff,#ecebeb)!important;
 }
 
+.field-error{
+    border: 1px solid #dc2626!important; /* Red-600 */
+    background-color: light-dark(#fef2f2, #703d3d75)!important; /* Red-50 */
+    color: light-dark(#b91c1c, #e63e3e)!important; /* Red-700 */
+}
+
+.field-error::placeholder{
+    color: light-dark(#b91c1c, #e63e3e)!important; /* Red-700 */
+}
+
+.field-error-message{
+    color: light-dark(#b91c1c, #e63e3e)!important; /* Red-700 */
+}
+
 /* .invisible{
     visibility: hidden;
 } */
