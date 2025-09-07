@@ -15,4 +15,12 @@ export const fileSchema = yup.object({
             const file = value as File;
             return file && SUPPORTED_FORMATS.includes(file.type);
     }),
+
+    multipleFiles: yup
+        .mixed()
+        .test("multipleFiles", "Solo se permite un archivo", (value) => {
+            const files = value as FileList;
+            return files && files.length === 1;
+        })
+
 });
