@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
-import { profileSchema } from '@validations/profileSchema';
+import { fileSchema } from '@validations/fileSchema';
 import { passwordSchema } from '@validations/passwordSchema';
 import { DragDropZone } from './DragDropZone';
 import { CountrySelect } from '@pages/components/CountrySelect';
@@ -186,9 +186,9 @@ export const Account = ({ user, token, paises }) => {
                 </button>
                 </div>
                 {errors.newPassword ? (
-                    <p className="mt-1 text-sm field-error-message">{errors.newPassword.message}</p>
+                    <legend className="mt-1 text-sm field-error-message">{errors.newPassword.message}</legend>
                 ) : (
-                    <p className="text-xs text-gray-500 mt-1">Your password must have at least 8 characters, include one uppercase letter, one lowercase letter, one number, and one special character.</p>
+                    <legend className="text-xs text-gray-500 mt-1">Your password must have at least 8 characters, include one uppercase letter, one lowercase letter, one number, and one special character.</legend>
                 )}
             </div>
             <div>
