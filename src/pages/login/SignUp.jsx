@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { alerta, showLoader, hideLoader } from '../assets/js/utils';
-import GoogleAuth from './components/auth/GoogleAuth';
-import GitHubAuth from './components/auth/GitHubAuth';
+import { OAuth } from './components/OAuth';
+import './components/login.css';
 
 const SignUp = () => {
     document.title = 'Registro | Cosmos';
@@ -75,10 +75,7 @@ const SignUp = () => {
                             <p className="">¿Ya tienes una cuenta? <a href="/login" className="font-medium text-indigo-600 hover:text-indigo-500">Iniciar sesion</a></p>
                         </div>
                     </div>
-                    <div className="grid grid-cols-2 gap-x-3">
-                        <GoogleAuth oauthClass="dark-button" />
-                        <GitHubAuth oauthClass="dark-button" />
-                    </div>
+                    <OAuth />
                     <div className="relative">
                         <span className="block w-full h-px bg-gray-300 dark:bg-black-100"></span>
                         <p className={`inline-block w-fit text-sm ${isDarkMode ? 'text-white bg-[#121212]' : 'bg-[#FBF9FA] text-black'} px-2 absolute -top-2 inset-x-0 mx-auto`}>O continua con</p>

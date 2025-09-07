@@ -1,0 +1,17 @@
+.oauth-button{
+    background-color: transparent;
+    border: 1px solid light-dark(#d1d5db, #2A313C)!important;
+    color: light-dark(var(--light-blue), #909aa1);
+}
+
+.oauth-button:hover{
+    background-color: light-dark(#ecedee, #4b5563)!important;
+}
+
+button{
+    background-color: light-dark(var(--light-blue), #364153);
+    color: light-dark(#fff, #ecebeb);
+}
+button:hover{
+    background-color: light-dark(var(--light-blue-hover), #455164);
+}
