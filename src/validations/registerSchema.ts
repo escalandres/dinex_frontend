@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-export const profileSchema = yup.object({
+export const registerSchema = yup.object({
     firstName: yup
         .string()
         .required("El nombre es obligatorio")
