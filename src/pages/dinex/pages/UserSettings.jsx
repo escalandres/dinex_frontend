@@ -1,8 +1,5 @@
-import { useState, useRef, useEffect } from 'react';
-import { User, Bell, CreditCard, Eye, EyeOff, House, ChevronDown } from 'lucide-react';
-import { profileSchema } from '@/validations/profileSchema';
-import { passwordSchema } from '@/validations/passwordSchema';
-import { alerta, VARIABLES } from '../../assets/js/utils';
+import { useState } from 'react';
+import { User, Bell, CreditCard, House } from 'lucide-react';
 import { ThemeToggle } from "../components/ThemeToggle";
 import { Account } from './pages-components/user_settings/Account';
 
