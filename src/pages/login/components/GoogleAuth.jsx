@@ -1,7 +1,6 @@
-import { alerta, showLoader, hideLoader } from '../../../assets/js/utils';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { useGoogleLogin } from '@react-oauth/google';
-
+import { alerta, showLoader, hideLoader } from '@pages/assets/js/utils';
 const GoogleButton = ({ oauthClass }) => {
     const login = useGoogleLogin({
         // onSuccess: tokenResponse => console.log(tokenResponse),
