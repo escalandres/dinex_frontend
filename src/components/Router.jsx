@@ -9,7 +9,7 @@ import AuthenticatedRoute from './AuthenticatedRoute';
 import Logout from '../pages/login/Logout';
 import ForgotPassword from '../pages/extras/ForgotPassword';
 import ChangePassword from '../pages/extras/ChangePassword';
-import GithubAuthorize from '../pages/login/components/auth/GithubAuthMiddleware';
+import GithubAuthorize from '@pages/login/components/GithubAuthMiddleware';
 
 import Ahorros from '../pages/dinex/pages/Ahorros';
 import Gastos from '../pages/dinex/pages/Gastos';
