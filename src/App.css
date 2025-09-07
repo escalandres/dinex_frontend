@@ -28,18 +28,6 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
-.dark-button{
-  background-color: transparent;
-  /* border: 1px solid light-dark(#154D71, #2A313C); */
-  box-shadow: 0 2px 10px light-dark(#00000009, #00000040);
-  color: light-dark(var(--light-blue), #909aa1);
-}
-
-.dark-button:hover{
-  background-color: light-dark(#F9FAFB, #3D4750);
-  /* border-color: light-dark(#0E3A57, #1E293B); */
-}
-
 .nav-button{
   background-color: transparent;
   /* border: 1px solid light-dark(#154D71, #191D21); */

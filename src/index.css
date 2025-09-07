@@ -27,11 +27,11 @@
 
 a {
   font-weight: 500;
-  color: var(--light-indigo);
+  color: var(--light-blue);
   text-decoration: inherit;
 }
 a:hover {
-  color: var(--light-indigo-hover) !important;
+  color: var(--light-blue-hover) !important;
 }
 
 body {
