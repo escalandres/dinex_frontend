@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
-import { alerta, showLoader, hideLoader } from '../assets/js/utils';
+import { alerta, showLoader, hideLoader } from '@pages/assets/js/utils';
+import { CountrySelect } from '@pages/components/CountrySelect';
 import { OAuth } from './components/OAuth';
+
 import './components/login.css';
 
 const SignUp = () => {
@@ -165,6 +167,7 @@ const SignUp = () => {
                                 </div>
                             </div>
                         </div>
+                        <CountrySelect />
                         
                         <button
                             className="w-full my-4 px-4 py-2 text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150"

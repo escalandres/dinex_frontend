@@ -1,4 +1,5 @@
 // import { useState, useEffect } from "react";
+import { LayoutDashboard, Wallet, WalletMinimal, BanknoteArrowUp, PiggyBank, CreditCard, ChartNoAxesCombined } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 export const Sidebar = () => {
     return (
@@ -35,55 +36,53 @@ export const Sidebar = () => {
                 </div>
                 <ul className="space-y-2 font-medium">
                     <li>
-                        <a href="/app" className="flex items-center gap-7 p-2 text-gray-900 rounded-lg  group">
+                        <a href="/dinex" className="flex items-center gap-7 p-2 text-gray-900 rounded-lg  group">
                         <span className="flex items-center justify-center w-5 h-5">
-                            <i className="fa-solid fa-chart-pie text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+                            <LayoutDashboard className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                         </span>
                         <span className="text-l font-medium">Dashboard</span>
                         </a>
                     </li>
                     <li>
-                        <a href="/app/instrumentos" className="flex items-center gap-7 p-2 text-gray-900 rounded-lg  group">
+                        <a href="/app/instruments" className="flex items-center gap-7 p-2 text-gray-900 rounded-lg  group">
                         <span className="flex items-center justify-center w-5 h-5">
-                            <i className="fa-solid fa-wallet text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+                            <Wallet className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                         </span>
-                        <span className="text-l font-medium">Instrumentos</span>
+                        <span className="text-l font-medium">Instruments</span>
                         </a>
                     </li>
                     <li>
-                        <a href="/app/ingresos" className="flex items-center gap-7 p-2 text-gray-900 rounded-lg  group">
+                        <a href="/app/incomes" className="flex items-center gap-7 p-2 text-gray-900 rounded-lg  group">
                         <span className="flex items-center justify-center w-5 h-5">
-                            {/* <i className="fa-solid fa-hand-holding-dollar text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i> */}
-                            <i className="fa-solid fa-money-bill-1-wave text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+                            <BanknoteArrowUp className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                         </span>
-                        <span className="text-l font-medium">Ingresos</span>
+                        <span className="text-l font-medium">Income</span>
                         </a>
                     </li>
                     <li>
-                        <a href="/app/ahorros" className="flex items-center gap-7 p-2 text-gray-900 rounded-lg  group">
+                        <a href="/app/savings" className="flex items-center gap-7 p-2 text-gray-900 rounded-lg  group">
                         <span className="flex items-center justify-center w-5 h-5">
-                            <i className="fa-solid fa-piggy-bank text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+                            <PiggyBank className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                         </span>
-                        <span className="text-l font-medium">Ahorros</span>
+                        <span className="text-l font-medium">Savings</span>
                         </a>
                     </li>
                     <li>
                         <a href="/app/gastos" className="flex items-center gap-7 p-2 text-gray-900 rounded-lg  group">
                         <span className="flex items-center justify-center w-5 h-5">
-                            <i className="fa-solid fa-credit-card text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+                            <CreditCard className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                         </span>
-                        <span className="text-l font-medium">Gastos</span>
+                        <span className="text-l font-medium">Expenses</span>
                         </a>
                     </li>
                     <li>
-                        <a
-                            href="/app/inversiones"
+                        <a href="/app/inversiones"
                             className="flex items-center gap-7 p-2 text-gray-900 rounded-lg  group"
                             >
                             <span className="flex items-center justify-center w-5 h-5">
-                                <i className="fa-solid fa-money-bill-trend-up text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+                                <ChartNoAxesCombined className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                             </span>
-                            <span className="text-l font-medium">Inversiones</span>
+                            <span className="text-l font-medium">Investments</span>
                             </a>
                     </li>
                 </ul>

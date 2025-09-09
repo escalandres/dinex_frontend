@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 
 export const ThemeToggle = () => {
     const [isDark, setIsDark] = useState(() => {
-        const themeGuardado = localStorage.theme;
-        if (themeGuardado) return themeGuardado === "dark";
-        document.documentElement.style.colorScheme = themeGuardado;
+        const themeSaved = localStorage.theme;
+        if (themeSaved) return themeSaved === "dark";
+        document.documentElement.style.colorScheme = themeSaved;
         return window.matchMedia("(prefers-color-scheme: dark)").matches;
     });
 
@@ -39,7 +39,7 @@ export const ThemeToggle = () => {
             </div>
             </div>
             <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-            Tema: {isDark ? "dark" : "light"}
+            Theme: {isDark ? "dark" : "light"}
             </span>
         </label>
         </div>

@@ -1,20 +1,20 @@
 // router.js
 import { createBrowserRouter, Navigate } from 'react-router-dom';
-import Dinex from '../pages/dinex/Dinex';
-import P404 from '../pages/extras/P404';
-import SignUp from '../pages/login/SignUp';
-import ProtectedRoute from './ProtectedRoute';
-import Homepage from '../pages/home/Homepage';
-import AuthenticatedRoute from './AuthenticatedRoute';
-import Logout from '../pages/login/Logout';
-import ForgotPassword from '../pages/extras/ForgotPassword';
-import ChangePassword from '../pages/extras/ChangePassword';
+import Dinex from '@pages/dinex/Dinex';
+import P404 from '@pages/extras/P404';
+import SignUp from '@pages/login/SignUp';
+import Homepage from '@pages/home/Homepage';
+import Logout from '@pages/login/Logout';
+import ForgotPassword from '@pages/extras/ForgotPassword';
+import ChangePassword from '@pages/extras/ChangePassword';
 import GithubAuthorize from '@pages/login/components/GithubAuthMiddleware';
+import AuthenticatedRoute from './AuthenticatedRoute';
+import ProtectedRoute from './ProtectedRoute';
 
-import Ahorros from '../pages/dinex/pages/Ahorros';
-import Gastos from '../pages/dinex/pages/Gastos';
-import Instrumentos from '../pages/dinex/pages/Instrumentos';
-import UserSettings from '../pages/dinex/pages/UserSettings';
+import Savings from '@/pages/dinex/pages/Savings';
+import Expenses from '@/pages/dinex/pages/Expenses';
+import Instruments from '@/pages/dinex/pages/Instruments';
+import UserSettings from '@pages/dinex/pages/UserSettings';
 
 const Router = createBrowserRouter(
     [
@@ -27,7 +27,7 @@ const Router = createBrowserRouter(
         element: <AuthenticatedRoute/>,
       },
       {
-        path: "/registro",
+        path: "/signup",
         element: <SignUp/>,
         errorElement: <P404/>
       },
@@ -44,27 +44,27 @@ const Router = createBrowserRouter(
         element: <Dinex/>
       },
       {
-        path: "/app/ahorros",
-        element: <Ahorros/>
+        path: "/app/savings",
+        element: <Savings/>
       },
       {
-        path: "/app/gastos",
-        element: <Gastos/>
+        path: "/app/expenses",
+        element: <Expenses/>
       },
       {
-        path: "/app/instrumentos",
-        element: <Instrumentos/>
+        path: "/app/instruments",
+        element: <Instruments/>
       },
       {
         path: "/app/user-settings",
         element: <UserSettings/>
       },
       {
-        path: "/recuperacion",
+        path: "/recovery",
         element: <ForgotPassword/>
       },
       {
-        path: "/cambiar-contrasena",
+        path: "/change-password",
         element: <ChangePassword/>
       },
       {

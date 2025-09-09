@@ -3,7 +3,7 @@ import { User, Bell, CreditCard, House } from 'lucide-react';
 import { ThemeToggle } from "../components/ThemeToggle";
 import { Account } from './pages-components/user_settings/Account';
 
-import "../../assets/css/utils.css";
+import "@pages/assets/css/utils.css";
 
 const Sidebar = ({ activeView, setActiveView }) => {
   return (
@@ -58,92 +58,92 @@ const Sidebar = ({ activeView, setActiveView }) => {
   );
 }
 
-const catalogos = {
-  paises: [
+const catalogs = {
+  countries: [
     {
       "id": 1,
-      "nombre": "México",
-      "emoji_bandera": "mx.svg"
+      "name": "México",
+      "flag_icon": "mx.svg"
     },
     {
       "id": 2,
-      "nombre": "Canadá",
-      "emoji_bandera": "ca.svg"
+      "name": "Canadá",
+      "flag_icon": "ca.svg"
     },
     {
       "id": 3,
-      "nombre": "Estados Unidos",
-      "emoji_bandera": "us.svg"
+      "name": "Estados Unidos",
+      "flag_icon": "us.svg"
     },
     {
       "id": 4,
-      "nombre": "Venezuela",
-      "emoji_bandera": "ve.svg"
+      "name": "Venezuela",
+      "flag_icon": "ve.svg"
     },
     {
       "id": 5,
-      "nombre": "Colombia",
-      "emoji_bandera": "co.svg"
+      "name": "Colombia",
+      "flag_icon": "co.svg"
     },
     {
       "id": 6,
-      "nombre": "Perú",
-      "emoji_bandera": "pe.svg"
+      "name": "Perú",
+      "flag_icon": "pe.svg"
     },
     {
       "id": 7,
-      "nombre": "Chile",
-      "emoji_bandera": "cl.svg"
+      "name": "Chile",
+      "flag_icon": "cl.svg"
     },
     {
       "id": 8,
-      "nombre": "Ecuador",
-      "emoji_bandera": "ec.svg"
+      "name": "Ecuador",
+      "flag_icon": "ec.svg"
     },
     {
       "id": 9,
-      "nombre": "República Dominicana",
-      "emoji_bandera": "do.svg"
+      "name": "República Dominicana",
+      "flag_icon": "do.svg"
     },
     {
       "id": 10,
-      "nombre": "Argentina",
-      "emoji_bandera": "ar.svg"
+      "name": "Argentina",
+      "flag_icon": "ar.svg"
     },
     {
       "id": 11,
-      "nombre": "Brasil",
-      "emoji_bandera": "br.svg"
+      "name": "Brasil",
+      "flag_icon": "br.svg"
     },
     {
       "id": 12,
-      "nombre": "España",
-      "emoji_bandera": "es.svg"
+      "name": "España",
+      "flag_icon": "es.svg"
     },
     {
       "id": 13,
-      "nombre": "Alemania",
-      "emoji_bandera": "de.svg"
+      "name": "Alemania",
+      "flag_icon": "de.svg"
     },
     {
       "id": 14,
-      "nombre": "Reino Unido",
-      "emoji_bandera": "gb.svg"
+      "name": "Reino Unido",
+      "flag_icon": "gb.svg"
     },
     {
       "id": 15,
-      "nombre": "Japón",
-      "emoji_bandera": "jp.svg"
+      "name": "Japón",
+      "flag_icon": "jp.svg"
     },
     {
       "id": 16,
-      "nombre": "Rusia",
-      "emoji_bandera": "ru.svg"
+      "name": "Rusia",
+      "flag_icon": "ru.svg"
     },
     {
       "id": 17,
-      "nombre": "China",
-      "emoji_bandera": "cn.svg"
+      "name": "China",
+      "flag_icon": "cn.svg"
     }
   ]
 }
@@ -151,19 +151,22 @@ const catalogos = {
 const token = 'Algo';
 
 const user = {
-  id: 1,
-  nombre: 'Andres',
-  apellido: 'Escala',
+  uuid: '123e4567-e89b-12d3-a456-426614174000',
+  name: 'Andres',
+  lastname: 'Escala',
   email: 'andres.escala.344@gmai.com',
   profile_picture: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=64&h=64&fit=crop&crop=face',
-  pais: {
+  country: {
     id: 0,
-    nombre: '',
-    codigo_iso: '',
-    moneda_local: '',
-    simbolo_moneda: '',
-    emoji_bandera: '',
-    formato_moneda: '',
+    name: '',
+    country_iso_code: '',
+    currency: '',
+    currency_symbol: '',
+    currency_code: '',
+    currency_format: '',
+    flag_icon: '',
+    language_code: 'en',
+    timezone: 'America/Mexico_City'
   }
 }
 
@@ -175,7 +178,7 @@ export default function UserSettings() {
       case 'account':
         return (
           <div className="max-w-2xl flex-grow overflow-y-auto p-4">
-            <Account user={user} token={token} paises={catalogos.paises} />
+            <Account user={user} token={token} countries={catalogs.countries} />
           </div>
         );
       case 'billing':

@@ -74,13 +74,13 @@ export const hideLoader = () => {
     loader.style.display = 'none';
 }
 
-export const obtenerColorBadge = (tipo, item) => {
-    const coloresTipoInstrumentos = {
+export const getBadgeColor = (type, item) => {
+    const instrumentTypesColor = {
         'Ahorro': 'bg-blue-400',
         'Gasto': 'bg-red-600',
         'Inversión': 'bg-green-600'
     };
-    const coloresSubtipoInstrumentos = {
+    const subInstrumentColors = {
         'Cuenta de ahorro': 'bg-yellow-500',
         'Cuenta corriente': 'bg-gray-500',
         'Efectivo para ahorro': 'bg-purple-400',
@@ -89,8 +89,8 @@ export const obtenerColorBadge = (tipo, item) => {
         'Efectivo para gastos': 'bg-gray-800',
         'Cuenta de inversión': 'bg-green-600'
     };
-    if (tipo === 'tipoInstrumento') {
-        return coloresTipoInstrumentos[item] || 'bg-gray-500';
+    if (type === 'typeInstrument') {
+        return instrumentTypesColor[item] || 'bg-gray-500';
     }
-    return coloresSubtipoInstrumentos[item] || 'bg-gray-500';
+    return subInstrumentColors[item] || 'bg-gray-500';
 }

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { alerta, showLoader, hideLoader, obtenerColorBadge } from '../../assets/js/utils';
+import { alerta, showLoader, hideLoader, getBadgeColor } from '../../assets/js/utils';
 import { jwtDecode } from 'jwt-decode'; 
 import { Sidebar } from "../components/Sidebar";
 
@@ -8,7 +8,7 @@ import "../navbar.css";
 
 import { UserMenu } from "../components/UserMenu";
 import { Notification } from "../components/Notification";
-import { AgregarInstrumentos } from "./pages-components/instrumentos/AgregarInstrumentos";
+import { AddInstruments } from "./pages-components/Instruments/AddInstruments";
 
 export const Navbar = ({ token }) => {
 
@@ -28,7 +28,7 @@ export const Navbar = ({ token }) => {
                     <UserMenu token={token} />
                 </div>
                 <div className="items-center justify-between w-full md:flex md:w-auto md:order-1 grid grid-cols-2 gap-x-3" id="navbar-sticky">
-                    <AgregarInstrumentos />
+                    <AddInstruments />
                 </div>
             </div>
         </nav>
@@ -36,39 +36,39 @@ export const Navbar = ({ token }) => {
     );
 }
 
-const datosIniciales = [
-  { id: 1, nombre: 'Cuenta bancaria BBVA', tipo: 'Ahorro', subtipo: 'Cuenta corriente' },
-  { id: 2, nombre: 'Plata Card', tipo: 'Gasto', subtipo: 'TDC - Tarjeta de crédito' },
-  { id: 3, nombre: 'Inversión ETF', tipo: 'Inversión', subtipo: 'Cuenta de inversión' },
-  { id: 4, nombre: 'Guardadito', tipo: 'Ahorro', subtipo: 'Efectivo para ahorro' },
-  { id: 5, nombre: 'Banorte', tipo: 'Gasto', subtipo: 'TDD - Tarjeta de débito' },
-  { id: 6, nombre: 'Efectivo', tipo: 'Gasto', subtipo: 'Efectivo para gastos' },
-  { id: 7, nombre: 'Nu bank', tipo: 'Ahorro', subtipo: 'Cuenta de ahorro' },
+const dataIniciales = [
+  { id: 1, description: 'Cuenta bancaria BBVA', type: 'Ahorro', subtype: 'Cuenta corriente' },
+  { id: 2, description: 'Plata Card', type: 'Gasto', subtype: 'TDC - Tarjeta de crédito' },
+  { id: 3, description: 'Inversión ETF', type: 'Inversión', subtype: 'Cuenta de inversión' },
+  { id: 4, description: 'Guardadito', type: 'Ahorro', subtype: 'Efectivo para ahorro' },
+  { id: 5, description: 'Banorte', type: 'Gasto', subtype: 'TDD - Tarjeta de débito' },
+  { id: 6, description: 'Efectivo', type: 'Gasto', subtype: 'Efectivo para gastos' },
+  { id: 7, description: 'Nu bank', type: 'Ahorro', subtype: 'Cuenta de ahorro' },
 ];
 
-export const TablaInstrumentos = () => {
-    const [datos, setDatos] = useState(datosIniciales);
-    const [orden, setOrden] = useState({ campo: null, asc: true });
+export const InstrumentTable = () => {
+    const [data, setData] = useState(dataIniciales);
+    const [order, setOrder] = useState({ field: null, asc: true });
 
-    const tipo = "tipoInstrumento";
-    const subtipo = "subtipoInstrumento";
+    const type = "typeInstrument";
+    const subtype = "subtypeInstrument";
 
-    const handleSort = (campo) => {
-        const asc = orden.campo === campo ? !orden.asc : true;
-        const datosOrdenados = [...datos].sort((a, b) => {
-        const valA = a[campo]?.toLowerCase();
-        const valB = b[campo]?.toLowerCase();
+    const handleSort = (field) => {
+        const asc = order.field === field ? !order.asc : true;
+        const dataorderados = [...data].sort((a, b) => {
+        const valA = a[field]?.toLowerCase();
+        const valB = b[field]?.toLowerCase();
         if (valA < valB) return asc ? -1 : 1;
         if (valA > valB) return asc ? 1 : -1;
         return 0;
         });
-        setDatos(datosOrdenados);
-        setOrden({ campo, asc });
+        setData(dataorderados);
+        setOrder({ field, asc });
     };
 
-    const iconoOrden = (campo) => {
-        if (orden.campo !== campo) return '⇅';
-        return orden.asc ? '↑' : '↓';
+    const orderIcon = (field) => {
+        if (order.field !== field) return '⇅';
+        return order.asc ? '↑' : '↓';
     };
 
     return (
@@ -76,32 +76,32 @@ export const TablaInstrumentos = () => {
         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead className="">
             <tr>
-                {['nombre', 'tipo', 'subtipo'].map((campo) => (
+                {['description', 'type', 'subtype'].map((field) => (
                     <th
-                        key={campo}
-                        onClick={() => handleSort(campo)}
+                        key={field}
+                        onClick={() => handleSort(field)}
                         className="w-[25%] px-4 py-2 text-center text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer select-none"
                     >
-                        {campo.charAt(0).toUpperCase() + campo.slice(1)} {iconoOrden(campo)}
+                        {field.charAt(0).toUpperCase() + field.slice(1)} {orderIcon(field)}
                     </th>
                 ))}
                 <th className="px-4 py-2 text-center text-sm font-medium text-gray-700 dark:text-gray-300">Acciones</th>
             </tr>
             </thead>
             <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
-            {datos.map((item) => (
+            {data.map((item) => (
                 <tr key={item.id}>
-                <td className="px-4 py-2 text-sm text-left text-gray-800 dark:text-gray-200">{item.nombre}</td>
+                <td className="px-4 py-2 text-sm text-left text-gray-800 dark:text-gray-200">{item.description}</td>
                 <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-200">
-                    <span className={`${obtenerColorBadge(tipo, item.tipo)} font-bold text-white text-center py-1 px-2 text-xs rounded`}>{item.tipo}</span>
+                    <span className={`${getBadgeColor(type, item.type)} font-bold text-white text-center py-1 px-2 text-xs rounded`}>{item.type}</span>
                 </td>
                 <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-200">
-                    <span className={`${obtenerColorBadge(subtipo, item.subtipo)} font-bold text-white text-center py-1 px-2 text-xs rounded`}>{item.subtipo}</span>
+                    <span className={`${getBadgeColor(subtype, item.subtype)} font-bold text-white text-center py-1 px-2 text-xs rounded`}>{item.subtype}</span>
                 </td>
                 <td className="px-4 py-2 text-sm text-center space-x-2">
-                    <button type="button" className="bg-green-500 hover:bg-green-600 py-2 px-4 text-sm font-medium text-white border border-transparent rounded-lg focus:outline-none">Mostrar</button>
-                    <button type="button" className="bg-yellow-500 hover:bg-yellow-600 py-2 px-4 text-sm font-medium text-white border border-transparent rounded-lg focus:outline-none">Editar</button>
-                    <button type="button" className="bg-red-500 hover:bg-red-600 py-2 px-4 text-sm font-medium text-white border border-transparent rounded-lg focus:outline-none">Eliminar</button>
+                    <button type="button" className="!bg-green-500 hover:!bg-green-600 py-2 px-4 text-sm font-medium text-white border border-transparent rounded-lg focus:outline-none">Mostrar</button>
+                    <button type="button" className="!bg-yellow-500 hover:!bg-yellow-600 py-2 px-4 text-sm font-medium text-white border border-transparent rounded-lg focus:outline-none">Editar</button>
+                    <button type="button" className="!bg-red-500 hover:!bg-red-700 py-2 px-4 text-sm font-medium text-white border border-transparent rounded-lg focus:outline-none">Eliminar</button>
 
                 </td>
                 </tr>
@@ -112,26 +112,26 @@ export const TablaInstrumentos = () => {
     );
 };
 
-const Instrumentos = () => {
-    const [instrumentos, setInstrumentos] = useState([]);
+const Instruments = () => {
+    const [Instruments, setInstruments] = useState([]);
     const [catalogos, setCatalogos] = useState([]);
     const isRequesting = useRef(false);
     // const token = localStorage.getItem('token');
     // const decoded = jwtDecode(token);
     const token = "";
-    const decoded = { "id": "12345", "nombre": "Andres Escala", "email": "andres@escala.com", "profile_picture": "https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80", "iat": 1693708800, "exp": 1693712400 }
+    const decoded = { "id": "12345", "description": "Andres Escala", "email": "andres@escala.com", "profile_picture": "https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80", "iat": 1693708800, "exp": 1693712400 }
 
 
-    const cargarInstrumentos = useCallback(async () => {
+    const cargarInstruments = useCallback(async () => {
         showLoader();
         let respuesta = {
-            instrumentos: [],
+            Instruments: [],
             catalogos: []
         }
         if (!isRequesting.current) { 
             isRequesting.current = true
             try {
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/app/instrumentos`, {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/app/Instruments`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -143,7 +143,7 @@ const Instrumentos = () => {
                     return respuesta;
                 } else {
                     const data = await response.json();
-                    respuesta.instrumentos = data.instrumentos;
+                    respuesta.Instruments = data.Instruments;
                     respuesta.catalogos = data.catalogos;
                     return respuesta;
                 }
@@ -156,16 +156,16 @@ const Instrumentos = () => {
         } else { console.log('Solicitud en progreso, no se ejecuta la función'); return respuesta; }
     }, [token]);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const results = await cargarInstrumentos();
-            console.log('results', results);
-            setInstrumentos(results.instrumentos);
-            setCatalogos(results.catalogos);
-        };
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         const results = await cargarInstruments();
+    //         console.log('results', results);
+    //         setInstruments(results.Instruments);
+    //         setCatalogos(results.catalogos);
+    //     };
 
-        fetchData();
-    }, [cargarInstrumentos]);
+    //     fetchData();
+    // }, [cargarInstruments]);
 
     return (
         <div className="content-window flex h-screen w-full bg-gray-50 dark:bg-gray-900">
@@ -181,12 +181,12 @@ const Instrumentos = () => {
                 </div>
                 {/* Scrollable content */}
                 <div className="flex-grow overflow-y-auto p-4">
-                    <h1 className="text-2xl font-bold mb-4">Bienvenido a Instrumentos</h1>
-                    <TablaInstrumentos />
+                    <h1 className="text-2xl font-bold mb-4">Welcome to Instruments</h1>
+                    <InstrumentTable />
                 </div>
             </div>
         </div>
     );
 };
 
-export default Instrumentos;
+export default Instruments;

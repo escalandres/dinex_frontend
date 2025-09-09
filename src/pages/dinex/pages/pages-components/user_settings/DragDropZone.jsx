@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { Upload, CircleX } from 'lucide-react';
 
 export const DragDropZone = () => {

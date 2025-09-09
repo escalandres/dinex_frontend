@@ -5,21 +5,21 @@ import { passwordSchema } from '@validations/passwordSchema';
 import { DragDropZone } from './DragDropZone';
 import { CountrySelect } from '@pages/components/CountrySelect';
 import { alerta } from '@pages/assets/js/utils';
-import { ThemeToggle } from "../../../components/ThemeToggle";
+import { ThemeToggle } from "@pages/dinex/components/ThemeToggle";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 
-export const Account = ({ user, token, paises }) => {
+export const Account = ({ user, token, countries }) => {
     const [showCurrentPassword, setShowCurrentPassword] = useState(false);
     const [showNewPassword, setShowNewPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const selectRef = useRef(null);
     const [countrySelected, setCountrySelected] = useState({
-        id: user.pais.id || 1,
-        nombre: user.pais.nombre || 'México',
-        emoji_bandera: user.pais.emoji_bandera || 'mx.svg'
+        id: user.country.id || 1,
+        name: user.country.name || 'México',
+        flag_icon: user.country.flag_icon || 'mx.svg'
     });
 
     const {
@@ -35,9 +35,9 @@ export const Account = ({ user, token, paises }) => {
         newPassword: '',
         confirmPassword: '',
         profile_picture: '',
-        pais: {
-        id: 0,
-        nombre: ''
+        country: {
+            id: 0,
+            name: ''
         }
     });
 
@@ -48,7 +48,7 @@ export const Account = ({ user, token, paises }) => {
         }));
     };
 
-    // Cerrar el dropdown cuando se hace click fuera
+    // Close dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
         if (selectRef.current && !selectRef.current.contains(event.target)) {
@@ -97,7 +97,7 @@ export const Account = ({ user, token, paises }) => {
                 <label className="block text-sm font-medium text-gray-300 mb-2">First name</label>
                 <input
                 type="text"
-                value={user.nombre}
+                value={user.name}
                 // onChange={(e) => handleInputChange('nombre', e.target.value)}
                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 disabled
@@ -107,7 +107,7 @@ export const Account = ({ user, token, paises }) => {
                 <label className="block text-sm font-medium text-gray-300 mb-2">Last name</label>
                 <input
                 type="text"
-                value={user.apellido}
+                value={user.lastname}
                 // onChange={(e) => handleInputChange('apellido', e.target.value)}
                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 disabled
@@ -132,9 +132,9 @@ export const Account = ({ user, token, paises }) => {
             </div>
             </div>
 
-            {/* País */}
+            {/* Country */}
             <CountrySelect 
-                paises={paises} 
+                countries={countries} 
                 countrySelected={countrySelected} 
                 handleOptionClick={handleOptionClick} 
             />
