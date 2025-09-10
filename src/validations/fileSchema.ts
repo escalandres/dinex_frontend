@@ -6,19 +6,19 @@ const SUPPORTED_FORMATS = ["image/svg+xml", "image/jpeg", "image/png"];
 export const fileSchema = yup.object({
     file: yup
         .mixed()
-        .required("Debes seleccionar un archivo")
-        .test("fileSize", "El archivo excede el tamaño permitido", (value) => {
+        .required("You must select a file")
+        .test("fileSize", "File exceeds the maximum allowed size", (value) => {
             const file = value as File;
             return file && file.size <= FILE_SIZE;
         })
-        .test("fileType", "Formato no permitido", (value) => {
+        .test("fileType", "Unsupported file format", (value) => {
             const file = value as File;
             return file && SUPPORTED_FORMATS.includes(file.type);
     }),
 
     multipleFiles: yup
         .mixed()
-        .test("multipleFiles", "Solo se permite un archivo", (value) => {
+        .test("multipleFiles", "Only one file is allowed", (value) => {
             const files = value as FileList;
             return files && files.length === 1;
         })

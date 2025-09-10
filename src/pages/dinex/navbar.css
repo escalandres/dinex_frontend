@@ -7,7 +7,7 @@ nav button {
 
 nav button:hover {
     color: white;
-    background-color: light-dark(var(--light-blue-hover), #24292e);
+    background-color: light-dark(var(--light-blue-hover), #4a4e52);
     border-color: transparent;
 }
 

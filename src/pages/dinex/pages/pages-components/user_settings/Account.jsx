@@ -138,7 +138,7 @@ export const Account = ({ user, token, countries }) => {
                 countrySelected={countrySelected} 
                 handleOptionClick={handleOptionClick} 
             />
-            <button className="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg text-sm font-medium transition-colors">
+            <button className="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg text-sm font-medium transition-colors mt-8">
                 Change your country
             </button>
         </div>

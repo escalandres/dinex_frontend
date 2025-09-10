@@ -155,7 +155,7 @@ const user = {
   name: 'Andres',
   lastname: 'Escala',
   email: 'andres.escala.344@gmai.com',
-  profile_picture: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=64&h=64&fit=crop&crop=face',
+  profile_picture: 'https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
   country: {
     id: 0,
     name: '',

@@ -6,17 +6,31 @@ export const CountrySelect = ({ countries, countrySelected, handleOptionClick })
     const [isOpen, setIsOpen] = useState(false);
     const selectRef = useRef(null);
 
+    const handleToggleOpen = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsOpen(!isOpen);
+    };
+
+    const handleSelectOption = (option, e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        handleOptionClick(option);
+        setIsOpen(false);
+    };
 
     return(
-        <div className="mb-8">
-        <label className="block text-sm font-medium text-gray-300 mb-2">Country</label>
+        <div className="">
+        <label className="block text-sm font-medium text-gray-300 mb-2 text-left">Country</label>
         {/* Select personalizado */}
         <div className="relative" ref={selectRef}>
             <button
-            onClick={() => setIsOpen(!isOpen)}
-            className={`country-select w-full px-4 py-4 border border-gray-700 rounded-xl text-left text-white hover:border-gray-600 focus:outline-none focus:border-gray-600 transition-all duration-200 flex items-center justify-between ${
-                isOpen ? 'border-gray-600' : ''
-            }`}
+                type="button" // Importante: especificar type="button"
+                onClick={handleToggleOpen}
+                onMouseDown={(e) => e.preventDefault()} // Prevenir pérdida de foco
+                className={`country-select w-full px-4 py-4 border border-gray-700 rounded-xl text-left text-white hover:border-gray-600 focus:outline-none focus:border-gray-600 transition-all duration-200 flex items-center justify-between ${
+                    isOpen ? 'border-gray-600' : ''
+                }`}
             >
             <div className="flex items-center space-x-3">
                 <img className="w-6 h-6 object-cover rounded-full" src={VARIABLES.icons.flags + countrySelected.flag_icon} 
@@ -36,7 +50,8 @@ export const CountrySelect = ({ countries, countrySelected, handleOptionClick })
                 {countries.map((option) => (
                 <button
                     key={option.id}
-                    onClick={() => handleOptionClick(option)}
+                    onClick={(e) => handleSelectOption(option, e)}
+                    onMouseDown={(e) => e.preventDefault()}
                     className={`country-select w-full px-4 py-3 text-left hover:bg-gray-700 transition-colors duration-150 flex items-center space-x-3 ${
                     countrySelected.id === option.id
                         ? 'bg-gray-700 text-blue-400'

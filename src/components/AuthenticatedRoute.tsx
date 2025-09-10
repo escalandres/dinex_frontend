@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import { isAuthenticated } from './auth';
-import Login from "@pages/login/Login";
+import Login from "@/pages/login/Login";
 
 const AuthenticatedRoute = () => {
     if (!isAuthenticated()) {

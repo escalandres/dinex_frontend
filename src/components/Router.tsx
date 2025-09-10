@@ -28,8 +28,7 @@ const Router = createBrowserRouter(
       },
       {
         path: "/signup",
-        element: <SignUp/>,
-        errorElement: <P404/>
+        element: <SignUp/>
       },
       {
           path: '/app',

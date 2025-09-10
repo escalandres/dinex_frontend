@@ -4,21 +4,21 @@ import * as yup from "yup";
 export const passwordSchema = yup.object({
     currentPassword: yup
         .string()
-        .required("La contraseña actual es obligatoria")
-        .min(8, "Debe tener al menos 8 caracteres")
-        .matches(/[A-Z]/, "Debe contener al menos una letra mayúscula")
-        .matches(/[0-9]/, "Debe contener al menos un número")
-        .matches(/[@$!%*?&]/, "Debe contener al menos un carácter especial"),
+        .required("Current password is required")
+        .min(8, "Must be at least 8 characters")
+        .matches(/[A-Z]/, "Must contain at least one uppercase letter")
+        .matches(/[0-9]/, "Must contain at least one number")
+        .matches(/[@$!%*?&]/, "Must contain at least one special character"),
     newPassword: yup
         .string()
-        .required("La nueva contraseña es obligatoria")
-        .min(8, "Debe tener al menos 8 caracteres")
-        .matches(/[A-Z]/, "Debe contener al menos una letra mayúscula")
-        .matches(/[0-9]/, "Debe contener al menos un número")
-        .matches(/[@$!%*?&]/, "Debe contener al menos un carácter especial"),
+        .required("New password is required")
+        .min(8, "Must be at least 8 characters")
+        .matches(/[A-Z]/, "Must contain at least one uppercase letter")
+        .matches(/[0-9]/, "Must contain at least one number")
+        .matches(/[@$!%*?&]/, "Must contain at least one special character"),
     confirmPassword: yup
         .string()
-        .oneOf([yup.ref("newPassword")], "Las contraseñas no coinciden")
-        .required("La confirmación de la contraseña es obligatoria"),
+        .oneOf([yup.ref("newPassword")], "Passwords do not match")
+        .required("Password confirmation is required"),
 });
 
