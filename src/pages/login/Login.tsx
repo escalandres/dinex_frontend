@@ -81,7 +81,7 @@ const Login = () => {
                     <OAuth isDarkMode={isDarkMode} />
                     <div className="relative">
                         <span className="block w-full h-px bg-gray-300 dark:bg-black-100"></span>
-                        <p className={`inline-block w-fit text-sm ${isDarkMode ? 'text-white bg-[#121212]' : 'bg-[#FBF9FA] text-black'} px-2 absolute -top-2 inset-x-0 mx-auto`}>O continua con</p>
+                        <p className={`inline-block w-fit text-sm ${isDarkMode ? 'text-white bg-[#121212]' : 'bg-[#FBF9FA] text-black'} px-2 absolute -top-2 inset-x-0 mx-auto`}>Or continue with</p>
                     </div>
                     <form
                         onSubmit={handleSubmit(handleLogin)}

@@ -17,12 +17,19 @@ interface SignupFormData {
     lastname: string;
 }
 
+interface Country {
+    id: number;
+    name: string;
+    flag_icon: string;
+}
+
 const SignUp = () => {
     document.title = 'Sign up | Dinex';
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
     const [isDarkMode, setIsDarkMode] = useState(false);
-    const [countrySelected, setCountrySelected] = useState({
+    const [countries, setCountries] = useState<Country[]>([]);
+    const [countrySelected, setCountrySelected] = useState<Country>({
         id: 1,
         name: 'México',
         flag_icon: 'mx.svg'
@@ -38,8 +45,18 @@ const SignUp = () => {
     });
 
     useEffect(() => {
-        const theme = localStorage.theme;
-        setIsDarkMode(theme === 'dark');
+        const fetchData = async () => {
+            try {
+                const theme = localStorage.theme;
+                setIsDarkMode(theme === 'dark');
+                const catalogCountries = await getCountriesCatalog();
+                setCountries(catalogCountries);
+            } catch (error) {
+                console.error('Error fetching countries:', error);
+            }
+        };
+        
+        fetchData();
     }, []);
 
     // Function to toggle password visibility
@@ -50,30 +67,45 @@ const SignUp = () => {
         setCountrySelected(option);
     };
 
+    const getCountriesCatalog = async () => {
+        try {
+            // Simulación de la solicitud de autenticación al servidor
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/app/catalogs/countries`);
+            if (!response.ok) throw new Error('Error al obtener el catálogo de países');
+            const result = await response.json();
+            return result.countries;
+        } catch (error) {
+            console.error('Error fetching countries:', error);
+            return [];
+        }
+    };
+
     const handleSignUp = async (data: SignupFormData) => {
         try {
             showLoader();
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/signup`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name: data.name.trim(), lastname: data.lastname.trim(), email: data.email.trim(), 
-                    password: data.password.trim(), country: countrySelected.id }),
-            });
+            console.log('countrySelected', countrySelected);
+            console.log('data', data);
+            // const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/signup`, {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify({ name: data.name.trim(), lastname: data.lastname.trim(), email: data.email.trim(), 
+            //         password: data.password.trim(), country: countrySelected.id }),
+            // });
             
-            hideLoader();
-            if (!response.ok) {
-                alerta.error('Error al iniciar sesión');
-            }
+            // hideLoader();
+            // if (!response.ok) {
+            //     alerta.error('Error al iniciar sesión');
+            // }
 
-            const result = await response.json();
+            // const result = await response.json();
 
-            // Guardar el token o información del usuario en el almacenamiento local o en el estado
-            localStorage.setItem('token', result.token);
+            // // Guardar el token o información del usuario en el almacenamiento local o en el estado
+            // localStorage.setItem('token', result.token);
 
-            // Redireccionar o actualizar el estado de la aplicación
-            window.location.href = '/app';
+            // // Redireccionar o actualizar el estado de la aplicación
+            // window.location.href = '/app';
             
         } catch (error) {
             hideLoader();
@@ -91,14 +123,14 @@ const SignUp = () => {
                             <img src="/icons/logo.png" alt="Dinex icon" width={80} className="mx-auto" />
                         </a>
                         <div className="mt-5 space-y-2">
-                            <h3 className="text-gray-800 text-2xl font-bold sm:text-2xl">Crea tu cuenta</h3>
+                            <h3 className="text-gray-800 text-2xl font-bold sm:text-2xl">Create an account</h3>
                             <p className="">Do you have an account? <a href="/login" className="font-medium text-indigo-600 hover:text-indigo-500">Sign in</a></p>
                         </div>
                     </div>
                     <OAuth isDarkMode={isDarkMode} />
                     <div className="relative">
                         <span className="block w-full h-px bg-gray-300 dark:bg-black-100"></span>
-                        <p className={`inline-block w-fit text-sm ${isDarkMode ? 'text-white bg-[#121212]' : 'bg-[#FBF9FA] text-black'} px-2 absolute -top-2 inset-x-0 mx-auto`}>O continua con</p>
+                        <p className={`inline-block w-fit text-sm ${isDarkMode ? 'text-white bg-[#121212]' : 'bg-[#FBF9FA] text-black'} px-2 absolute -top-2 inset-x-0 mx-auto`}>Or continue with</p>
                     </div>
                     <form
                         onSubmit={handleSubmit(handleSignUp)}
@@ -156,7 +188,7 @@ const SignUp = () => {
                                 )}
                             </div>
                             <CountrySelect 
-                                countries={catalogs.countries} 
+                                countries={countries} 
                                 countrySelected={countrySelected} 
                                 handleOptionClick={handleOptionClick} 
                             />
@@ -169,7 +201,7 @@ const SignUp = () => {
                                     </label>
                                     <div className="relative w-full mt-2">
                                         <input
-                                        type={showPassword ? "text" : "password"} // Alterna entre text y password
+                                        type={showPassword ? "text" : "password"}
                                         {...register("password")}
                                         placeholder="Enter your password"
                                         className={`${errors.password ? 'field-error' : 'bg-transparent text-gray-500'} w-full px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg pr-10`}
@@ -191,7 +223,7 @@ const SignUp = () => {
                                     </label>
                                     <div className="relative w-full mt-2">
                                         <input
-                                        type={showConfirm ? "text" : "password"} // Alterna entre text y password
+                                        type={showConfirm ? "text" : "password"}
                                         {...register("confirmPassword")}
                                         placeholder="Enter your password"
                                         className={`${errors.confirmPassword ? 'field-error' : 'bg-transparent text-gray-500'} w-full px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg pr-10`}
@@ -222,92 +254,92 @@ const SignUp = () => {
 
 export default SignUp;
 
-const catalogs = {
-  countries: [
-    {
-      "id": 1,
-      "name": "México",
-      "flag_icon": "mx.svg"
-    },
-    {
-      "id": 2,
-      "name": "Canadá",
-      "flag_icon": "ca.svg"
-    },
-    {
-      "id": 3,
-      "name": "Estados Unidos",
-      "flag_icon": "us.svg"
-    },
-    {
-      "id": 4,
-      "name": "Venezuela",
-      "flag_icon": "ve.svg"
-    },
-    {
-      "id": 5,
-      "name": "Colombia",
-      "flag_icon": "co.svg"
-    },
-    {
-      "id": 6,
-      "name": "Perú",
-      "flag_icon": "pe.svg"
-    },
-    {
-      "id": 7,
-      "name": "Chile",
-      "flag_icon": "cl.svg"
-    },
-    {
-      "id": 8,
-      "name": "Ecuador",
-      "flag_icon": "ec.svg"
-    },
-    {
-      "id": 9,
-      "name": "República Dominicana",
-      "flag_icon": "do.svg"
-    },
-    {
-      "id": 10,
-      "name": "Argentina",
-      "flag_icon": "ar.svg"
-    },
-    {
-      "id": 11,
-      "name": "Brasil",
-      "flag_icon": "br.svg"
-    },
-    {
-      "id": 12,
-      "name": "España",
-      "flag_icon": "es.svg"
-    },
-    {
-      "id": 13,
-      "name": "Alemania",
-      "flag_icon": "de.svg"
-    },
-    {
-      "id": 14,
-      "name": "Reino Unido",
-      "flag_icon": "gb.svg"
-    },
-    {
-      "id": 15,
-      "name": "Japón",
-      "flag_icon": "jp.svg"
-    },
-    {
-      "id": 16,
-      "name": "Rusia",
-      "flag_icon": "ru.svg"
-    },
-    {
-      "id": 17,
-      "name": "China",
-      "flag_icon": "cn.svg"
-    }
-  ]
-}
+// const catalogs = {
+//   countries: [
+//     {
+//       "id": 1,
+//       "name": "México",
+//       "flag_icon": "mx.svg"
+//     },
+//     {
+//       "id": 2,
+//       "name": "Canadá",
+//       "flag_icon": "ca.svg"
+//     },
+//     {
+//       "id": 3,
+//       "name": "Estados Unidos",
+//       "flag_icon": "us.svg"
+//     },
+//     {
+//       "id": 4,
+//       "name": "Venezuela",
+//       "flag_icon": "ve.svg"
+//     },
+//     {
+//       "id": 5,
+//       "name": "Colombia",
+//       "flag_icon": "co.svg"
+//     },
+//     {
+//       "id": 6,
+//       "name": "Perú",
+//       "flag_icon": "pe.svg"
+//     },
+//     {
+//       "id": 7,
+//       "name": "Chile",
+//       "flag_icon": "cl.svg"
+//     },
+//     {
+//       "id": 8,
+//       "name": "Ecuador",
+//       "flag_icon": "ec.svg"
+//     },
+//     {
+//       "id": 9,
+//       "name": "República Dominicana",
+//       "flag_icon": "do.svg"
+//     },
+//     {
+//       "id": 10,
+//       "name": "Argentina",
+//       "flag_icon": "ar.svg"
+//     },
+//     {
+//       "id": 11,
+//       "name": "Brasil",
+//       "flag_icon": "br.svg"
+//     },
+//     {
+//       "id": 12,
+//       "name": "España",
+//       "flag_icon": "es.svg"
+//     },
+//     {
+//       "id": 13,
+//       "name": "Alemania",
+//       "flag_icon": "de.svg"
+//     },
+//     {
+//       "id": 14,
+//       "name": "Reino Unido",
+//       "flag_icon": "gb.svg"
+//     },
+//     {
+//       "id": 15,
+//       "name": "Japón",
+//       "flag_icon": "jp.svg"
+//     },
+//     {
+//       "id": 16,
+//       "name": "Rusia",
+//       "flag_icon": "ru.svg"
+//     },
+//     {
+//       "id": 17,
+//       "name": "China",
+//       "flag_icon": "cn.svg"
+//     }
+//   ]
+// }
