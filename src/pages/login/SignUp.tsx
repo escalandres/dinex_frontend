@@ -85,27 +85,27 @@ const SignUp = () => {
             showLoader();
             console.log('countrySelected', countrySelected);
             console.log('data', data);
-            // const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/signup`, {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify({ name: data.name.trim(), lastname: data.lastname.trim(), email: data.email.trim(), 
-            //         password: data.password.trim(), country: countrySelected.id }),
-            // });
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/signup`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name: data.name.trim(), lastname: data.lastname.trim(), email: data.email.trim(), 
+                    password: data.password.trim(), countryId: countrySelected.id }),
+            });
             
-            // hideLoader();
-            // if (!response.ok) {
-            //     alerta.error('Error al iniciar sesión');
-            // }
+            hideLoader();
+            if (!response.ok) {
+                alerta.error('Error al iniciar sesión');
+            }
 
-            // const result = await response.json();
+            const result = await response.json();
 
-            // // Guardar el token o información del usuario en el almacenamiento local o en el estado
-            // localStorage.setItem('token', result.token);
+            // Guardar el token o información del usuario en el almacenamiento local o en el estado
+            localStorage.setItem('token', result.token);
 
-            // // Redireccionar o actualizar el estado de la aplicación
-            // window.location.href = '/app';
+            // Redireccionar o actualizar el estado de la aplicación
+            window.location.href = '/dinex';
             
         } catch (error) {
             hideLoader();
