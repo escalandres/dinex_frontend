@@ -146,7 +146,7 @@ const SignUp = () => {
                                         type="text"
                                         {...register("name")}
                                         placeholder='Enter your name'
-                                        className={`${errors.name ? 'field-error' : 'bg-transparent text-gray-500'} w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg`}
+                                        className={`${errors.name ? 'field-error' : 'bg-transparent text-gray-500'} w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600  rounded-lg`}
                                     />
                                 </fieldset>
                                 {errors.name && (
@@ -162,7 +162,7 @@ const SignUp = () => {
                                         type="text"
                                         {...register("lastname")}
                                         placeholder='Enter your last name'
-                                        className={`${errors.lastname ? 'field-error' : 'bg-transparent text-gray-500'} w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg`}
+                                        className={`${errors.lastname ? 'field-error' : 'bg-transparent text-gray-500'} w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600  rounded-lg`}
                                     />
                                 </fieldset>
                                 {errors.lastname && (
@@ -180,7 +180,7 @@ const SignUp = () => {
                                         type="email"
                                         {...register("email")}
                                         placeholder='Enter your email'
-                                        className={`${errors.email ? 'field-error' : 'bg-transparent text-gray-500'} w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg`}
+                                        className={`${errors.email ? 'field-error' : 'bg-transparent text-gray-500'} w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600  rounded-lg`}
                                     />
                                 </fieldset>
                                 {errors.email && (
@@ -204,7 +204,7 @@ const SignUp = () => {
                                         type={showPassword ? "text" : "password"}
                                         {...register("password")}
                                         placeholder="Enter your password"
-                                        className={`${errors.password ? 'field-error' : 'bg-transparent text-gray-500'} w-full px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg pr-10`}
+                                        className={`${errors.password ? 'field-error' : 'bg-transparent text-gray-500'} w-full px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600  rounded-lg pr-10`}
                                         />
                                         {
                                             showPassword ? <EyeOff className="eye-icon absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer" onClick={togglePasswordVisibility} /> 
@@ -226,7 +226,7 @@ const SignUp = () => {
                                         type={showConfirm ? "text" : "password"}
                                         {...register("confirmPassword")}
                                         placeholder="Enter your password"
-                                        className={`${errors.confirmPassword ? 'field-error' : 'bg-transparent text-gray-500'} w-full px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg pr-10`}
+                                        className={`${errors.confirmPassword ? 'field-error' : 'bg-transparent text-gray-500'} w-full px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600  rounded-lg pr-10`}
                                         />
                                         {
                                             showConfirm ? <EyeOff className="eye-icon absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer" onClick={toggleConfirmVisibility} /> 
@@ -240,7 +240,7 @@ const SignUp = () => {
                             </div>
                         </div>
                         <button
-                            className="w-full my-4 px-4 py-2 text-white font-medium rounded-lg duration-150 mt-8"
+                            className="w-full my-4 px-4 py-2 text-white font-medium rounded-lg duration-150 mt-8 blue-button"
                             type="submit"
                         >
                             Sign up
