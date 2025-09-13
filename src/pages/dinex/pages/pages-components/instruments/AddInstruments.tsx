@@ -2,10 +2,16 @@ import { useState } from 'react';
 import * as Dialog from "@radix-ui/react-dialog";
 import { alerta, showLoader, hideLoader } from '../../../../assets/js/utils';
 import { Plus } from 'lucide-react';
+import { CountrySelect } from '@pages/components/CountrySelect';
 
 interface AddInstrumentsProps {
     user: object;
     token: object;
+    catalogs: {
+        instrumentTypes: Array<{ id: number; name: string; color: string }>;
+        instrumentSubtypes: Array<{ id: number; id_instrument_type: number; name: string, color: string }>;
+        currencies: Country[];
+    };
 }
 
 type InstrumentPayload = {
@@ -21,20 +27,104 @@ type BackendResponse = {
     message: string;
 };
 
-const catalog = {
-    instrumentType: [
-        { id: 1, description: 'Tipo 1' },
-        { id: 2, description: 'Tipo 2' },
-        { id: 3, description: 'Tipo 3' },
-    ],
-    instrumentSubtype: [
-        { id: 1, id_instrument_type: 1, description: 'Subtipo 1' },
-        { id: 2, id_instrument_type: 1, description: 'Subtipo 2' },
-        { id: 3, id_instrument_type: 2, description: 'Subtipo 3' },
-    ],
-};
+interface Country {
+    id: string;
+    name: string;
+    flag_icon: string;
+}
 
-export const AddInstruments = ({ token }: AddInstrumentsProps) => {
+// const catalog = {
+//     instrumentType: [
+//         { id: 1, description: 'Tipo 1' },
+//         { id: 2, description: 'Tipo 2' },
+//         { id: 3, description: 'Tipo 3' },
+//         { id: 4, description: 'Tipo 4' },
+//     ],
+//     instrumentSubtype: [
+//         { id: 1, id_instrument_type: 1, description: 'Subtipo 1' },
+//         { id: 2, id_instrument_type: 1, description: 'Subtipo 2' },
+//         { id: 3, id_instrument_type: 2, description: 'Subtipo 3' },
+//     ],
+//     "currencies": [
+//         {
+//             "id": "ARS",
+//             "name": "Peso argentino",
+//             "flag_icon": "ar.svg"
+//         },
+//         {
+//             "id": "BRL",
+//             "name": "Real brasileño",
+//             "flag_icon": "br.svg"
+//         },
+//         {
+//             "id": "CAD",
+//             "name": "Dólar canadiense",
+//             "flag_icon": "ca.svg"
+//         },
+//         {
+//             "id": "CLP",
+//             "name": "Peso chileno",
+//             "flag_icon": "cl.svg"
+//         },
+//         {
+//             "id": "CNY",
+//             "name": "Yuan chino",
+//             "flag_icon": "cn.svg"
+//         },
+//         {
+//             "id": "COP",
+//             "name": "Peso colombiano",
+//             "flag_icon": "co.svg"
+//         },
+//         {
+//             "id": "DOP",
+//             "name": "Peso dominicano",
+//             "flag_icon": "do.svg"
+//         },
+//         {
+//             "id": "EUR",
+//             "name": "Euro",
+//             "flag_icon": "eu.png"
+//         },
+//         {
+//             "id": "GBP",
+//             "name": "Libra esterlina",
+//             "flag_icon": "gb.svg"
+//         },
+//         {
+//             "id": "JPY",
+//             "name": "Yen japonés",
+//             "flag_icon": "jp.svg"
+//         },
+//         {
+//             "id": "MXN",
+//             "name": "Peso mexicano",
+//             "flag_icon": "mx.svg"
+//         },
+//         {
+//             "id": "PEN",
+//             "name": "Sol peruano",
+//             "flag_icon": "pe.svg"
+//         },
+//         {
+//             "id": "RUB",
+//             "name": "Rublo ruso",
+//             "flag_icon": "ru.svg"
+//         },
+//         {
+//             "id": "USD",
+//             "name": "Dólar estadounidense",
+//             "flag_icon": "us.svg"
+//         },
+//         {
+//             "id": "VES",
+//             "name": "Bolívar digital",
+//             "flag_icon": "ve.svg"
+//         }
+//     ]
+// };
+
+export const AddInstruments = ({ token, catalogs }: AddInstrumentsProps) => {
     const [description, setDescription] = useState('');
     const [instrumentType, setInstrumentType] = useState(0);
     const [instrumentSubtype, setInstrumentSubtype] = useState(0);
@@ -44,18 +134,29 @@ export const AddInstruments = ({ token }: AddInstrumentsProps) => {
     const [isTypeSelected, setIsTypeSelected] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false); // Estado para controlar si ya se ha enviado el formulario
     const [isOpen, setIsOpen] = useState(false); // Estado para controlar la apertura y cierre del modal
+    const [currencySelected, setCurrencySelected] = useState<Country>({
+        id: 'MXN',
+        name: 'Pesos mexicanos',
+        flag_icon: 'mx.svg'
+    });
+
+    console.log("catalogs", catalogs);
 
     const handleInstrumentTypeChange = (event) => {
         const instrumentType = event.target.value;
         //alert(companyName);
         setInstrumentType(instrumentType);
         console.log('Selected tipo instrumento:', instrumentType);
-        console.log("tipo instrumentos", catalog.instrumentType);
+        console.log("tipo instrumentos", catalogs.instrumentTypes);
 
-        const subTypeCatalog = catalog.instrumentSubtype.filter((subtipoInstrumento) => subtipoInstrumento.id_instrument_type == instrumentType);
+        const subTypeCatalog = catalogs.instrumentSubtypes.filter((subtipoInstrumento) => subtipoInstrumento.id_instrument_type == instrumentType);
         console.log("selected",subTypeCatalog);
         setIsTypeSelected(true);
         setSubtypeCatalog(subTypeCatalog ? subTypeCatalog : []);
+    };
+
+    const handleOptionClick = (option) => {
+        setCurrencySelected(option);
     };
 
     const handleAddInstrument = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -113,117 +214,161 @@ export const AddInstruments = ({ token }: AddInstrumentsProps) => {
                 className="px-4 py-2 text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150"
                 onClick={() => setIsOpen(true)}
             >
-                <div className='flex'>
-                    <Plus className="mr-2" /> Add Instrument
+                <div className='flex items-center'>
+                    <Plus className="mr-2 h-4 w-4" /> Add Instrument
                 </div>
-                
             </Dialog.Trigger>
+            
             <Dialog.Portal>
-                <Dialog.Overlay className="data-[state=open]:animate-overlayShow fixed inset-0 w-full h-full bg-black opacity-40" />
-                <Dialog.Content className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-full max-w-lg mx-auto px-4">
-                    <div className="modal rounded-md shadow-lg px-4 py-6">
-                        <div className="flex items-center justify-end">
-                            <Dialog.Close className="p-2 text-gray-400 !bg-transparent rounded-md hover:bg-gray-100">
-                                <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="w-5 h-5 mx-auto"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                                >
-                                <path
-                                    fillRule="evenodd"
-                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                    clipRule="evenodd"
-                                />
-                                </svg>
-                            </Dialog.Close>
+                <Dialog.Overlay className="fixed inset-0 bg-black/50 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
+                
+                <Dialog.Content className="fixed left-[50%] top-[50%] z-50 w-full max-w-2xl translate-x-[-50%] translate-y-[-50%] bg-white rounded-lg shadow-lg data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] modal"
+                    onOpenAutoFocus={(event) => {
+                        event.preventDefault();
+                        // No enfocar nada - el modal queda sin foco inicial
+                    }}
+                >
+                    
+                    {/* Header */}
+                    <div className="flex items-center justify-between p-6 pb-0">
+                        <div>
+                            <Dialog.Title className="text-xl font-semibold text-blue-500 text-center">
+                                Agregar instrumento
+                            </Dialog.Title>
+                            <Dialog.Description className="text-sm text-gray-600 mt-1">
+                                Registra un nuevo instrumento para gestionar sus finanzas.
+                            </Dialog.Description>
                         </div>
-                        <form onSubmit={handleAddInstrument} className="mt-3">
-                            <div className="max-w-sm mx-auto space-y-3 text-center">
-                                <Dialog.Title className="text-lg font-medium text-gray-800 ">
-                                    Agregar instrumento
-                                </Dialog.Title>
-                                <Dialog.Description className=" text-sm text-gray-600">
-                                        Registra un nuevo instrumento para gestionar sus finanzas.
-                                </Dialog.Description>
-                                <div className="relative mt-8 mb-4">
-                                    <fieldset className="Fieldset relative">
-                                        <label htmlFor="instrumentType" className="block mb-2 text-sm font-medium dark:text-gray-900 text-white text-left">Tipo de instrumento *</label>
-                                        <input
-                                            className="w-full pl-12 pr-3 py-2 text-gray-500 bg-transparent outline-none border   rounded-lg"
-                                            value={description}
-                                            onChange={(e) => setDescription(e.target.value)}
-                                            placeholder="Ingrese el nombre de su instrumento"
-                                            required
-                                        />
-                                    </fieldset>
-                                </div>
-                                <div className="grid grid-cols-2 gap-x-3 my-4">
-                                    <fieldset className="Fieldset relative text-left">
-                                        <label htmlFor="instrumentType" className="block mb-2 text-sm font-medium dark:text-gray-900 text-white">Tipo de instrumento *</label>
-                                        <select id="instrumentType" className="bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 text-sm rounded-lg dark:bg-gray-50 border dark:border-gray-300 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500 block w-full p-2.5 "
-                                            onChange={handleInstrumentTypeChange}
-                                            required
-                                        >
-                                            <option value="">Seleccione un tipo de instrumento</option>
-                                            {
-                                                catalog.instrumentType && catalog.instrumentType.length > 0 && catalog.instrumentType.map((tipo, index) => (
-                                                    <option key={index} value={tipo.id}>{tipo.description}</option>
-                                                ))
-                                            }
-                                        </select>
-                                    </fieldset>
-                                    <fieldset className="Fieldset relative text-left">
-                                        <label htmlFor="instrumentSubtype" className="block mb-2 text-sm font-medium dark:text-gray-900 text-white">Subtipo de instrumento *</label>
-                                        <select id="instrumentSubtype" className="bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 text-sm rounded-lg dark:bg-gray-50 border dark:border-gray-300 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500 block w-full p-2.5 "
-                                            disabled={!isTypeSelected}
-                                            onChange={(e) => setInstrumentSubtype(Number(e.target.value))}
-                                            required
-                                        >
-                                            <option value="">Seleccione un subtipo de instrumento</option>
-                                            {
-                                                subTypeCatalog && subTypeCatalog.length > 0 && subTypeCatalog.map((subtipo, index) => (
-                                                    <option key={index} value={subtipo.id}>{subtipo.description}</option>
-                                                ))
-                                            }
-                                        </select>
-                                    </fieldset>
-                                </div>
-                                <div className="grid grid-cols-2 gap-x-3">
-                                    <fieldset className="Fieldset relative text-left">
-                                        <label htmlFor="instrumentType" className="block mb-2 text-sm font-medium dark:text-gray-900 text-white">Dia de corte</label>
-                                        <input
-                                            type="number"
-                                            min={1}
-                                            max={31}
-                                            className="w-full pl-12 pr-3 py-2 text-gray-500 bg-transparent outline-none border  rounded-lg"
-                                            value={cutOffDay}
-                                            onChange={(e) => setCutOffDay(Number(e.target.value))}
-                                        />
-                                    </fieldset>
-                                    <fieldset className="Fieldset relative text-left">
-                                        <label htmlFor="instrumentSubtype" className="block mb-2 text-sm font-medium dark:text-gray-900 text-white">Día limite de pago</label>
-                                        <input
-                                            type="number"
-                                            min={1}
-                                            max={31}
-                                            className="w-full pl-12 pr-3 py-2 text-gray-500 bg-transparent outline-none border   rounded-lg"
-                                            value={paymentDueDay}
-                                            onChange={(e) => setPaymentDueDay(Number(e.target.value))}
-                                        />
-                                    </fieldset>
+                        <Dialog.Close className="rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground x-button">
+                            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            <span className="sr-only">Close</span>
+                        </Dialog.Close>
+                    </div>
+
+                    {/* Form */}
+                    <form onSubmit={handleAddInstrument} className="p-6">
+                        <div className="space-y-6">
+                            {/* Nombre del instrumento */}
+                            <div className="space-y-2">
+                                <label htmlFor="instrumentName" className="text-sm font-medium text-gray-700">
+                                    Nombre del instrumento *
+                                </label>
+                                <input
+                                    id="instrumentName"
+                                    type="text"
+                                    className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md  placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                    value={description}
+                                    onChange={(e) => setDescription(e.target.value)}
+                                    placeholder="Ingrese el nombre de su instrumento"
+                                    required
+                                />
+                            </div>
+
+                            {/* Grid para tipo y subtipo */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <label htmlFor="instrumentType" className="text-sm font-medium text-gray-700">
+                                        Tipo de instrumento *
+                                    </label>
+                                    <select 
+                                        id="instrumentType" 
+                                        className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md  focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                        onChange={handleInstrumentTypeChange}
+                                        required
+                                    >
+                                        <option value="">Seleccione un tipo</option>
+                                        {catalogs?.instrumentTypes && catalogs?.instrumentTypes.length > 0 && 
+                                            catalogs.instrumentTypes?.map((tipo, index) => (
+                                                <option key={index} value={tipo.id}>{tipo.name}</option>
+                                            ))
+                                        }
+                                    </select>
                                 </div>
 
-                                <Dialog.Close asChild>
-                                    <button className=" w-full mt-3 py-3 px-4 font-medium text-sm text-center text-white bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 rounded-lg ring-offset-2 ring-indigo-600 focus:ring-2"
-                                        type="submit"
+                                <div className="space-y-2">
+                                    <label htmlFor="instrumentSubtype" className="text-sm font-medium text-gray-700">
+                                        Subtipo de instrumento *
+                                    </label>
+                                    <select 
+                                        id="instrumentSubtype" 
+                                        className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md  focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-100 disabled:text-gray-400"
+                                        disabled={!isTypeSelected}
+                                        onChange={(e) => setInstrumentSubtype(Number(e.target.value))}
+                                        required
                                     >
-                                        Registrar nuevo envío
-                                    </button>
-                                </Dialog.Close>
+                                        <option value="">Seleccione un subtipo</option>
+                                        {subTypeCatalog && subTypeCatalog?.length > 0 && 
+                                            subTypeCatalog?.map((subtipo, index) => (
+                                                <option key={index} value={subtipo.id}>{subtipo.name}</option>
+                                            ))
+                                        }
+                                    </select>
+                                </div>
                             </div>
-                        </form>
-                    </div>
+
+                            {/* Grid para días de corte y pago */}
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div className="space-y-2">
+                                    <label htmlFor="cutOffDay" className="text-sm font-medium text-gray-700">
+                                        Día de corte
+                                    </label>
+                                    <input
+                                        id="cutOffDay"
+                                        type="number"
+                                        min={1}
+                                        max={31}
+                                        className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md  placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                        value={cutOffDay}
+                                        onChange={(e) => setCutOffDay(Number(e.target.value))}
+                                        placeholder="Día (1-31)"
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label htmlFor="paymentDueDay" className="text-sm font-medium text-gray-700">
+                                        Día límite de pago
+                                    </label>
+                                    <input
+                                        id="paymentDueDay"
+                                        type="number"
+                                        min={1}
+                                        max={31}
+                                        className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md  placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                        value={paymentDueDay}
+                                        onChange={(e) => setPaymentDueDay(Number(e.target.value))}
+                                        placeholder="Día (1-31)"
+                                    />
+                                </div>
+
+                                <CountrySelect 
+                                    countries={catalogs?.currencies} 
+                                    countrySelected={currencySelected} 
+                                    handleOptionClick={handleOptionClick} 
+                                    isCountry={false}
+                                />
+                            </div>
+                        </div>
+
+                        {/* Footer con botones */}
+                        <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 pt-6 mt-6 border-t border-gray-200">
+                            <Dialog.Close asChild>
+                                <button
+                                    type="button"
+                                    className="mt-3 sm:mt-0 w-full sm:w-auto px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md  hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                >
+                                    Cancelar
+                                </button>
+                            </Dialog.Close>
+                            <button
+                                type="submit"
+                                className="w-full sm:w-auto px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md  hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            >
+                                Registrar instrumento
+                            </button>
+                        </div>
+                    </form>
                 </Dialog.Content>
             </Dialog.Portal>
         </Dialog.Root>

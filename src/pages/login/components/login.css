@@ -8,10 +8,11 @@
     background-color: light-dark(#ecedee, #4b5563)!important;
 }
 
-button{
+.blue-button{
     background-color: light-dark(var(--light-blue), #364153);
     color: light-dark(#fff, #ecebeb);
 }
-button:hover{
+
+.blue-button:hover{
     background-color: light-dark(var(--light-blue-hover), #455164);
 }

@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { VARIABLES } from '../assets/js/utils';
 
-export const CountrySelect = ({ countries, countrySelected, handleOptionClick }) => {
+export const CountrySelect = ({ countries, countrySelected, handleOptionClick, isCountry = true }) => {
     const [isOpen, setIsOpen] = useState(false);
     const selectRef = useRef(null);
 
@@ -21,13 +21,13 @@ export const CountrySelect = ({ countries, countrySelected, handleOptionClick })
 
     return(
         <div className="">
-        <label className="block text-sm font-medium text-gray-300 mb-2 text-left">Country you live in</label>
-        {/* Select personalizado */}
+        <label className="block text-sm font-medium text-gray-300 mb-2 text-left">{ isCountry ? 'Country you live in' : 'Currency you use' }</label>
+        {/* Select customization */}
         <div className="relative" ref={selectRef}>
             <button
-                type="button" // Importante: especificar type="button"
+                type="button"
                 onClick={handleToggleOpen}
-                onMouseDown={(e) => e.preventDefault()} // Prevenir pérdida de foco
+                onMouseDown={(e) => e.preventDefault()} // Prevent losing focus
                 className={`country-select w-full px-4 py-4 border border-gray-700 rounded-xl text-left text-white hover:border-gray-600 focus:outline-none focus:border-gray-600 transition-all duration-200 flex items-center justify-between ${
                     isOpen ? 'border-gray-600' : ''
                 }`}
@@ -35,7 +35,7 @@ export const CountrySelect = ({ countries, countrySelected, handleOptionClick })
             <div className="flex items-center space-x-3">
                 <img className="w-6 h-6 object-cover rounded-full" src={VARIABLES.icons.flags + countrySelected.flag_icon} 
                 alt={countrySelected.name} />
-                <span className="text-base font-medium">{countrySelected.name}</span>
+                <span className="text-base font-medium">{isCountry ? countrySelected.name : countrySelected.id}</span>
             </div>
             <ChevronDown 
                 className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${
@@ -47,7 +47,7 @@ export const CountrySelect = ({ countries, countrySelected, handleOptionClick })
             {/* Dropdown */}
             {isOpen && (
             <div className="absolute top-full left-0 right-0 mt-2 bg-transparent border border-gray-700 rounded-xl shadow-2xl z-50 max-h-64 overflow-y-auto">
-                {countries.map((option) => (
+                {countries?.map((option) => (
                 <button
                     key={option.id}
                     onClick={(e) => handleSelectOption(option, e)}
@@ -66,7 +66,7 @@ export const CountrySelect = ({ countries, countrySelected, handleOptionClick })
                     <div className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden p-0.5">
                     <img className="w-6 h-6 object-cover rounded-full" src={VARIABLES.icons.flags + option.flag_icon} alt={option.name} />
                     </div>
-                    <span className="text-base font-medium">{option.name}</span>
+                    <span className="text-base font-medium">{isCountry ? option.name : option.id}</span>
 
                 </button>
                 ))}

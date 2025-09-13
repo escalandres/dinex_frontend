@@ -48,6 +48,36 @@
   color: light-dark(#1e54b7, #f9f9f9)!important;
 }
 
+.x-button{
+  background-color: transparent;
+  border: none;
+  color: light-dark(#5A677A, #C3C9D6);
+  font-size: 1.5em;
+  padding: 0.2em 0.5em;
+  line-height: 1;
+}
+
+.x-button:hover{
+  color: light-dark(#5A677A, #C3C9D6)!important;
+}
+
+.dialog-content {
+  overflow: visible !important;
+}
+
+select, ::picker(select) {
+  appearance: auto;
+  border-bottom: 1px solid light-dark(#E5E7EB, #4B5563);
+}
+
+::picker(select) {
+  background-color: light-dark(#e9e8e8, #191D21);
+  color: light-dark(#000, #ecebeb);
+  border: none;
+}
+
+
+
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);

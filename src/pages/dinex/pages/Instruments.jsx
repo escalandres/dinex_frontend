@@ -10,7 +10,7 @@ import { UserMenu } from "../components/UserMenu";
 import { Notification } from "../components/Notification";
 import { AddInstruments } from "./pages-components/Instruments/AddInstruments";
 
-export const Navbar = ({ token }) => {
+export const Navbar = ({ token, catalogs }) => {
 
     return (
         <nav className="bg-white dark:bg-[#191D21] w-full z-10 border-b border-gray-200 dark:border-gray-600">
@@ -28,7 +28,7 @@ export const Navbar = ({ token }) => {
                     <UserMenu token={token} />
                 </div>
                 <div className="items-center justify-between w-full md:flex md:w-auto md:order-1 grid grid-cols-2 gap-x-3" id="navbar-sticky">
-                    <AddInstruments />
+                    {catalogs?.instrumentTypes?.length > 0 && <AddInstruments token={token} catalogs={catalogs} />}
                 </div>
             </div>
         </nav>
@@ -37,13 +37,13 @@ export const Navbar = ({ token }) => {
 }
 
 const dataIniciales = [
-  { id: 1, description: 'Cuenta bancaria BBVA', type: 'Ahorro', subtype: 'Cuenta corriente' },
-  { id: 2, description: 'Plata Card', type: 'Gasto', subtype: 'TDC - Tarjeta de crédito' },
-  { id: 3, description: 'Inversión ETF', type: 'Inversión', subtype: 'Cuenta de inversión' },
-  { id: 4, description: 'Guardadito', type: 'Ahorro', subtype: 'Efectivo para ahorro' },
-  { id: 5, description: 'Banorte', type: 'Gasto', subtype: 'TDD - Tarjeta de débito' },
-  { id: 6, description: 'Efectivo', type: 'Gasto', subtype: 'Efectivo para gastos' },
-  { id: 7, description: 'Nu bank', type: 'Ahorro', subtype: 'Cuenta de ahorro' },
+  { id: 1, description: 'Cuenta bancaria BBVA', type: 'Ahorro', subtype: 'Cuenta corriente', type_color: '#60A5FA', subtype_color: '#FF3859' },
+  { id: 2, description: 'Plata Card', type: 'Gasto', subtype: 'TDC - Tarjeta de crédito', type_color: '#6B7280', subtype_color: '#FF3859' },
+  { id: 3, description: 'Inversión ETF', type: 'Inversión', subtype: 'Cuenta de inversión', type_color: '#16A34A', subtype_color: '#4F46E5' },
+  { id: 4, description: 'Guardadito', type: 'Ahorro', subtype: 'Efectivo para ahorro', type_color: '#183292', subtype_color: '#4F46E5' },
+  { id: 5, description: 'Banorte', type: 'Gasto', subtype: 'TDD - Tarjeta de débito', type_color: '#FF3859', subtype_color: '#4F46E5' },
+  { id: 6, description: 'Efectivo', type: 'Gasto', subtype: 'Efectivo para gastos', type_color: '#751F00', subtype_color: '#4F46E5' },
+  { id: 7, description: 'Nu bank', type: 'Ahorro', subtype: 'Cuenta de ahorro', type_color: '#4F46E5', subtype_color: '#4F46E5' },
 ];
 
 export const InstrumentTable = () => {
@@ -93,10 +93,10 @@ export const InstrumentTable = () => {
                 <tr key={item.id}>
                 <td className="px-4 py-2 text-sm text-left text-gray-800 dark:text-gray-200">{item.description}</td>
                 <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-200">
-                    <span className={`${getBadgeColor(type, item.type)} font-bold text-white text-center py-1 px-2 text-xs rounded`}>{item.type}</span>
+                    <span className="font-bold text-white text-center py-1 px-2 text-xs rounded" style={{ backgroundColor: item.type_color }}>{item.type}</span>
                 </td>
                 <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-200">
-                    <span className={`${getBadgeColor(subtype, item.subtype)} font-bold text-white text-center py-1 px-2 text-xs rounded`}>{item.subtype}</span>
+                    <span className="font-bold text-white text-center py-1 px-2 text-xs rounded" style={{ backgroundColor: item.subtype_color }}>{item.subtype}</span>
                 </td>
                 <td className="px-4 py-2 text-sm text-center space-x-2">
                     <button type="button" className="!bg-green-500 hover:!bg-green-600 py-2 px-4 text-sm font-medium text-white border border-transparent rounded-lg focus:outline-none">Mostrar</button>
@@ -114,7 +114,11 @@ export const InstrumentTable = () => {
 
 const Instruments = () => {
     const [Instruments, setInstruments] = useState([]);
-    const [catalogos, setCatalogos] = useState([]);
+    const [catalogs, setCatalogs] = useState({
+        instrumentType: [],
+        instrumentSubtype: [],
+        currencies: []
+    });
     const isRequesting = useRef(false);
     // const token = localStorage.getItem('token');
     // const decoded = jwtDecode(token);
@@ -167,6 +171,41 @@ const Instruments = () => {
     //     fetchData();
     // }, [cargarInstruments]);
 
+    const getCatalogs = useCallback(async () => {
+        try {
+            showLoader();
+            // Simulación de la solicitud de autenticación al servidor
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/app/catalogs/instruments`);
+            if (!response.ok) throw new Error('Error al obtener el catálogo de instrumentos');
+            const result = await response.json();
+            console.log('Catalogs fetched:', result);
+            return result;
+        } catch (error) {
+            console.error('Error fetching instruments:', error);
+            return [];
+        } finally {
+            hideLoader();
+        }
+    }, []);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const theme = localStorage.theme;
+                // setIsDarkMode(theme === 'dark');
+                const catalogs = await getCatalogs();
+                console.log('Catalogs to set:', catalogs);
+                setCatalogs(catalogs);
+            } catch (error) {
+                console.error('Error fetching countries:', error);
+            }
+        };
+        
+        fetchData();
+    }, [getCatalogs]);
+
+        
+
     return (
         <div className="content-window flex h-screen w-full bg-gray-50 dark:bg-gray-900">
             {/* Sidebar */}
@@ -177,7 +216,7 @@ const Instruments = () => {
             <div className="flex flex-col flex-grow">
                 {/* Navbar */}
                 <div className="h-16">
-                    <Navbar token={decoded} />
+                    <Navbar token={decoded} catalogs={catalogs} />
                 </div>
                 {/* Scrollable content */}
                 <div className="flex-grow overflow-y-auto p-4">

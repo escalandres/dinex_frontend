@@ -64,6 +64,12 @@ tbody tr:hover{
     background-color: light-dark(#ecedee, #374151);
 }
 
+:is(:disabled, .disabled){
+    background-color: light-dark(#f3f4f6, #374151);
+    color: light-dark(#9ca3af, #6b7280);
+    cursor: not-allowed;
+}
+
 /* .element a, .element span {
   color: light-dark(var(--light-blue), #fff);
 }

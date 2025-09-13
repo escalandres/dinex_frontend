@@ -97,6 +97,15 @@ p{
   color: light-dark(#4b4a4a, #d1d5db);
 }
 
+/* [
+  '#F59E0B', '#6B7280', '#C084FC', '#EA580C', '#4F46E5',
+  '#1F2937', '#16A34A', '#183292', '#FF3859', '#751F00'
+] */
+
+/* [
+  '#60A5FA', '#DC2626', '#16A34A', '#FDBA74', '#A5B4FC',
+] */
+
 /* CSS - Solo color-scheme */
 /* @media (prefers-color-scheme: light) {
   :root { color-scheme: light; }
