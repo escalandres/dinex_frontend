@@ -74,23 +74,8 @@ export const hideLoader = () => {
     loader.style.display = 'none';
 }
 
-export const getBadgeColor = (type, item) => {
-    const instrumentTypesColor = {
-        'Ahorro': 'bg-blue-400',
-        'Gasto': 'bg-red-600',
-        'Inversión': 'bg-green-600'
-    };
-    const subInstrumentColors = {
-        'Cuenta de ahorro': 'bg-yellow-500',
-        'Cuenta corriente': 'bg-gray-500',
-        'Efectivo para ahorro': 'bg-purple-400',
-        'TDC - Tarjeta de crédito': 'bg-orange-600',
-        'TDD - Tarjeta de débito': 'bg-indigo-600',
-        'Efectivo para gastos': 'bg-gray-800',
-        'Cuenta de inversión': 'bg-green-600'
-    };
-    if (type === 'typeInstrument') {
-        return instrumentTypesColor[item] || 'bg-gray-500';
-    }
-    return subInstrumentColors[item] || 'bg-gray-500';
+export const getBadgeColor = (color) => {
+    console.log(color);
+    if (!color) return '!bg-gray-500';
+    return `!bg-[${color}]`;
 }
