@@ -71,7 +71,7 @@ const Login = () => {
                 <div className="shadow p-4 py-6 space-y-8 sm:p-6 sm:rounded-lg">
                     <div className="text-center">
                         <a href="/">
-                            <img src="/icons/logo.png" alt="Dinex icon" width={80} className="mx-auto" />
+                            <img src="/icons/dinex.png" alt="Dinex icon" width={80} className="mx-auto" />
                         </a>
                         <div className="mt-5 space-y-2">
                             <h3 className="text-gray-800 text-2xl font-bold sm:text-2xl">Sign in</h3>

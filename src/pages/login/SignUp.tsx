@@ -105,7 +105,7 @@ const SignUp = () => {
             localStorage.setItem('token', result.token);
 
             // Redireccionar o actualizar el estado de la aplicación
-            window.location.href = '/dinex';
+            window.location.href = '/app';
             
         } catch (error) {
             hideLoader();
@@ -120,7 +120,7 @@ const SignUp = () => {
                 <div className="shadow p-4 py-6 space-y-8 sm:p-8 sm:rounded-lg">
                     <div className="text-center">
                         <a href="/login">
-                            <img src="/icons/logo.png" alt="Dinex icon" width={80} className="mx-auto" />
+                            <img src="/icons/dinex.png" alt="Dinex icon" width={80} className="mx-auto" />
                         </a>
                         <div className="mt-5 space-y-2">
                             <h3 className="text-gray-800 text-2xl font-bold sm:text-2xl">Create an account</h3>

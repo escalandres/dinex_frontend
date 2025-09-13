@@ -56,7 +56,6 @@ const Dinex = () => {
                 {/* Scrollable content */}
                 <div className="flex-grow overflow-y-auto p-4">
                     <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
-                    <DialogSizes />
                 </div>
             </div>
         </div>
