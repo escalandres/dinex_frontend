@@ -37,9 +37,8 @@ export const Navbar = ({ token }) => {
 }
 
 const Dinex = () => {
-    // const token = localStorage.getItem('token');
-    // const decoded = jwtDecode(token);
-    const decoded = { name: "John Doe" }; // Placeholder until token logic is implemented
+    const token = localStorage.getItem('token');
+    const decoded = jwtDecode(token);
 
     return (
         <div className="content-window flex h-screen w-full bg-gray-50 dark:bg-gray-900">

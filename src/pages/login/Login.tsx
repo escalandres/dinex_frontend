@@ -6,6 +6,7 @@ import { alerta, showLoader, hideLoader } from '../assets/js/utils';
 import { loginSchema } from '@/validations/loginSchema';
 import { OAuth } from './components/OAuth';
 import './components/login.css';
+import { saveTokens } from '@/components/auth';
 
 interface LoginFormData {
     email: string;
@@ -39,24 +40,27 @@ const Login = () => {
         try {
             showLoader();
             // Simulación de la solicitud de autenticación al servidor
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/login`, {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/users/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ email: data.email.trim(), password: data.password.trim() }),
             });
-            hideLoader();
-            // console.log(response);
+            
+            console.log(response);
             if (!response.ok) {
                 alerta.error('Error al iniciar sesión');
             }
             else{
                 const result = await response.json();
-                console.log(response);
-                localStorage.setItem('token', result.token); // Ejemplo
-                // Redireccionar o actualizar el estado de la aplicación
-                window.location.href = '/app'; // Ejemplo
+                console.log(result);
+                saveTokens(result.token, result.csrfToken);
+
+                setTimeout(() => {
+                    hideLoader();
+                    window.location.href = '/app';
+                }, 1500);
             }
         } catch (error) {
             hideLoader();

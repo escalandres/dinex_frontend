@@ -10,6 +10,7 @@ import ChangePassword from '@pages/extras/ChangePassword';
 import GithubAuthorize from '@pages/login/components/GithubAuthMiddleware';
 import AuthenticatedRoute from './AuthenticatedRoute';
 import ProtectedRoute from './ProtectedRoute';
+import { RequireVerifiedEmail } from './RequireVerifiedEmail';
 
 import Savings from '@/pages/dinex/pages/Savings';
 import Expenses from '@/pages/dinex/pages/Expenses';
@@ -31,6 +32,10 @@ const Router = createBrowserRouter(
         element: <SignUp/>
       },
       {
+        path: "/verify-email",
+        element: <SignUp/>
+      },
+      {
           path: '/app',
           element: (
               <ProtectedRoute>
@@ -39,24 +44,44 @@ const Router = createBrowserRouter(
           ),
       },
       {
-        path: "/dinex",
-        element: <Dinex/>
-      },
-      {
         path: "/app/savings",
-        element: <Savings/>
+        element: ( 
+          <ProtectedRoute>
+            <RequireVerifiedEmail>
+              <Savings/>
+            </RequireVerifiedEmail>
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/app/expenses",
-        element: <Expenses/>
+        element: ( 
+          <ProtectedRoute>
+            <RequireVerifiedEmail>
+              <Expenses/>
+            </RequireVerifiedEmail>
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/app/instruments",
-        element: <Instruments/>
+        element: ( 
+          <ProtectedRoute>
+            <RequireVerifiedEmail>
+              <Instruments/>
+            </RequireVerifiedEmail>
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/app/user-settings",
-        element: <UserSettings/>
+        element: (
+          <ProtectedRoute>
+            <RequireVerifiedEmail>
+              <UserSettings/>
+            </RequireVerifiedEmail>
+          </ProtectedRoute>
+        )
       },
       {
         path: "/recovery",

@@ -120,11 +120,8 @@ const Instruments = () => {
         currencies: []
     });
     const isRequesting = useRef(false);
-    // const token = localStorage.getItem('token');
-    // const decoded = jwtDecode(token);
-    const token = "";
-    const decoded = { "uuid": "1234-568-9998", "description": "Andres Escala", "email": "andres@escala.com", "profile_picture": "https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80", "iat": 1693708800, "exp": 1693712400 }
-
+    const token = localStorage.getItem('token');
+    const decoded = jwtDecode(token);
 
     const cargarInstruments = useCallback(async () => {
         showLoader();

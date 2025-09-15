@@ -100,7 +100,7 @@ export const Account = ({ user, token, countries }) => {
                 value={user.name}
                 // onChange={(e) => handleInputChange('nombre', e.target.value)}
                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                disabled
+                readOnly
                 />
             </div>
             <div>
@@ -110,7 +110,7 @@ export const Account = ({ user, token, countries }) => {
                 value={user.lastname}
                 // onChange={(e) => handleInputChange('apellido', e.target.value)}
                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                disabled
+                readOnly
                 />
             </div>
             </div>
@@ -124,10 +124,10 @@ export const Account = ({ user, token, countries }) => {
                 value={user.email}
                 // onChange={(e) => handleInputChange('email', e.target.value)}
                 className="w-full px-3 py-2 pr-10 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                disabled
+                readOnly
                 />
                 <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <div className={`w-2 h-2 ${user.email_verified ? 'bg-green-500' : 'bg-red-500'} rounded-full`}></div>
                 </div>
             </div>
             </div>

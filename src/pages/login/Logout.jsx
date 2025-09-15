@@ -6,7 +6,7 @@ const Logout = () => {
 
   useEffect(() => {
     // Elimina el JWT del localStorage
-    localStorage.removeItem('token'); // Asegúrate de que 'token' es la clave correcta
+    localStorage.removeItem('token');
 
     // Redirige al usuario a la página de inicio de sesión
     navigate('/login');

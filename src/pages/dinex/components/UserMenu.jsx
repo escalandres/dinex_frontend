@@ -37,12 +37,15 @@ export const UserMenu = ({ token}) => {
                 <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
                     <div className="flex items-center space-x-8 mb-2">
                         <div className="relative w-10 h-10 mb-2 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
-                        {<img src={token?.profile_picture ? token.profile_picture : '/icons/default-avatar.png'} alt={token.name} className="w-full h-full object-cover" />}
-                            {/* <svg className="absolute w-12 h-12 text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"></path></svg> */}
+                        {<img src={token.user?.profile_picture ? token.user.profile_picture : '/icons/default-avatar.png'} alt={token.user?.name} className="w-full h-full object-cover" />}
                         </div>
-                        <span className="bg-green-500 font-bold text-white text-center py-1 px-2 text-xs rounded-full">Pro</span>
+                        { token.user?.email_verified ? (
+                            <span className="bg-green-500 font-bold text-white text-center py-1 px-2 text-xs rounded-full">Pro</span>
+                        ) : (
+                            <span className="bg-red-500 font-bold text-white text-center py-1 px-2 text-xs rounded-full">Inactive</span>
+                        )}
                     </div>
-                    <div className="font-medium text-gray-400 truncate">{token.email}</div>
+                    <div className="font-medium text-gray-400 truncate">{token.user?.email}</div>
                 </div>
                 <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
                     <li>
@@ -63,8 +66,8 @@ export const UserMenu = ({ token}) => {
                 </ul>
                 <div className="py-2">
                     <a
-                    href="#"
-                    className="block px-4 py-2 text-sm !text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                    href="/logout"
+                    className="block px-4 py-2 text-sm !text-red-500 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                     >
                     Log out
                     </a>

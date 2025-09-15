@@ -85,7 +85,7 @@ const SignUp = () => {
             showLoader();
             console.log('countrySelected', countrySelected);
             console.log('data', data);
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/signup`, {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/users/signup`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -93,19 +93,19 @@ const SignUp = () => {
                 body: JSON.stringify({ name: data.name.trim(), lastname: data.lastname.trim(), email: data.email.trim(), 
                     password: data.password.trim(), countryId: countrySelected.id }),
             });
-            
-            hideLoader();
+
             if (!response.ok) {
                 alerta.error('Error al iniciar sesión');
             }
 
             const result = await response.json();
-
-            // Guardar el token o información del usuario en el almacenamiento local o en el estado
             localStorage.setItem('token', result.token);
+            
+            setTimeout(() => {
+                hideLoader();
+                window.location.href = '/app';
+            }, 1500);
 
-            // Redireccionar o actualizar el estado de la aplicación
-            window.location.href = '/app';
             
         } catch (error) {
             hideLoader();
