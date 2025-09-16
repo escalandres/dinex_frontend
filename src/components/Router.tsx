@@ -12,10 +12,12 @@ import AuthenticatedRoute from './AuthenticatedRoute';
 import ProtectedRoute from './ProtectedRoute';
 import { RequireVerifiedEmail } from './RequireVerifiedEmail';
 
-import Savings from '@/pages/dinex/pages/Savings';
-import Expenses from '@/pages/dinex/pages/Expenses';
-import Instruments from '@/pages/dinex/pages/Instruments';
+import Savings from '@pages/dinex/pages/Savings';
+import Expenses from '@pages/dinex/pages/Expenses';
+import Instruments from '@pages/dinex/pages/Instruments';
 import UserSettings from '@pages/dinex/pages/UserSettings';
+import VerifyEmail from '@pages/login/VerifyEmail';
+import VerifyRequired from '@pages/login/VerifyRequired';
 
 const Router = createBrowserRouter(
     [
@@ -33,7 +35,11 @@ const Router = createBrowserRouter(
       },
       {
         path: "/verify-email",
-        element: <SignUp/>
+        element: <VerifyEmail/>
+      },
+      {
+        path: "/verify-required",
+        element: <VerifyRequired/>
       },
       {
           path: '/app',

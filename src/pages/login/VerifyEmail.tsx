@@ -1,90 +1,57 @@
-import { useState, useEffect } from 'react';
-import { decodeToken, updateTokens } from '@components/auth';
+import { useEffect, useState } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { alerta, showLoader, hideLoader } from '@pages/assets/js/utils';
 
-export const VerifyEmail = () => {
-    const { decoded, token, csrfToken } = decodeToken();
-    const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
-    const [checking, setChecking] = useState(false);
-    const [isUserEmailVerified, setIsUserEmailVerified] = useState(false);
+const VerifyEmail = () => {
+    const [status, setStatus] = useState<'pending' | 'success' | 'error'>('pending');
+    const [message, setMessage] = useState('');
+    const [searchParams] = useSearchParams();
+    const navigate = useNavigate();
 
-    const handleResend = async () => {
-        setStatus('sending');
+    useEffect(() => {
+        const token = searchParams.get('token');
+
+        if (!token) {
+        setStatus('error');
+        setMessage('Token de verificación no encontrado.');
+        return;
+        }
+
+        const verify = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/users/resend-verification`, {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
-                    'X-CSRF-Token': csrfToken,
-                },
+            showLoader();
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/users/verify-email?token=${token}`, {
+                method: 'GET',
             });
-
-            if (response.ok) {
-                setStatus('sent');
+            hideLoader();
+            const result = await response.json();
+            if (response.status === 200) {
+                setStatus('success');
+                setMessage(result.message);
+                setTimeout(() => navigate('/app'), 3000); // redirige tras éxito
             } else {
+                alerta.error(result.message || 'Error al verificar el correo.');
                 setStatus('error');
+                setMessage(result.message || 'Error al verificar el correo.');
+                throw new Error('Respuesta inesperada');
             }
         } catch (err) {
-            console.error('Error al reenviar verificación:', err);
+            hideLoader();
             setStatus('error');
+            setMessage(err.message || 'Error al verificar el correo.');
         }
-    };
+        };
 
-     // ⏱️ Polling defensivo cada 3 minutos para verificar si el email ha sido confirmado
-    useEffect(() => {
-        if (!isUserEmailVerified) {
-        const interval = setInterval(async () => {
-            setChecking(true);
-            try {
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/users/auth/refresh`, {
-                    method: 'POST',
-                    credentials: 'include',
-                });
-
-                if (response.ok) {
-                    const result = await response.json();
-                    if (result.emailVerified) {
-                        updateTokens(result.newToken, result.newCSRFToken); // Actualiza el token en localStorage
-                        setIsUserEmailVerified(true);
-                        clearInterval(interval); // Detiene el polling
-                    }
-                }
-            } catch (err) {
-                console.error('Error al verificar estado de email:', err);
-            } finally {
-                setChecking(false);
-            }
-        }, 1000 * 60 * 3); // cada 3 minutos
-
-        return () => clearInterval(interval);
-        }
-    }, [token, isUserEmailVerified]);
-
-
-
-    if (isUserEmailVerified) {
-        return (
-        <div className="verified-message">
-            <h2>✅ Tu correo ya está verificado</h2>
-            <p>Ya puedes acceder a todas las funcionalidades.</p>
-            <button onClick={() => window.location.href = '/app'}>Ir a la aplicación</button>
-        </div>
-        );
-    }
+        verify();
+    }, [searchParams, navigate]);
 
     return (
-        <div className="verify-email">
-            <h2>📩 Verifica tu correo electrónico</h2>
-            <p>Hemos enviado un correo de verificación a <strong>{decoded.user?.email}</strong>.</p>
-            <p>Por favor revisa tu bandeja de entrada y haz clic en el enlace para activar tu cuenta.</p>
-
-            <button onClick={handleResend} disabled={status === 'sending'}>
-                {status === 'sending' ? 'Reenviando...' : 'Reenviar correo'}
-            </button>
-
-            {status === 'sent' && <p style={{ color: 'green' }}>Correo reenviado correctamente.</p>}
-            {status === 'error' && <p style={{ color: 'red' }}>Hubo un error al reenviar el correo.</p>}
+        <div className="verify-email-container">
+        {status === 'pending' && <p>Verificando tu correo electrónico...</p>}
+        {status === 'success' && <p className="success">{message}</p>}
+        {status === 'error' && <p className="error">{message}</p>}
         </div>
     );
 };
+
+export default VerifyEmail;

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Eye, EyeOff } from 'lucide-react';
-import { alerta, showLoader, hideLoader } from '../assets/js/utils';
+import { alerta, showLoader, hideLoader } from '@pages/assets/js/utils';
 import { loginSchema } from '@/validations/loginSchema';
 import { OAuth } from './components/OAuth';
 import './components/login.css';
