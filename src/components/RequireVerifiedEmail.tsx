@@ -3,7 +3,7 @@ import { isEmailVerified } from "./auth";
 
 export const RequireVerifiedEmail = ({ children }: { children: React.ReactNode }) => {
   if (!isEmailVerified()) {
-    return <Navigate to="/verify-email" replace />;
+    return <Navigate to="/verify-required" replace />;
   }
 
   return <>{children}</>;

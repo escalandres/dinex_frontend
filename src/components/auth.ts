@@ -17,7 +17,7 @@ interface DecodedToken {
 
 export const decodeToken = () => {
     const token = localStorage.getItem('token');
-    if (!token) {
+    if (!token || token === 'undefined') {
         return { decoded: null, token: null, csrfToken: null };
     }
     const decoded: DecodedToken = jwtDecode(token);

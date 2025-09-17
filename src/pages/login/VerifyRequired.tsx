@@ -1,44 +1,67 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { alerta, showLoader, hideLoader } from '@pages/assets/js/utils';
 import { decodeToken, updateTokens } from '@components/auth';
+import './components/verify.css';
 
 const VerifyRequired = () => {
     const { decoded, token, csrfToken } = decodeToken();
+    if (!token) {
+        window.location.href = '/login';
+    }
     const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
-    const [checking, setChecking] = useState(false);
     const [isUserEmailVerified, setIsUserEmailVerified] = useState(false);
 
-    const handleResend = async () => {
+    const handleResend = useCallback(async () => {
         setStatus('sending');
         try {
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/resend-verification`, {
+            showLoader();
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/users/resend-verification`, {
                 method: 'POST',
-                credentials: 'include',
+                credentials: 'include', 
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
                     'X-CSRF-Token': csrfToken,
                 },
             });
-
+            hideLoader();
             if (response.ok) {
-                setStatus('sent');
+                const result = await response.json();
+                if (result.emailVerified) {
+                    updateTokens(result.newToken, result.newCSRFToken);
+                    setIsUserEmailVerified(true);
+                    alerta.success('Tu correo ya está verificado. Redirigiendo...');
+                    setTimeout(() => {
+                        window.location.href = '/app';
+                    }, 2000);
+                }else{
+                    setStatus('sent');
+                    alerta.success('Correo de verificación reenviado');
+                }
+                
             } else {
                 setStatus('error');
+                alerta.error('Error al reenviar el correo de verificación');
             }
         } catch (err) {
             console.error('Error al reenviar verificación:', err);
             setStatus('error');
+            alerta.error('Error al reenviar el correo de verificación');
         }
-    };
+    }, [token, csrfToken, setStatus]);
 
      // ⏱️ Polling defensivo cada 3 minutos para verificar si el email ha sido confirmado
     useEffect(() => {
         if (!isUserEmailVerified) {
         const interval = setInterval(async () => {
-            setChecking(true);
             try {
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/users/auth/refresh`, {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/users/resend-verificatio`, {
                     method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
+                        'X-CSRF-Token': csrfToken,
+                    },
                     credentials: 'include',
                 });
 
@@ -52,41 +75,78 @@ const VerifyRequired = () => {
                 }
             } catch (err) {
                 console.error('Error al verificar estado de email:', err);
-            } finally {
-                setChecking(false);
             }
         }, 1000 * 60 * 3); // cada 3 minutos
 
         return () => clearInterval(interval);
         }
-    }, [token, isUserEmailVerified]);
+    }, [token, isUserEmailVerified, csrfToken]);
 
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                await handleResend();
+            } catch (error) {
+                console.error('Error fetching countries:', error);
+            }
+        };
 
-    if (isUserEmailVerified) {
-        return (
-        <div className="verified-message">
-            <h2>✅ Tu correo ya está verificado</h2>
-            <p>Ya puedes acceder a todas las funcionalidades.</p>
-            <button onClick={() => window.location.href = '/app'}>Ir a la aplicación</button>
-        </div>
-        );
-    }
+        fetchData();
+    }, [handleResend]);
 
     return (
+        <div className="body">
         <div className="verify-email">
-            <h2>📩 Verifica tu correo electrónico</h2>
-            <p>Hemos enviado un correo de verificación a <strong>{decoded.user?.email}</strong>.</p>
-            <p>Por favor revisa tu bandeja de entrada y haz clic en el enlace para activar tu cuenta.</p>
+            <div className="gradient-bar"></div>
 
-            <button onClick={handleResend} disabled={status === 'sending'}>
+            <div className="email-icon">📩</div>
+
+            <h2 className="title">Verifica tu correo electrónico</h2>
+            
+            <p className="paragraph">Hemos enviado un correo de verificación a:</p>
+
+            <div className="email-address">
+            {decoded?.user?.email || 'usuario@ejemplo.com'}
+            </div>
+            
+            <p className="paragraph">
+            Por favor revisa tu bandeja de entrada y haz clic en el enlace para activar tu cuenta.
+            </p>
+            
+            <div className="instructions">
+            <h3 className="instructions-title">💡 ¿No encuentras el correo?</h3>
+            <ul className="instructions-list">
+                <li className="instructions-item">Revisa tu carpeta de spam o correo no deseado</li>
+                <li className="instructions-item">Asegúrate de que la dirección sea correcta</li>
+                <li className="instructions-item">El correo puede tardar unos minutos en llegar</li>
+            </ul>
+            </div>
+            
+            <button 
+                className="resend-button"
+                onClick={handleResend} 
+                disabled={status === 'sending'}
+            >
+                {status === 'sending' && <span className="loading-spinner"></span>}
                 {status === 'sending' ? 'Reenviando...' : 'Reenviar correo'}
             </button>
-
-            {status === 'sent' && <p style={{ color: 'green' }}>Correo reenviado correctamente.</p>}
-            {status === 'error' && <p style={{ color: 'red' }}>Hubo un error al reenviar el correo.</p>}
+            
+            { status === 'sent' && (
+                <div className="status-message status-success">
+                    ✅ Correo reenviado correctamente
+                </div>
+            )}
+            
+            {status === 'error' && (
+                <div className="status-message status-error">
+                    ❌ Hubo un error al reenviar el correo
+                </div>
+            )}
+        </div>
         </div>
     );
-};
+}
+
 
 export default VerifyRequired;
