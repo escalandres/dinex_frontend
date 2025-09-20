@@ -5,17 +5,10 @@ import { Eye, EyeOff } from 'lucide-react';
 import { alerta, showLoader, hideLoader } from '../assets/js/utils';
 import { registerSchema } from '@/validations/registerSchema';
 import { OAuth } from './components/OAuth';
+import { SignupFormData } from '@/interfaces/auth';
 import { CountrySelect } from '@pages/components/CountrySelect';
-
+import { sanitizeSignupData } from "@/utils/sanitize";
 import './components/login.css';
-
-interface SignupFormData {
-    email: string;
-    password: string;
-    confirmPassword: string;
-    name: string;
-    lastname: string;
-}
 
 interface Country {
     id: number;
@@ -83,15 +76,15 @@ const SignUp = () => {
     const handleSignUp = async (data: SignupFormData) => {
         try {
             showLoader();
-            console.log('countrySelected', countrySelected);
-            console.log('data', data);
+            // 🧼 Sanitize data before submitting
+            const cleanData = await sanitizeSignupData(data);
             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/users/signup`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ name: data.name.trim(), lastname: data.lastname.trim(), email: data.email.trim(), 
-                    password: data.password.trim(), countryId: countrySelected.id }),
+                body: JSON.stringify({ name: cleanData.name.trim(), lastname: cleanData.lastname.trim(), email: cleanData.email.trim(), 
+                    password: cleanData.password.trim(), countryId: countrySelected.id }),
             });
 
             if (!response.ok) {

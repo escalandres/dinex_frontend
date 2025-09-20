@@ -7,11 +7,8 @@ import { loginSchema } from '@/validations/loginSchema';
 import { OAuth } from './components/OAuth';
 import './components/login.css';
 import { saveTokens } from '@/components/auth';
-
-interface LoginFormData {
-    email: string;
-    password: string;
-}
+import { LoginFormData } from '@/interfaces/auth';
+import { sanitizeLoginData } from "@/utils/sanitize";
 
 const Login = () => {
     document.title = 'Sign in | Dinex';
@@ -20,13 +17,13 @@ const Login = () => {
     const [isDarkMode, setIsDarkMode] = useState(false);
     
     const {
-            register,
-            handleSubmit,
-            formState: { errors },
-        } = useForm<LoginFormData>({
-            resolver: yupResolver(loginSchema),
-            mode: "onBlur",
-        });
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<LoginFormData>({
+        resolver: yupResolver(loginSchema),
+        mode: "onBlur",
+    });
 
     useEffect(() => {
         const theme = localStorage.theme;
@@ -39,14 +36,17 @@ const Login = () => {
     const handleLogin = async (data: LoginFormData) => {
         try {
             showLoader();
-            // Simulación de la solicitud de autenticación al servidor
+
+            // 🧼 Sanitize data before submitting
+            const cleanData = await sanitizeLoginData(data);
+
             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/users/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include',
-                body: JSON.stringify({ email: data.email.trim(), password: data.password.trim() }),
+                body: JSON.stringify({ email: cleanData.email.trim(), password: cleanData.password.trim() }),
             });
             
             console.log(response);

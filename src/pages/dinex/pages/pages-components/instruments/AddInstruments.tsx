@@ -7,6 +7,11 @@ import { CountrySelect } from '@pages/components/CountrySelect';
 interface AddInstrumentsProps {
     user: object;
     token: object;
+    currency: {
+        id: string;
+        name: string;
+        flag_icon: string;
+    };
     catalogs: {
         instrumentTypes: Array<{ id: number; name: string; color: string }>;
         instrumentSubtypes: Array<{ id: number; id_instrument_type: number; name: string, color: string }>;
@@ -33,98 +38,7 @@ interface Country {
     flag_icon: string;
 }
 
-// const catalog = {
-//     instrumentType: [
-//         { id: 1, description: 'Tipo 1' },
-//         { id: 2, description: 'Tipo 2' },
-//         { id: 3, description: 'Tipo 3' },
-//         { id: 4, description: 'Tipo 4' },
-//     ],
-//     instrumentSubtype: [
-//         { id: 1, id_instrument_type: 1, description: 'Subtipo 1' },
-//         { id: 2, id_instrument_type: 1, description: 'Subtipo 2' },
-//         { id: 3, id_instrument_type: 2, description: 'Subtipo 3' },
-//     ],
-//     "currencies": [
-//         {
-//             "id": "ARS",
-//             "name": "Peso argentino",
-//             "flag_icon": "ar.svg"
-//         },
-//         {
-//             "id": "BRL",
-//             "name": "Real brasileño",
-//             "flag_icon": "br.svg"
-//         },
-//         {
-//             "id": "CAD",
-//             "name": "Dólar canadiense",
-//             "flag_icon": "ca.svg"
-//         },
-//         {
-//             "id": "CLP",
-//             "name": "Peso chileno",
-//             "flag_icon": "cl.svg"
-//         },
-//         {
-//             "id": "CNY",
-//             "name": "Yuan chino",
-//             "flag_icon": "cn.svg"
-//         },
-//         {
-//             "id": "COP",
-//             "name": "Peso colombiano",
-//             "flag_icon": "co.svg"
-//         },
-//         {
-//             "id": "DOP",
-//             "name": "Peso dominicano",
-//             "flag_icon": "do.svg"
-//         },
-//         {
-//             "id": "EUR",
-//             "name": "Euro",
-//             "flag_icon": "eu.png"
-//         },
-//         {
-//             "id": "GBP",
-//             "name": "Libra esterlina",
-//             "flag_icon": "gb.svg"
-//         },
-//         {
-//             "id": "JPY",
-//             "name": "Yen japonés",
-//             "flag_icon": "jp.svg"
-//         },
-//         {
-//             "id": "MXN",
-//             "name": "Peso mexicano",
-//             "flag_icon": "mx.svg"
-//         },
-//         {
-//             "id": "PEN",
-//             "name": "Sol peruano",
-//             "flag_icon": "pe.svg"
-//         },
-//         {
-//             "id": "RUB",
-//             "name": "Rublo ruso",
-//             "flag_icon": "ru.svg"
-//         },
-//         {
-//             "id": "USD",
-//             "name": "Dólar estadounidense",
-//             "flag_icon": "us.svg"
-//         },
-//         {
-//             "id": "VES",
-//             "name": "Bolívar digital",
-//             "flag_icon": "ve.svg"
-//         }
-//     ]
-// };
-
-export const AddInstruments = ({ token, catalogs }: AddInstrumentsProps) => {
+export const AddInstruments = ({ token, currency, catalogs }: AddInstrumentsProps) => {
     const [description, setDescription] = useState('');
     const [instrumentType, setInstrumentType] = useState(0);
     const [instrumentSubtype, setInstrumentSubtype] = useState(0);
@@ -135,9 +49,9 @@ export const AddInstruments = ({ token, catalogs }: AddInstrumentsProps) => {
     const [isSubmitting, setIsSubmitting] = useState(false); // Estado para controlar si ya se ha enviado el formulario
     const [isOpen, setIsOpen] = useState(false); // Estado para controlar la apertura y cierre del modal
     const [currencySelected, setCurrencySelected] = useState<Country>({
-        id: 'MXN',
-        name: 'Pesos mexicanos',
-        flag_icon: 'mx.svg'
+        id: currency.id ?? 'MXN',
+        name: currency.name ?? 'Pesos mexicanos',
+        flag_icon: currency.flag_icon ?? 'mx.svg'
     });
 
     console.log("catalogs", catalogs);

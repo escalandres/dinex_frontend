@@ -36,7 +36,7 @@ export const Sidebar = () => {
                 </div>
                 <ul className="space-y-2 font-medium">
                     <li>
-                        <a href="/dinex" className="flex items-center gap-7 p-2 text-gray-900 rounded-lg  group">
+                        <a href="/app/dashboard" className="flex items-center gap-7 p-2 text-gray-900 rounded-lg  group">
                         <span className="flex items-center justify-center w-5 h-5">
                             <LayoutDashboard className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                         </span>
