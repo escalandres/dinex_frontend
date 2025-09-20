@@ -1,6 +1,6 @@
 // router.js
 import { createBrowserRouter, Navigate } from 'react-router-dom';
-import Dinex from '@pages/dinex/Dinex';
+import Dashboard from '@pages/dinex/Dashboard';
 import P404 from '@pages/extras/P404';
 import SignUp from '@pages/login/SignUp';
 import Homepage from '@pages/home/Homepage';
@@ -45,7 +45,15 @@ const Router = createBrowserRouter(
           path: '/app',
           element: (
               <ProtectedRoute>
-                  <Dinex />
+                  <Navigate to="/app/dashboard" replace />
+              </ProtectedRoute>
+          ),
+      },
+      {
+          path: '/app/dashboard',
+          element: (
+              <ProtectedRoute>
+                  <Dashboard />
               </ProtectedRoute>
           ),
       },
