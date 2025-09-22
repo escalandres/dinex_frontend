@@ -1,52 +1,23 @@
 import { useState } from 'react';
 import * as Dialog from "@radix-ui/react-dialog";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { alerta, showLoader, hideLoader } from '../../../../assets/js/utils';
 import { Plus } from 'lucide-react';
 import { CountrySelect } from '@pages/components/CountrySelect';
+import { sanitizeInstrumentData } from '@/utils/sanitize';
+import { BackendResponse, AddInstrumentsProps, Country, InstrumentFormData } from '@interfaces/instruments';
+import { instrumentValidator } from '@/validations/instrumentsValidator';
 
-interface AddInstrumentsProps {
-    user: object;
-    token: object;
-    currency: {
-        id: string;
-        name: string;
-        flag_icon: string;
-    };
-    catalogs: {
-        instrumentTypes: Array<{ id: number; name: string; color: string }>;
-        instrumentSubtypes: Array<{ id: number; id_instrument_type: number; name: string, color: string }>;
-        currencies: Country[];
-    };
-}
-
-type InstrumentPayload = {
-    description: string;
-    id_instrument_type: number;
-    id_instrument_subtype: number;
-    cut_off_day: number;
-    payment_due_day: number;
-};
-
-type BackendResponse = {
-    success: boolean;
-    message: string;
-};
-
-interface Country {
-    id: string;
-    name: string;
-    flag_icon: string;
-}
-
-export const AddInstruments = ({ token, currency, catalogs }: AddInstrumentsProps) => {
-    const [description, setDescription] = useState('');
-    const [instrumentType, setInstrumentType] = useState(0);
-    const [instrumentSubtype, setInstrumentSubtype] = useState(0);
-    const [cutOffDay, setCutOffDay] = useState(1);
-    const [paymentDueDay, setPaymentDueDay] = useState(1);
+export const AddInstruments = ({ token, currency, catalogs, csrfToken }: AddInstrumentsProps) => {
+    // const [description, setDescription] = useState('');
+    // const [instrumentType, setInstrumentType] = useState(0);
+    // const [instrumentSubtype, setInstrumentSubtype] = useState(0);
+    // const [cutOffDay, setCutOffDay] = useState(1);
+    // const [paymentDueDay, setPaymentDueDay] = useState(1);
     const [subTypeCatalog, setSubtypeCatalog] = useState([]);
     const [isTypeSelected, setIsTypeSelected] = useState(false);
-    const [isSubmitting, setIsSubmitting] = useState(false); // Estado para controlar si ya se ha enviado el formulario
+    // const [isSubmitting, setIsSubmitting] = useState(false); // Estado para controlar si ya se ha enviado el formulario
     const [isOpen, setIsOpen] = useState(false); // Estado para controlar la apertura y cierre del modal
     const [currencySelected, setCurrencySelected] = useState<Country>({
         id: currency.id ?? 'MXN',
@@ -54,17 +25,15 @@ export const AddInstruments = ({ token, currency, catalogs }: AddInstrumentsProp
         flag_icon: currency.flag_icon ?? 'mx.svg'
     });
 
-    console.log("catalogs", catalogs);
-
     const handleInstrumentTypeChange = (event) => {
         const instrumentType = event.target.value;
         //alert(companyName);
-        setInstrumentType(instrumentType);
-        console.log('Selected tipo instrumento:', instrumentType);
-        console.log("tipo instrumentos", catalogs.instrumentTypes);
+        // setInstrumentType(instrumentType);
+        // console.log('Selected tipo instrumento:', instrumentType);
+        // console.log("tipo instrumentos", catalogs.instrumentTypes);
 
-        const subTypeCatalog = catalogs.instrumentSubtypes.filter((subtipoInstrumento) => subtipoInstrumento.id_instrument_type == instrumentType);
-        console.log("selected",subTypeCatalog);
+        const subTypeCatalog = catalogs.instrumentSubtypes.filter((instrumentSubtype) => instrumentSubtype.id_instrument_type == instrumentType);
+        // console.log("selected",subTypeCatalog);
         setIsTypeSelected(true);
         setSubtypeCatalog(subTypeCatalog ? subTypeCatalog : []);
     };
@@ -73,40 +42,42 @@ export const AddInstruments = ({ token, currency, catalogs }: AddInstrumentsProp
         setCurrencySelected(option);
     };
 
-    const handleAddInstrument = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<InstrumentFormData>({
+        resolver: yupResolver(instrumentValidator),
+        mode: "onBlur",
+    });
 
-        if (isSubmitting) return; // Evita que el formulario se vuelva a enviar
-
-        setIsSubmitting(true);
-
+    const handleAddInstrument = async (data: InstrumentFormData) => {
         try {
             showLoader();
-            const _instrument: InstrumentPayload = {
-                description: description.trim(),
-                id_instrument_type: instrumentType,
-                id_instrument_subtype: instrumentSubtype,
-                cut_off_day: cutOffDay,
-                payment_due_day: paymentDueDay
-            };
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/app/instrumentos`, {
+            // 🧼 Sanitize data before submitting
+            const cleanData = await sanitizeInstrumentData(data);
+            console.log('Sanitized Data:', cleanData);
+            
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/instruments`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
+                    'X-CSRF-Token': csrfToken,
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ instrument: _instrument }),
+                body: JSON.stringify({ description: cleanData.description.trim(), type: cleanData.idInstrumentType, subtype: cleanData.idInstrumentSubtype, cut_off_day: cleanData.cutOffDay, payment_due_day: cleanData.paymentDueDay, currency: currencySelected.id }),
             });
             hideLoader();
 
             if (!response.ok) {
-                alerta.autoError('Error al agregar el instrumento. Inténtelo nuevamente.');
+                alerta.autoError('Error al registrar el instrumento.');
+                return;
             }
 
-            const data: BackendResponse = await response.json();
-            if(!data.success) alerta.autoError(data.message);
+            const result: BackendResponse = await response.json();
+            if(!result.success) alerta.autoError(result.message);
 
-            alerta.autoSuccess(data.message)
+            alerta.autoSuccess(result.message)
 
             // Close the modal and refresh the page after a short delay
             setTimeout(() => {
@@ -117,8 +88,9 @@ export const AddInstruments = ({ token, currency, catalogs }: AddInstrumentsProp
         } catch (error) {
             hideLoader();
             console.log('error', error.message);
+            alerta.autoError('Error al registrar el instrumento.');
         } finally {
-            setIsSubmitting(false); // Restablece el estado de envío
+            // setIsSubmitting(false); // Restablece el estado de envío
         }
     };
 
@@ -162,35 +134,42 @@ export const AddInstruments = ({ token, currency, catalogs }: AddInstrumentsProp
                     </div>
 
                     {/* Form */}
-                    <form onSubmit={handleAddInstrument} className="p-6">
+                    <form onSubmit={handleSubmit(handleAddInstrument)} className="p-6">
                         <div className="space-y-6">
                             {/* Nombre del instrumento */}
                             <div className="space-y-2">
-                                <label htmlFor="instrumentName" className="text-sm font-medium text-gray-700">
-                                    Nombre del instrumento *
-                                </label>
-                                <input
-                                    id="instrumentName"
-                                    type="text"
-                                    className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md  placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                                    value={description}
-                                    onChange={(e) => setDescription(e.target.value)}
-                                    placeholder="Ingrese el nombre de su instrumento"
-                                    required
-                                />
+                                <fieldset>
+                                    <label htmlFor="instrumentName" className="text-sm font-medium text-gray-700">
+                                        Nombre del instrumento *
+                                    </label>
+                                    <input
+                                        id="instrumentName"
+                                        type="text"
+                                        className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md  placeholder-gray-400 focus:outline-none focus:ring-2"
+                                        {...register("description")}
+                                        placeholder="Ingrese el nombre de su instrumento"
+                                    />
+                                </fieldset>
+                                {errors.description && (
+                                    <legend className="mt-1 text-sm field-error-message">{errors.description.message}</legend>
+                                )}
                             </div>
 
                             {/* Grid para tipo y subtipo */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="space-y-2">
+                                    <fieldset>
                                     <label htmlFor="instrumentType" className="text-sm font-medium text-gray-700">
                                         Tipo de instrumento *
                                     </label>
                                     <select 
                                         id="instrumentType" 
                                         className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md  focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                                        onChange={handleInstrumentTypeChange}
-                                        required
+                                        {...register("idInstrumentType", {
+                                            onChange: (e) => {
+                                            handleInstrumentTypeChange(e); // tu función personalizada
+                                            }
+                                        })}
                                     >
                                         <option value="">Seleccione un tipo</option>
                                         {catalogs?.instrumentTypes && catalogs?.instrumentTypes.length > 0 && 
@@ -199,9 +178,14 @@ export const AddInstruments = ({ token, currency, catalogs }: AddInstrumentsProp
                                             ))
                                         }
                                     </select>
+                                    </fieldset>
+                                    {errors.idInstrumentType && (
+                                        <legend className="mt-1 text-sm field-error-message">{errors.idInstrumentType.message}</legend>
+                                    )}
                                 </div>
 
                                 <div className="space-y-2">
+                                    <fieldset>
                                     <label htmlFor="instrumentSubtype" className="text-sm font-medium text-gray-700">
                                         Subtipo de instrumento *
                                     </label>
@@ -209,8 +193,7 @@ export const AddInstruments = ({ token, currency, catalogs }: AddInstrumentsProp
                                         id="instrumentSubtype" 
                                         className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md  focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-100 disabled:text-gray-400"
                                         disabled={!isTypeSelected}
-                                        onChange={(e) => setInstrumentSubtype(Number(e.target.value))}
-                                        required
+                                        {...register("idInstrumentSubtype")}
                                     >
                                         <option value="">Seleccione un subtipo</option>
                                         {subTypeCatalog && subTypeCatalog?.length > 0 && 
@@ -219,12 +202,17 @@ export const AddInstruments = ({ token, currency, catalogs }: AddInstrumentsProp
                                             ))
                                         }
                                     </select>
+                                    </fieldset>
+                                    {errors.idInstrumentSubtype && (
+                                        <legend className="mt-1 text-sm field-error-message">{errors.idInstrumentSubtype.message}</legend>
+                                    )}
                                 </div>
                             </div>
 
                             {/* Grid para días de corte y pago */}
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <div className="space-y-2">
+                                    <fieldset>
                                     <label htmlFor="cutOffDay" className="text-sm font-medium text-gray-700">
                                         Día de corte
                                     </label>
@@ -234,13 +222,17 @@ export const AddInstruments = ({ token, currency, catalogs }: AddInstrumentsProp
                                         min={1}
                                         max={31}
                                         className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md  placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                                        value={cutOffDay}
-                                        onChange={(e) => setCutOffDay(Number(e.target.value))}
+                                        {...register("cutOffDay")}
                                         placeholder="Día (1-31)"
                                     />
+                                    </fieldset>
+                                    {errors.cutOffDay && (
+                                        <legend className="mt-1 text-sm field-error-message">{errors.cutOffDay.message}</legend>
+                                    )}
                                 </div>
 
                                 <div className="space-y-2">
+                                    <fieldset>
                                     <label htmlFor="paymentDueDay" className="text-sm font-medium text-gray-700">
                                         Día límite de pago
                                     </label>
@@ -250,10 +242,13 @@ export const AddInstruments = ({ token, currency, catalogs }: AddInstrumentsProp
                                         min={1}
                                         max={31}
                                         className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md  placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                                        value={paymentDueDay}
-                                        onChange={(e) => setPaymentDueDay(Number(e.target.value))}
+                                        {...register("paymentDueDay")}
                                         placeholder="Día (1-31)"
                                     />
+                                    </fieldset>
+                                    {errors.paymentDueDay && (
+                                        <legend className="mt-1 text-sm field-error-message">{errors.paymentDueDay.message}</legend>
+                                    )}
                                 </div>
 
                                 <CountrySelect 

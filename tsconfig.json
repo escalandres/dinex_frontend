@@ -12,7 +12,9 @@
       "@components/*": ["src/components/*"],
       "@pages/*": ["src/pages/*"],
       "@hooks/*": ["src/hooks/*"],
-      "@validations/*": ["src/validations/*"]
+      "@validations/*": ["src/validations/*"],
+      "@utils/*": ["src/utils/*"],
+      "@interfaces/*": ["src/interfaces/*"]
     }
   },
   "include": ["src"]

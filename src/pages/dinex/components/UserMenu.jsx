@@ -37,15 +37,15 @@ export const UserMenu = ({ user }) => {
                 <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
                     <div className="flex items-center space-x-8 mb-2">
                         <div className="relative w-10 h-10 mb-2 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
-                        {<img src={user.user?.profile_picture ? user.user.profile_picture : '/icons/default-avatar.png'} alt={user.user?.name} className="w-full h-full object-cover" />}
+                        {<img src={user.profile_picture ? user.profile_picture : '/icons/default-avatar.png'} alt={user.name} className="w-full h-full object-cover" />}
                         </div>
-                        { user.user?.email_verified ? (
+                        { user.email_verified ? (
                             <span className="bg-green-500 font-bold text-white text-center py-1 px-2 text-xs rounded-full">Pro</span>
                         ) : (
                             <span className="bg-red-500 font-bold text-white text-center py-1 px-2 text-xs rounded-full">Inactive</span>
                         )}
                     </div>
-                    <div className="font-medium text-gray-400 truncate">{user.user?.email}</div>
+                    <div className="font-medium text-gray-400 truncate">{user.email}</div>
                 </div>
                 <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
                     <li>

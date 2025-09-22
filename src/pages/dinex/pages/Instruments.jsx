@@ -1,17 +1,16 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { jwtDecode } from 'jwt-decode';
 import { alerta, showLoader, hideLoader, getBadgeColor } from '../../assets/js/utils';
-import { jwtDecode } from 'jwt-decode'; 
+import { decodeToken, updateTokens } from '@components/auth';
 import { Sidebar } from "../components/Sidebar";
-
-import "../dinex.css";
-import "../navbar.css";
 
 import { UserMenu } from "../components/UserMenu";
 import { Notification } from "../components/Notification";
 import { AddInstruments } from "./pages-components/Instruments/AddInstruments";
+import "../dinex.css";
+import "../navbar.css";
 
-export const Navbar = ({ token, user, catalogs }) => {
-    console.log('user in navbar', user);
+export const Navbar = ({ token, user, catalogs, csrfToken }) => {
     const [currency, setCurrency] = useState({ id: user.country.currency_code, name: user.country.currency, flag_icon: user.country.flag_icon });
     return (
         <nav className="bg-white dark:bg-[#191D21] w-full z-10 border-b border-gray-200 dark:border-gray-600">
@@ -29,7 +28,7 @@ export const Navbar = ({ token, user, catalogs }) => {
                     <UserMenu user={user} />
                 </div>
                 <div className="items-center justify-between w-full md:flex md:w-auto md:order-1 grid grid-cols-2 gap-x-3" id="navbar-sticky">
-                    {catalogs?.instrumentTypes?.length > 0 && <AddInstruments token={token} currency={currency} catalogs={catalogs} />}
+                    {catalogs?.instrumentTypes?.length > 0 && <AddInstruments token={token} currency={currency} catalogs={catalogs} csrfToken={csrfToken} />}
                 </div>
             </div>
         </nav>
@@ -37,20 +36,10 @@ export const Navbar = ({ token, user, catalogs }) => {
     );
 }
 
-// const dataIniciales = [
-//   { id: 1, description: 'Cuenta bancaria BBVA', type: 'Ahorro', subtype: 'Cuenta corriente', type_color: '#60A5FA', subtype_color: '#FF3859' },
-//   { id: 2, description: 'Plata Card', type: 'Gasto', subtype: 'TDC - Tarjeta de crédito', type_color: '#6B7280', subtype_color: '#FF3859' },
-//   { id: 3, description: 'Inversión ETF', type: 'Inversión', subtype: 'Cuenta de inversión', type_color: '#16A34A', subtype_color: '#4F46E5' },
-//   { id: 4, description: 'Guardadito', type: 'Ahorro', subtype: 'Efectivo para ahorro', type_color: '#183292', subtype_color: '#4F46E5' },
-//   { id: 5, description: 'Banorte', type: 'Gasto', subtype: 'TDD - Tarjeta de débito', type_color: '#FF3859', subtype_color: '#4F46E5' },
-//   { id: 6, description: 'Efectivo', type: 'Gasto', subtype: 'Efectivo para gastos', type_color: '#751F00', subtype_color: '#4F46E5' },
-//   { id: 7, description: 'Nu bank', type: 'Ahorro', subtype: 'Cuenta de ahorro', type_color: '#4F46E5', subtype_color: '#4F46E5' },
-// ];
-
-export const InstrumentTable = ({ instruments }) => {
+export const InstrumentTable = ({ instruments, catalogs }) => {
     const [data, setData] = useState(instruments);
     const [order, setOrder] = useState({ field: null, asc: true });
-
+    console.log('Instruments to display:', data);
     const handleSort = (field) => {
         const asc = order.field === field ? !order.asc : true;
         const dataorderados = [...data].sort((a, b) => {
@@ -68,6 +57,36 @@ export const InstrumentTable = ({ instruments }) => {
         if (order.field !== field) return '⇅';
         return order.asc ? '↑' : '↓';
     };
+
+    const getInstrumentType = (id) => {
+        const type = catalogs.instrumentTypes.find((type) => type.id === id);
+        return type ? type.name : '';
+    };
+
+    const getInstrumentCurrency = (id) => {
+        const currency = catalogs.currencies.find((currency) => currency.id === id);
+        return currency ? currency.name : '';
+    };
+
+    const getInstrumentSubtype = (id) => {
+        const subtype = catalogs.instrumentSubtypes.find((subtype) => subtype.id === id);
+        return subtype ? subtype.name : '';
+    };
+
+    const getInstrumentTypeColor = (id) => {
+        const type = catalogs.instrumentTypes.find((type) => type.id === id);
+        return type ? type.color : '';
+    };
+
+    const getInstrumentSubtypeColor = (id) => {
+        const subtype = catalogs.instrumentSubtypes.find((subtype) => subtype.id === id);
+        return subtype ? subtype.color : '';
+    };
+
+    useEffect(() => {
+        setData(instruments);
+    }, [instruments]);
+
 
     return (
         <div className="overflow-x-auto rounded-lg shadow-md">
@@ -91,10 +110,10 @@ export const InstrumentTable = ({ instruments }) => {
                 <tr key={item.id}>
                 <td className="px-4 py-2 text-sm text-left text-gray-800 dark:text-gray-200">{item.description}</td>
                 <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-200">
-                    <span className="font-bold text-white text-center py-1 px-2 text-xs rounded" style={{ backgroundColor: item.type_color }}>{item.type}</span>
+                    <span className="font-bold text-white text-center py-1 px-2 text-xs rounded" style={{ backgroundColor: getInstrumentTypeColor(item.type) }}>{getInstrumentType(item.type)}</span>
                 </td>
                 <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-200">
-                    <span className="font-bold text-white text-center py-1 px-2 text-xs rounded" style={{ backgroundColor: item.subtype_color }}>{item.subtype}</span>
+                    <span className="font-bold text-white text-center py-1 px-2 text-xs rounded" style={{ backgroundColor: getInstrumentSubtypeColor(item.subtype) }}>{getInstrumentSubtype(item.subtype)}</span>
                 </td>
                 <td className="px-4 py-2 text-sm text-center space-x-2">
                     <button type="button" className="!bg-green-500 hover:!bg-green-600 py-2 px-4 text-sm font-medium text-white border border-transparent rounded-lg focus:outline-none">Mostrar</button>
@@ -120,87 +139,135 @@ const Instruments = () => {
         instrumentSubtype: [],
         currencies: []
     });
-    const isRequesting = useRef(false);
-    const token = localStorage.getItem('token');
-    const decoded = jwtDecode(token);
+    const { decoded, token, csrfToken } = decodeToken();
+    if (!token) {
+        window.location.href = '/login';
+    }
 
-    const cargarInstruments = useCallback(async () => {
+    const getUserInstruments = useCallback(async () => {
         showLoader();
-        let respuesta = {
-            Instruments: [],
-            catalogos: []
-        }
-        if (!isRequesting.current) { 
-            isRequesting.current = true
-            try {
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/catalogs/instruments`, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                
-                if (!response.ok) {
-                    alerta.error('No se pudo obtener sus rastreadores. Inténtelo nuevamente.');
-                    return respuesta;
-                } else {
-                    const data = await response.json();
-                    respuesta.Instruments = data.Instruments;
-                    respuesta.catalogos = data.catalogos;
-                    return respuesta;
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                return respuesta;
-            } finally {
-                hideLoader();
-            }
-        } else { console.log('Solicitud en progreso, no se ejecuta la función'); return respuesta; }
-    }, [token]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const results = await cargarInstruments();
-            console.log('results', results);
-            setInstruments(results.Instruments);
-            setCatalogos(results.catalogos);
-        };
-
-        fetchData();
-    }, [cargarInstruments]);
-
-    const getCatalogs = useCallback(async () => {
         try {
-            showLoader();
-            // Simulación de la solicitud de autenticación al servidor
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/catalogs/instruments`);
-            if (!response.ok) throw new Error('Error al obtener el catálogo de instrumentos');
-            const result = await response.json();
-            console.log('Catalogs fetched:', result);
-            return result;
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/instruments/`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'X-CSRF-Token': csrfToken,
+                }
+            });
+            if (!response.ok) {
+                alerta.error('No se pudo obtener sus rastreadores. Inténtelo nuevamente.');
+                return [];
+            } else {
+                const data = await response.json();
+                console.log('Instruments fetched:', data);
+                return data;
+            }
         } catch (error) {
-            console.error('Error fetching instruments:', error);
+            console.error('Error:', error);
             return [];
         } finally {
             hideLoader();
         }
-    }, []);
+    }, [token]);
+
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         const results = await getUserInstruments();
+    //         console.log('results', results);
+    //         setInstruments(results.Instruments);
+    //         setCatalogos(results.catalogos);
+    //     };
+
+    //     fetchData();
+    // }, [getUserInstruments]);
+
+    // const getCatalogs = useCallback(async () => {
+    //     try {
+    //         showLoader();
+    //         // Simulación de la solicitud de autenticación al servidor
+    //         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/catalogs/instruments`);
+    //         if (!response.ok) throw new Error('Error al obtener el catálogo de instrumentos');
+    //         const result = await response.json();
+    //         console.log('Catalogs fetched:', result);
+    //         return result;
+    //     } catch (error) {
+    //         console.error('Error fetching instruments:', error);
+    //         return [];
+    //     } finally {
+    //         hideLoader();
+    //     }
+    // }, []);
+
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const theme = localStorage.theme;
+    //             // setIsDarkMode(theme === 'dark');
+    //             const catalogs = await getCatalogs();
+    //             console.log('Catalogs to set:', catalogs);
+    //             setCatalogs(catalogs);
+    //         } catch (error) {
+    //             console.error('Error fetching countries:', error);
+    //         }
+    //     };
+        
+    //     fetchData();
+    // }, [getCatalogs]);
+
+    // const fetchAllInstrumentData = useCallback(async () => {
+    //     showLoader();
+    //     let respuesta = {
+    //         Instruments: [],
+    //         catalogos: []
+    //     };
+
+    //     if (isRequesting.current) {
+    //         console.log('Solicitud en progreso, no se ejecuta la función');
+    //         hideLoader();
+    //         return respuesta;
+    //     }
+
+    //     isRequesting.current = true;
+
+    //     try {
+    //         const headers = {
+    //         'Authorization': `Bearer ${token}`
+    //         };
+
+    //         const [instrumentRes, catalogRes] = await Promise.all([
+    //         fetch(`${import.meta.env.VITE_BACKEND_URL}/catalogs/instruments`, { method: 'GET', headers }),
+    //         fetch(`${import.meta.env.VITE_BACKEND_URL}/catalogs/instruments`)
+    //         ]);
+
+    //         if (!instrumentRes.ok || !catalogRes.ok) {
+    //         alerta.error('No se pudo obtener los datos. Inténtelo nuevamente.');
+    //         return respuesta;
+    //         }
+
+    //         const instrumentData = await instrumentRes.json();
+    //         const catalogData = await catalogRes.json();
+
+    //         respuesta.Instruments = instrumentData.Instruments || [];
+    //         respuesta.catalogos = catalogData.catalogos || [];
+
+    //         return respuesta;
+    //     } catch (error) {
+    //         console.error('Error en fetchAllInstrumentData:', error);
+    //         return respuesta;
+    //     } finally {
+    //         hideLoader();
+    //     }
+    // }, [token]);
 
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                const theme = localStorage.theme;
-                // setIsDarkMode(theme === 'dark');
-                const catalogs = await getCatalogs();
-                console.log('Catalogs to set:', catalogs);
-                setCatalogs(catalogs);
-            } catch (error) {
-                console.error('Error fetching countries:', error);
-            }
+            const results = await getUserInstruments();
+            setInstruments(results.userInstruments);
+            setCatalogs(results.instrumentCatalogs);
         };
-        
+
         fetchData();
-    }, [getCatalogs]);
+    }, [getUserInstruments, setInstruments, setCatalogs]);
 
     return (
         <div className="content-window flex h-screen w-full bg-gray-50 dark:bg-gray-900">
@@ -212,12 +279,12 @@ const Instruments = () => {
             <div className="flex flex-col flex-grow">
                 {/* Navbar */}
                 <div className="h-16">
-                    <Navbar user={decoded.user} token={token} catalogs={catalogs} />
+                    <Navbar user={decoded.user} token={token} catalogs={catalogs} csrfToken={csrfToken} />
                 </div>
                 {/* Scrollable content */}
                 <div className="flex-grow overflow-y-auto p-4">
                     <h1 className="text-2xl font-bold mb-4">Welcome to Instruments</h1>
-                    <InstrumentTable instruments={instruments} />
+                    <InstrumentTable instruments={instruments} catalogs={catalogs} />
                 </div>
             </div>
         </div>
