@@ -1,13 +1,14 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { alerta, showLoader, hideLoader } from '../assets/js/utils';
-import { jwtDecode } from 'jwt-decode'; // Esto puede ser incorrecto, asegúrate de que la importación es correcta
+import { decodeToken } from '@components/auth';
 import { Sidebar } from "./components/Sidebar";
 import { UserMenu } from "@pages/dinex/components/UserMenu";
 import { Notification } from "@pages/dinex/components/Notification";
 import "./dinex.css";
+import "./navbar.css";
 
-export const Navbar = ({ token }) => {
-
+export const Navbar = ({ token, user, catalogs, csrfToken }) => {
+    const [currency, setCurrency] = useState({ id: user.country.currency_code, name: user.country.currency, flag_icon: user.country.flag_icon });
     return (
         <nav className="bg-white dark:bg-[#191D21] w-full z-10 border-b border-gray-200 dark:border-gray-600">
             <div className="w-full flex flex-wrap items-center justify-between p-4">
@@ -21,14 +22,10 @@ export const Navbar = ({ token }) => {
                 </div>
                 <div className="right-4 top-4 flex space-x-3 order-3">
                     <Notification />
-                    <UserMenu token={token} />
+                    <UserMenu user={user} />
                 </div>
                 <div className="items-center justify-between w-full md:flex md:w-auto md:order-1 grid grid-cols-2 gap-x-3" id="navbar-sticky">
-                    <button type="button" className="inline-flex items-center p-2 rounded-md nav-button">
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16"/>
-                        </svg>
-                    </button>
+                    {catalogs?.instrumentTypes?.length > 0 && <AddInstruments token={token} currency={currency} catalogs={catalogs} csrfToken={csrfToken} />}
                 </div>
             </div>
         </nav>
@@ -37,8 +34,16 @@ export const Navbar = ({ token }) => {
 }
 
 const Dinex = () => {
-    const token = localStorage.getItem('token');
-    const decoded = jwtDecode(token);
+    const [instruments, setInstruments] = useState([]);
+    const [catalogs, setCatalogs] = useState({
+        instrumentType: [],
+        instrumentSubtype: [],
+        currencies: []
+    });
+    const { decoded, token, csrfToken } = decodeToken();
+    if (!token) {
+        window.location.href = '/login';
+    }
 
     return (
         <div className="content-window flex h-screen w-full bg-gray-50 dark:bg-gray-900">
@@ -50,7 +55,7 @@ const Dinex = () => {
             <div className="flex flex-col flex-grow">
                 {/* Navbar */}
                 <div className="h-16">
-                    <Navbar token={decoded} />
+                    <Navbar user={decoded.user} token={token} catalogs={catalogs} csrfToken={csrfToken} />
                 </div>
                 {/* Scrollable content */}
                 <div className="flex-grow overflow-y-auto p-4">
