@@ -16,6 +16,7 @@ export default defineConfig({
       "@assets": path.resolve(__dirname, "src/assets"),
       "@utils": path.resolve(__dirname, "src/utils"),
       "@interfaces": path.resolve(__dirname, "src/interfaces"),
+      "@translations": path.resolve(__dirname, "src/i18n"),
     }
   }
 

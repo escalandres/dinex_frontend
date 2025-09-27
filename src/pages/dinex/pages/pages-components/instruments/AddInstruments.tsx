@@ -10,11 +10,6 @@ import { BackendResponse, AddInstrumentsProps, Country, InstrumentFormData } fro
 import { instrumentValidator } from '@/validations/instrumentsValidator';
 
 export const AddInstruments = ({ token, currency, catalogs, csrfToken }: AddInstrumentsProps) => {
-    // const [description, setDescription] = useState('');
-    // const [instrumentType, setInstrumentType] = useState(0);
-    // const [instrumentSubtype, setInstrumentSubtype] = useState(0);
-    // const [cutOffDay, setCutOffDay] = useState(1);
-    // const [paymentDueDay, setPaymentDueDay] = useState(1);
     const [subTypeCatalog, setSubtypeCatalog] = useState([]);
     const [isTypeSelected, setIsTypeSelected] = useState(false);
     // const [isSubmitting, setIsSubmitting] = useState(false); // Estado para controlar si ya se ha enviado el formulario
@@ -46,10 +41,27 @@ export const AddInstruments = ({ token, currency, catalogs, csrfToken }: AddInst
         register,
         handleSubmit,
         formState: { errors },
+        reset,
     } = useForm<InstrumentFormData>({
         resolver: yupResolver(instrumentValidator),
         mode: "onBlur",
     });
+
+    const handleDialogChange = (open: boolean) => {
+        if (!open) {
+            console.log("Diálogo cerrado");
+            reset(); // Reset form inputs when closing the modal
+            setIsTypeSelected(false);
+            setSubtypeCatalog([]);
+            setCurrencySelected({
+                id: currency.id ?? 'MXN',
+                name: currency.name ?? 'Pesos mexicanos',
+                flag_icon: currency.flag_icon ?? 'mx.svg'
+            });
+        }
+
+        setIsOpen(open);
+    };
 
     const handleAddInstrument = async (data: InstrumentFormData) => {
         try {
@@ -95,7 +107,7 @@ export const AddInstruments = ({ token, currency, catalogs, csrfToken }: AddInst
     };
 
     return (
-        <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
+        <Dialog.Root open={isOpen} onOpenChange={handleDialogChange}>
             <Dialog.Trigger 
                 className="px-4 py-2 text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150"
                 onClick={() => setIsOpen(true)}

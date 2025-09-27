@@ -1,0 +1,29 @@
+{
+    "language": {
+        "select_language": "Select Language",
+        "english": "English",
+        "spanish": "Spanish"
+    },
+    "instruments": {
+        "add_instrument": "Add Instrument",
+        "instrument_name": "Instrument Name",
+        "instrument_type": "Instrument Type",
+        "select_type": "Select Type",
+        "instrument_subtype": "Instrument Subtype",
+        "select_subtype": "Select Subtype",
+        "cut_off_day": "Cut-off Day",
+        "payment_due_day": "Payment Due Day",
+        "currency": "Currency",
+        "select_currency": "Select Currency",
+        "description": "Description",
+        "enter_description": "Enter Description",
+        "save": "Save",
+        "cancel": "Cancel",
+        "required_field": "This field is required",
+        "invalid_number": "Please enter a valid number",
+        "min_value": "Value must be at least {{min}}",
+        "max_value": "Value must be at most {{max}}",
+        "title": "Instruments",
+        "no_instruments": "No instruments available. Please add one."
+    }
+}

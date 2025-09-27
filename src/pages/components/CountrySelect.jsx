@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { ChevronDown } from 'lucide-react';
-import { VARIABLES } from '../assets/js/utils';
+import { VARIABLES } from '@pages/assets/js/utils';
 
 export const CountrySelect = ({ countries, countrySelected, handleOptionClick, isCountry = true }) => {
     const [isOpen, setIsOpen] = useState(false);

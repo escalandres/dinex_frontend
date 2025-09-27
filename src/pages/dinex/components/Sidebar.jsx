@@ -1,6 +1,7 @@
 // import { useState, useEffect } from "react";
 import { LayoutDashboard, Wallet, WalletMinimal, BanknoteArrowUp, PiggyBank, CreditCard, ChartNoAxesCombined } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
+import { LanguageSelector } from "@pages/components/LanguageSelector";
 export const Sidebar = () => {
     return (
         <div className="element">
@@ -88,6 +89,8 @@ export const Sidebar = () => {
                 </ul>
                 <hr className="flex-1 mt-8 border-gray-300 dark:border-gray-600" />
                 <ThemeToggle />
+                <br />
+                <LanguageSelector />
             </div>
             </div>
         </div>

@@ -2,10 +2,12 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { alerta, showLoader, hideLoader, getBadgeColor } from '../../assets/js/utils';
 import { decodeToken } from '@components/auth';
 import { Sidebar } from "../components/Sidebar";
-
+import { VARIABLES } from '@pages/assets/js/utils';
 import { UserMenu } from "../components/UserMenu";
 import { Notification } from "../components/Notification";
 import { AddInstruments } from "./pages-components/Instruments/AddInstruments";
+// import translations from "@transactions"; // Asegúrate de que la configuración de i18n se cargue
+import { useTranslation } from "react-i18next";
 import "../dinex.css";
 import "../navbar.css";
 
@@ -66,7 +68,7 @@ export const InstrumentTable = ({ instruments, catalogs }) => {
 
     const getInstrumentCurrency = (id) => {
         const currency = catalogs.currencies.find((currency) => currency.id === id);
-        return currency ? `/icons/flags/${currency.flag_icon}` : '';
+        return currency ? VARIABLES.icons.flags + currency.flag_icon : '';
     };
 
     const getInstrumentSubtype = (id) => {
@@ -142,6 +144,8 @@ export const InstrumentTable = ({ instruments, catalogs }) => {
 };
 
 const Instruments = () => {
+    const { t: transactions } = useTranslation();
+
     const [instruments, setInstruments] = useState([]);
     const [catalogs, setCatalogs] = useState({
         instrumentType: [],
@@ -203,7 +207,7 @@ const Instruments = () => {
                 </div>
                 {/* Scrollable content */}
                 <div className="flex-grow overflow-y-auto p-4">
-                    <h1 className="text-2xl font-bold mb-4">Welcome to Instruments</h1>
+                    <h1 className="text-2xl font-bold mb-4">{transactions("instruments.title")}</h1>
                     <InstrumentTable instruments={instruments} catalogs={catalogs} />
                 </div>
             </div>

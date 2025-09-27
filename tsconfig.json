@@ -5,6 +5,8 @@
     "target": "esnext",
     "moduleResolution": "node",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
@@ -14,7 +16,8 @@
       "@hooks/*": ["src/hooks/*"],
       "@validations/*": ["src/validations/*"],
       "@utils/*": ["src/utils/*"],
-      "@interfaces/*": ["src/interfaces/*"]
+      "@interfaces/*": ["src/interfaces/*"],
+      "@translations/*": ["src/i18n/*"]
     }
   },
   "include": ["src"]
