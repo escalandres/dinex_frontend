@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { jwtDecode } from 'jwt-decode';
 import { alerta, showLoader, hideLoader, getBadgeColor } from '../../assets/js/utils';
-import { decodeToken, updateTokens } from '@components/auth';
+import { decodeToken } from '@components/auth';
 import { Sidebar } from "../components/Sidebar";
 
 import { UserMenu } from "../components/UserMenu";
@@ -37,6 +36,8 @@ export const Navbar = ({ token, user, catalogs, csrfToken }) => {
 }
 
 export const InstrumentTable = ({ instruments, catalogs }) => {
+    console.log('Instruments received:', instruments);
+    console.log('Catalogs received:', catalogs);
     const [data, setData] = useState(instruments);
     const [order, setOrder] = useState({ field: null, asc: true });
     console.log('Instruments to display:', data);
@@ -65,7 +66,7 @@ export const InstrumentTable = ({ instruments, catalogs }) => {
 
     const getInstrumentCurrency = (id) => {
         const currency = catalogs.currencies.find((currency) => currency.id === id);
-        return currency ? currency.name : '';
+        return currency ? `/icons/flags/${currency.flag_icon}` : '';
     };
 
     const getInstrumentSubtype = (id) => {
@@ -93,11 +94,11 @@ export const InstrumentTable = ({ instruments, catalogs }) => {
         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead className="">
             <tr>
-                {['description', 'type', 'subtype'].map((field) => (
+                {['description', 'type', 'subtype', 'currency'].map((field) => (
                     <th
                         key={field}
                         onClick={() => handleSort(field)}
-                        className="w-[25%] px-4 py-2 text-center text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer select-none"
+                        className="w-[20%] px-4 py-2 text-center text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer select-none"
                     >
                         {field.charAt(0).toUpperCase() + field.slice(1)} {orderIcon(field)}
                     </th>
@@ -114,6 +115,14 @@ export const InstrumentTable = ({ instruments, catalogs }) => {
                 </td>
                 <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-200">
                     <span className="font-bold text-white text-center py-1 px-2 text-xs rounded" style={{ backgroundColor: getInstrumentSubtypeColor(item.subtype) }}>{getInstrumentSubtype(item.subtype)}</span>
+                </td>
+                <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-200">
+                    <div className="inline-block w-6 h-6 mr-1">
+                        <img src={getInstrumentCurrency(item.currency)} alt={item.currency} className="inline-block w-6 h-6 ml-1" />
+                    </div>
+                    <span className="font-bold text-white text-center py-1 px-2 text-xs rounded">
+                        {item.currency}
+                    </span>
                 </td>
                 <td className="px-4 py-2 text-sm text-center space-x-2">
                     <button type="button" className="!bg-green-500 hover:!bg-green-600 py-2 px-4 text-sm font-medium text-white border border-transparent rounded-lg focus:outline-none">Mostrar</button>
@@ -169,95 +178,6 @@ const Instruments = () => {
             hideLoader();
         }
     }, [token]);
-
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         const results = await getUserInstruments();
-    //         console.log('results', results);
-    //         setInstruments(results.Instruments);
-    //         setCatalogos(results.catalogos);
-    //     };
-
-    //     fetchData();
-    // }, [getUserInstruments]);
-
-    // const getCatalogs = useCallback(async () => {
-    //     try {
-    //         showLoader();
-    //         // Simulación de la solicitud de autenticación al servidor
-    //         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/catalogs/instruments`);
-    //         if (!response.ok) throw new Error('Error al obtener el catálogo de instrumentos');
-    //         const result = await response.json();
-    //         console.log('Catalogs fetched:', result);
-    //         return result;
-    //     } catch (error) {
-    //         console.error('Error fetching instruments:', error);
-    //         return [];
-    //     } finally {
-    //         hideLoader();
-    //     }
-    // }, []);
-
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const theme = localStorage.theme;
-    //             // setIsDarkMode(theme === 'dark');
-    //             const catalogs = await getCatalogs();
-    //             console.log('Catalogs to set:', catalogs);
-    //             setCatalogs(catalogs);
-    //         } catch (error) {
-    //             console.error('Error fetching countries:', error);
-    //         }
-    //     };
-        
-    //     fetchData();
-    // }, [getCatalogs]);
-
-    // const fetchAllInstrumentData = useCallback(async () => {
-    //     showLoader();
-    //     let respuesta = {
-    //         Instruments: [],
-    //         catalogos: []
-    //     };
-
-    //     if (isRequesting.current) {
-    //         console.log('Solicitud en progreso, no se ejecuta la función');
-    //         hideLoader();
-    //         return respuesta;
-    //     }
-
-    //     isRequesting.current = true;
-
-    //     try {
-    //         const headers = {
-    //         'Authorization': `Bearer ${token}`
-    //         };
-
-    //         const [instrumentRes, catalogRes] = await Promise.all([
-    //         fetch(`${import.meta.env.VITE_BACKEND_URL}/catalogs/instruments`, { method: 'GET', headers }),
-    //         fetch(`${import.meta.env.VITE_BACKEND_URL}/catalogs/instruments`)
-    //         ]);
-
-    //         if (!instrumentRes.ok || !catalogRes.ok) {
-    //         alerta.error('No se pudo obtener los datos. Inténtelo nuevamente.');
-    //         return respuesta;
-    //         }
-
-    //         const instrumentData = await instrumentRes.json();
-    //         const catalogData = await catalogRes.json();
-
-    //         respuesta.Instruments = instrumentData.Instruments || [];
-    //         respuesta.catalogos = catalogData.catalogos || [];
-
-    //         return respuesta;
-    //     } catch (error) {
-    //         console.error('Error en fetchAllInstrumentData:', error);
-    //         return respuesta;
-    //     } finally {
-    //         hideLoader();
-    //     }
-    // }, [token]);
 
     useEffect(() => {
         const fetchData = async () => {
