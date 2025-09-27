@@ -6,8 +6,8 @@ import { VARIABLES } from '@pages/assets/js/utils';
 import { UserMenu } from "../components/UserMenu";
 import { Notification } from "../components/Notification";
 import { AddInstruments } from "./pages-components/Instruments/AddInstruments";
-// import translations from "@transactions"; // Asegúrate de que la configuración de i18n se cargue
-import { useTranslation } from "react-i18next";
+import { useTranslations } from '@translations/translations';
+// import translations from "@translations"; // Asegúrate de que la configuración de i18n se cargue
 import "../dinex.css";
 import "../navbar.css";
 
@@ -37,12 +37,9 @@ export const Navbar = ({ token, user, catalogs, csrfToken }) => {
     );
 }
 
-export const InstrumentTable = ({ instruments, catalogs }) => {
-    console.log('Instruments received:', instruments);
-    console.log('Catalogs received:', catalogs);
+export const InstrumentTable = ({ instruments, catalogs, translations }) => {
     const [data, setData] = useState(instruments);
     const [order, setOrder] = useState({ field: null, asc: true });
-    console.log('Instruments to display:', data);
     const handleSort = (field) => {
         const asc = order.field === field ? !order.asc : true;
         const dataorderados = [...data].sort((a, b) => {
@@ -90,22 +87,22 @@ export const InstrumentTable = ({ instruments, catalogs }) => {
         setData(instruments);
     }, [instruments]);
 
-
     return (
         <div className="overflow-x-auto rounded-lg shadow-md">
         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead className="">
             <tr>
-                {['description', 'type', 'subtype', 'currency'].map((field) => (
+                {['name', 'type', 'subtype', 'currency'].map((field) => (
                     <th
                         key={field}
                         onClick={() => handleSort(field)}
                         className="w-[20%] px-4 py-2 text-center text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer select-none"
                     >
-                        {field.charAt(0).toUpperCase() + field.slice(1)} {orderIcon(field)}
+                        {/* {field.charAt(0).toUpperCase() + field.slice(1)} {orderIcon(field)} */}
+                        {translations(`instruments.table.${field}`)} {orderIcon(field)}
                     </th>
                 ))}
-                <th className="px-4 py-2 text-center text-sm font-medium text-gray-700 dark:text-gray-300">Acciones</th>
+                <th className="px-4 py-2 text-center text-sm font-medium text-gray-700 dark:text-gray-300">{translations("instruments.actions.title")}</th>
             </tr>
             </thead>
             <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
@@ -127,9 +124,9 @@ export const InstrumentTable = ({ instruments, catalogs }) => {
                     </span>
                 </td>
                 <td className="px-4 py-2 text-sm text-center space-x-2">
-                    <button type="button" className="!bg-green-500 hover:!bg-green-600 py-2 px-4 text-sm font-medium text-white border border-transparent rounded-lg focus:outline-none">Mostrar</button>
-                    <button type="button" className="!bg-yellow-500 hover:!bg-yellow-600 py-2 px-4 text-sm font-medium text-white border border-transparent rounded-lg focus:outline-none">Editar</button>
-                    {/* <button type="button" className="!bg-red-500 hover:!bg-red-700 py-2 px-4 text-sm font-medium text-white border border-transparent rounded-lg focus:outline-none">Eliminar</button> */}
+                    <button type="button" className="!bg-green-500 hover:!bg-green-600 py-2 px-4 text-sm font-medium text-white border border-transparent rounded-lg focus:outline-none">{translations("instruments.actions.view")}</button>
+                    <button type="button" className="!bg-yellow-500 hover:!bg-yellow-600 py-2 px-4 text-sm font-medium text-white border border-transparent rounded-lg focus:outline-none">{translations("instruments.actions.edit")}</button>
+                    {/* <button type="button" className="!bg-red-500 hover:!bg-red-700 py-2 px-4 text-sm font-medium text-white border border-transparent rounded-lg focus:outline-none">{translations("menus.delete")}</button> */}
                 </td>
                 </tr>
             ))) : (
@@ -144,7 +141,7 @@ export const InstrumentTable = ({ instruments, catalogs }) => {
 };
 
 const Instruments = () => {
-    const { t: transactions } = useTranslation();
+    const translations = useTranslations();
 
     const [instruments, setInstruments] = useState([]);
     const [catalogs, setCatalogs] = useState({
@@ -207,8 +204,8 @@ const Instruments = () => {
                 </div>
                 {/* Scrollable content */}
                 <div className="flex-grow overflow-y-auto p-4">
-                    <h1 className="text-2xl font-bold mb-4">{transactions("instruments.title")}</h1>
-                    <InstrumentTable instruments={instruments} catalogs={catalogs} />
+                    <h1 className="text-2xl font-bold mb-4">{translations("instruments.title")}</h1>
+                    <InstrumentTable instruments={instruments} catalogs={catalogs} translations={translations} />
                 </div>
             </div>
         </div>

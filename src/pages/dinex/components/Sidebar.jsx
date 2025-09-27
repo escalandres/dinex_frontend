@@ -2,7 +2,9 @@
 import { LayoutDashboard, Wallet, WalletMinimal, BanknoteArrowUp, PiggyBank, CreditCard, ChartNoAxesCombined } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { LanguageSelector } from "@pages/components/LanguageSelector";
+import { useTranslations } from '@translations/translations';
 export const Sidebar = () => {
+    const translations = useTranslations();
     return (
         <div className="element">
             <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" className="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
@@ -41,7 +43,7 @@ export const Sidebar = () => {
                         <span className="flex items-center justify-center w-5 h-5">
                             <LayoutDashboard className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                         </span>
-                        <span className="text-l font-medium">Dashboard</span>
+                        <span className="text-l font-medium">{translations("menus.dashboard")}</span>
                         </a>
                     </li>
                     <li>
@@ -49,7 +51,7 @@ export const Sidebar = () => {
                         <span className="flex items-center justify-center w-5 h-5">
                             <Wallet className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                         </span>
-                        <span className="text-l font-medium">Instruments</span>
+                        <span className="text-l font-medium">{translations("menus.instruments")}</span>
                         </a>
                     </li>
                     <li>
@@ -57,7 +59,7 @@ export const Sidebar = () => {
                         <span className="flex items-center justify-center w-5 h-5">
                             <BanknoteArrowUp className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                         </span>
-                        <span className="text-l font-medium">Income</span>
+                        <span className="text-l font-medium">{translations("menus.incomes")}</span>
                         </a>
                     </li>
                     <li>
@@ -65,7 +67,7 @@ export const Sidebar = () => {
                         <span className="flex items-center justify-center w-5 h-5">
                             <PiggyBank className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                         </span>
-                        <span className="text-l font-medium">Savings</span>
+                        <span className="text-l font-medium">{translations("menus.savings")}</span>
                         </a>
                     </li>
                     <li>
@@ -73,7 +75,7 @@ export const Sidebar = () => {
                         <span className="flex items-center justify-center w-5 h-5">
                             <CreditCard className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                         </span>
-                        <span className="text-l font-medium">Expenses</span>
+                        <span className="text-l font-medium">{translations("menus.expenses")}</span>
                         </a>
                     </li>
                     <li>
@@ -83,7 +85,7 @@ export const Sidebar = () => {
                             <span className="flex items-center justify-center w-5 h-5">
                                 <ChartNoAxesCombined className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                             </span>
-                            <span className="text-l font-medium">Investments</span>
+                            <span className="text-l font-medium">{translations("menus.investments")}</span>
                             </a>
                     </li>
                 </ul>

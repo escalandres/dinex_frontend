@@ -8,8 +8,10 @@ import { CountrySelect } from '@pages/components/CountrySelect';
 import { sanitizeInstrumentData } from '@/utils/sanitize';
 import { BackendResponse, AddInstrumentsProps, Country, InstrumentFormData } from '@interfaces/instruments';
 import { instrumentValidator } from '@/validations/instrumentsValidator';
+import { useTranslations } from '@translations/translations';
 
 export const AddInstruments = ({ token, currency, catalogs, csrfToken }: AddInstrumentsProps) => {
+    const translations = useTranslations();
     const [subTypeCatalog, setSubtypeCatalog] = useState([]);
     const [isTypeSelected, setIsTypeSelected] = useState(false);
     // const [isSubmitting, setIsSubmitting] = useState(false); // Estado para controlar si ya se ha enviado el formulario
@@ -22,11 +24,6 @@ export const AddInstruments = ({ token, currency, catalogs, csrfToken }: AddInst
 
     const handleInstrumentTypeChange = (event) => {
         const instrumentType = event.target.value;
-        //alert(companyName);
-        // setInstrumentType(instrumentType);
-        // console.log('Selected tipo instrumento:', instrumentType);
-        // console.log("tipo instrumentos", catalogs.instrumentTypes);
-
         const subTypeCatalog = catalogs.instrumentSubtypes.filter((instrumentSubtype) => instrumentSubtype.id_instrument_type == instrumentType);
         // console.log("selected",subTypeCatalog);
         setIsTypeSelected(true);
@@ -49,7 +46,7 @@ export const AddInstruments = ({ token, currency, catalogs, csrfToken }: AddInst
 
     const handleDialogChange = (open: boolean) => {
         if (!open) {
-            console.log("Diálogo cerrado");
+            // console.log("Diálogo cerrado");
             reset(); // Reset form inputs when closing the modal
             setIsTypeSelected(false);
             setSubtypeCatalog([]);
@@ -59,7 +56,6 @@ export const AddInstruments = ({ token, currency, catalogs, csrfToken }: AddInst
                 flag_icon: currency.flag_icon ?? 'mx.svg'
             });
         }
-
         setIsOpen(open);
     };
 
@@ -113,7 +109,7 @@ export const AddInstruments = ({ token, currency, catalogs, csrfToken }: AddInst
                 onClick={() => setIsOpen(true)}
             >
                 <div className='flex items-center'>
-                    <Plus className="mr-2 h-4 w-4" /> Add Instrument
+                    <Plus className="mr-2 h-4 w-4" /> {translations("instruments.buttons.add_instruments")}
                 </div>
             </Dialog.Trigger>
             
@@ -126,15 +122,14 @@ export const AddInstruments = ({ token, currency, catalogs, csrfToken }: AddInst
                         // No enfocar nada - el modal queda sin foco inicial
                     }}
                 >
-                    
                     {/* Header */}
                     <div className="flex items-center justify-between p-6 pb-0">
                         <div>
                             <Dialog.Title className="text-xl font-semibold text-blue-500 text-center">
-                                Agregar instrumento
+                                {translations("instruments.forms.title")}
                             </Dialog.Title>
                             <Dialog.Description className="text-sm text-gray-600 mt-1">
-                                Registra un nuevo instrumento para gestionar sus finanzas.
+                                {translations("instruments.forms.description")}
                             </Dialog.Description>
                         </div>
                         <Dialog.Close className="rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground x-button">
@@ -148,18 +143,18 @@ export const AddInstruments = ({ token, currency, catalogs, csrfToken }: AddInst
                     {/* Form */}
                     <form onSubmit={handleSubmit(handleAddInstrument)} className="p-6">
                         <div className="space-y-6">
-                            {/* Nombre del instrumento */}
+                            {/* Instrument name */}
                             <div className="space-y-2">
                                 <fieldset>
                                     <label htmlFor="instrumentName" className="text-sm font-medium text-gray-700">
-                                        Nombre del instrumento *
+                                        {translations("instruments.forms.fields.name.label")} *
                                     </label>
                                     <input
                                         id="instrumentName"
                                         type="text"
                                         className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md  placeholder-gray-400 focus:outline-none focus:ring-2"
                                         {...register("description")}
-                                        placeholder="Ingrese el nombre de su instrumento"
+                                        placeholder={translations("instruments.forms.fields.name.placeholder")}
                                     />
                                 </fieldset>
                                 {errors.description && (
@@ -167,23 +162,23 @@ export const AddInstruments = ({ token, currency, catalogs, csrfToken }: AddInst
                                 )}
                             </div>
 
-                            {/* Grid para tipo y subtipo */}
+                            {/* Grid for type and subtype */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="space-y-2">
                                     <fieldset>
                                     <label htmlFor="instrumentType" className="text-sm font-medium text-gray-700">
-                                        Tipo de instrumento *
+                                        {translations("instruments.forms.fields.type.label")} *
                                     </label>
                                     <select 
                                         id="instrumentType" 
                                         className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md  focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                                         {...register("idInstrumentType", {
                                             onChange: (e) => {
-                                            handleInstrumentTypeChange(e); // tu función personalizada
+                                            handleInstrumentTypeChange(e);
                                             }
                                         })}
                                     >
-                                        <option value="">Seleccione un tipo</option>
+                                        <option value="">{translations("instruments.forms.fields.type.placeholder")}</option>
                                         {catalogs?.instrumentTypes && catalogs?.instrumentTypes.length > 0 && 
                                             catalogs.instrumentTypes?.map((tipo, index) => (
                                                 <option key={index} value={tipo.id}>{tipo.name}</option>
@@ -199,7 +194,7 @@ export const AddInstruments = ({ token, currency, catalogs, csrfToken }: AddInst
                                 <div className="space-y-2">
                                     <fieldset>
                                     <label htmlFor="instrumentSubtype" className="text-sm font-medium text-gray-700">
-                                        Subtipo de instrumento *
+                                        {translations("instruments.forms.fields.subtype.label")} *
                                     </label>
                                     <select 
                                         id="instrumentSubtype" 
@@ -207,7 +202,7 @@ export const AddInstruments = ({ token, currency, catalogs, csrfToken }: AddInst
                                         disabled={!isTypeSelected}
                                         {...register("idInstrumentSubtype")}
                                     >
-                                        <option value="">Seleccione un subtipo</option>
+                                        <option value="">{translations("instruments.forms.fields.subtype.placeholder")}</option>
                                         {subTypeCatalog && subTypeCatalog?.length > 0 && 
                                             subTypeCatalog?.map((subtipo, index) => (
                                                 <option key={index} value={subtipo.id}>{subtipo.name}</option>
@@ -221,12 +216,12 @@ export const AddInstruments = ({ token, currency, catalogs, csrfToken }: AddInst
                                 </div>
                             </div>
 
-                            {/* Grid para días de corte y pago */}
+                            {/* Grid for cut off day and payment due day */}
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <div className="space-y-2">
                                     <fieldset>
                                     <label htmlFor="cutOffDay" className="text-sm font-medium text-gray-700">
-                                        Día de corte
+                                        {translations("instruments.forms.fields.cut_off_day.label")}
                                     </label>
                                     <input
                                         id="cutOffDay"
@@ -235,7 +230,7 @@ export const AddInstruments = ({ token, currency, catalogs, csrfToken }: AddInst
                                         max={31}
                                         className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md  placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                                         {...register("cutOffDay")}
-                                        placeholder="Día (1-31)"
+                                        placeholder={translations("instruments.forms.fields.cut_off_day.placeholder")}
                                     />
                                     </fieldset>
                                     {errors.cutOffDay && (
@@ -246,7 +241,7 @@ export const AddInstruments = ({ token, currency, catalogs, csrfToken }: AddInst
                                 <div className="space-y-2">
                                     <fieldset>
                                     <label htmlFor="paymentDueDay" className="text-sm font-medium text-gray-700">
-                                        Día límite de pago
+                                        {translations("instruments.forms.fields.payment_due_day.label")}
                                     </label>
                                     <input
                                         id="paymentDueDay"
@@ -255,7 +250,7 @@ export const AddInstruments = ({ token, currency, catalogs, csrfToken }: AddInst
                                         max={31}
                                         className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md  placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                                         {...register("paymentDueDay")}
-                                        placeholder="Día (1-31)"
+                                        placeholder={translations("instruments.forms.fields.payment_due_day.placeholder")}
                                     />
                                     </fieldset>
                                     {errors.paymentDueDay && (
@@ -279,14 +274,14 @@ export const AddInstruments = ({ token, currency, catalogs, csrfToken }: AddInst
                                     type="button"
                                     className="mt-3 sm:mt-0 w-full sm:w-auto px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                 >
-                                    Cancelar
+                                    {translations("instruments.actions.cancel")}
                                 </button>
                             </Dialog.Close>
                             <button
                                 type="submit"
                                 className="w-full sm:w-auto px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md  hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                             >
-                                Registrar instrumento
+                                {translations("instruments.actions.save")}
                             </button>
                         </div>
                     </form>

@@ -1,7 +1,8 @@
 import { useState } from 'react';
-
+import { useTranslations } from '@translations/translations';
 export const UserMenu = ({ user }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const translations = useTranslations();
 
     return (
         <div id="user-menu" className="relative inline-block text-left mx-2">
@@ -11,7 +12,7 @@ export const UserMenu = ({ user }) => {
                 className="font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center nav-button"
                 type="button"
             >
-                My profile
+                {translations("menus.profile")}
                 <svg
                 className="w-2.5 h-2.5 ml-2"
                 aria-hidden="true"
@@ -50,12 +51,12 @@ export const UserMenu = ({ user }) => {
                 <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
                     <li>
                     <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                        Subscription
+                        {translations("menus.subscriptions")}
                     </a>
                     </li>
                     <li>
                     <a href="/app/user-settings" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                        Settings
+                        {translations("menus.settings")}
                     </a>
                     </li>
                     {/* <li>
@@ -69,7 +70,7 @@ export const UserMenu = ({ user }) => {
                     href="/logout"
                     className="block px-4 py-2 text-sm !text-red-500 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                     >
-                    Log out
+                    {translations("menus.logout")}
                     </a>
                 </div>
                 </div>
