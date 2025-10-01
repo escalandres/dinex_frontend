@@ -10,11 +10,10 @@ import { BackendResponse, AddInstrumentsProps, Country, InstrumentFormData } fro
 import { instrumentValidator } from '@/validations/instrumentsValidator';
 import { useTranslations } from '@translations/translations';
 
-export const AddInstruments = ({ token, currency, catalogs, csrfToken }: AddInstrumentsProps) => {
+export const AddInstruments = ({ tokens, currency, catalogs }: AddInstrumentsProps) => {
     const translations = useTranslations();
     const [subTypeCatalog, setSubtypeCatalog] = useState([]);
     const [isTypeSelected, setIsTypeSelected] = useState(false);
-    // const [isSubmitting, setIsSubmitting] = useState(false); // Estado para controlar si ya se ha enviado el formulario
     const [isOpen, setIsOpen] = useState(false); // Estado para controlar la apertura y cierre del modal
     const [currencySelected, setCurrencySelected] = useState<Country>({
         id: currency.id ?? 'MXN',
@@ -25,7 +24,6 @@ export const AddInstruments = ({ token, currency, catalogs, csrfToken }: AddInst
     const handleInstrumentTypeChange = (event) => {
         const instrumentType = event.target.value;
         const subTypeCatalog = catalogs.instrumentSubtypes.filter((instrumentSubtype) => instrumentSubtype.id_instrument_type == instrumentType);
-        // console.log("selected",subTypeCatalog);
         setIsTypeSelected(true);
         setSubtypeCatalog(subTypeCatalog ? subTypeCatalog : []);
     };
@@ -46,7 +44,6 @@ export const AddInstruments = ({ token, currency, catalogs, csrfToken }: AddInst
 
     const handleDialogChange = (open: boolean) => {
         if (!open) {
-            // console.log("Diálogo cerrado");
             reset(); // Reset form inputs when closing the modal
             setIsTypeSelected(false);
             setSubtypeCatalog([]);
@@ -69,8 +66,8 @@ export const AddInstruments = ({ token, currency, catalogs, csrfToken }: AddInst
             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/instruments`, {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'X-CSRF-Token': csrfToken,
+                    'Authorization': `Bearer ${tokens.authToken}`,
+                    'X-CSRF-Token': tokens.csrfToken,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ description: cleanData.description.trim(), type: cleanData.idInstrumentType, subtype: cleanData.idInstrumentSubtype, cut_off_day: cleanData.cutOffDay, payment_due_day: cleanData.paymentDueDay, currency: currencySelected.id }),

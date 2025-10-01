@@ -20,7 +20,8 @@
     },
     "instruments": {
         "buttons": {
-            "add_instruments": "Add new instrument"
+            "add_instruments": "Add new instrument",
+            "edit_instruments": "Edit"
         },
         "forms": {
             "title": "Add New Instrument",

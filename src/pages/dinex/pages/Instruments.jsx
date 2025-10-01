@@ -6,12 +6,13 @@ import { VARIABLES } from '@pages/assets/js/utils';
 import { UserMenu } from "../components/UserMenu";
 import { Notification } from "../components/Notification";
 import { AddInstruments } from "./pages-components/Instruments/AddInstruments";
+import { EditInstruments } from "./pages-components/Instruments/EditInstruments";
 import { useTranslations } from '@translations/translations';
 // import translations from "@translations"; // Asegúrate de que la configuración de i18n se cargue
 import "../dinex.css";
 import "../navbar.css";
 
-export const Navbar = ({ token, user, catalogs, csrfToken }) => {
+export const Navbar = ({ tokens, user, catalogs }) => {
     const [currency, setCurrency] = useState({ id: user.country.currency_code, name: user.country.currency, flag_icon: user.country.flag_icon });
     return (
         <nav className="bg-white dark:bg-[#191D21] w-full z-10 border-b border-gray-200 dark:border-gray-600">
@@ -29,7 +30,7 @@ export const Navbar = ({ token, user, catalogs, csrfToken }) => {
                     <UserMenu user={user} />
                 </div>
                 <div className="items-center justify-between w-full md:flex md:w-auto md:order-1 grid grid-cols-2 gap-x-3" id="navbar-sticky">
-                    {catalogs?.instrumentTypes?.length > 0 && <AddInstruments token={token} currency={currency} catalogs={catalogs} csrfToken={csrfToken} />}
+                    {catalogs?.instrumentTypes?.length > 0 && <AddInstruments tokens={tokens} currency={currency} catalogs={catalogs} />}
                 </div>
             </div>
         </nav>
@@ -37,7 +38,7 @@ export const Navbar = ({ token, user, catalogs, csrfToken }) => {
     );
 }
 
-export const InstrumentTable = ({ instruments, catalogs, translations }) => {
+export const InstrumentTable = ({ tokens, instruments, catalogs, translations }) => {
     const [data, setData] = useState(instruments);
     const [order, setOrder] = useState({ field: null, asc: true });
     const handleSort = (field) => {
@@ -65,7 +66,7 @@ export const InstrumentTable = ({ instruments, catalogs, translations }) => {
 
     const getInstrumentCurrency = (id) => {
         const currency = catalogs.currencies.find((currency) => currency.id === id);
-        return currency ? VARIABLES.icons.flags + currency.flag_icon : '';
+        return currency ? { flag: VARIABLES.icons.flags + currency.flag_icon, name: currency.name } : {};
     };
 
     const getInstrumentSubtype = (id) => {
@@ -117,7 +118,7 @@ export const InstrumentTable = ({ instruments, catalogs, translations }) => {
                 </td>
                 <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-200">
                     <div className="inline-block w-6 h-6 mr-1">
-                        <img src={getInstrumentCurrency(item.currency)} alt={item.currency} className="inline-block w-6 h-6 ml-1" />
+                        <img src={getInstrumentCurrency(item.currency).flag} alt={item.currency} className="inline-block w-6 h-6 ml-1" />
                     </div>
                     <span className="font-bold text-white text-center py-1 px-2 text-xs rounded">
                         {item.currency}
@@ -125,7 +126,8 @@ export const InstrumentTable = ({ instruments, catalogs, translations }) => {
                 </td>
                 <td className="px-4 py-2 text-sm text-center space-x-2">
                     <button type="button" className="!bg-green-500 hover:!bg-green-600 py-2 px-4 text-sm font-medium text-white border border-transparent rounded-lg focus:outline-none">{translations("instruments.actions.view")}</button>
-                    <button type="button" className="!bg-yellow-500 hover:!bg-yellow-600 py-2 px-4 text-sm font-medium text-white border border-transparent rounded-lg focus:outline-none">{translations("instruments.actions.edit")}</button>
+                    {/* <button type="button" className="!bg-yellow-500 hover:!bg-yellow-600 py-2 px-4 text-sm font-medium text-white border border-transparent rounded-lg focus:outline-none">{translations("instruments.actions.edit")}</button> */}
+                    <EditInstruments instrument={item} catalogs={catalogs} tokens={tokens} currency={{ id: item.currency, flag_icon: () => getInstrumentCurrency(item.currency) }} />
                     {/* <button type="button" className="!bg-red-500 hover:!bg-red-700 py-2 px-4 text-sm font-medium text-white border border-transparent rounded-lg focus:outline-none">{translations("menus.delete")}</button> */}
                 </td>
                 </tr>
@@ -152,6 +154,10 @@ const Instruments = () => {
     const { decoded, token, csrfToken } = decodeToken();
     if (!token) {
         window.location.href = '/login';
+    }
+    const tokens = {
+        authToken: token,
+        csrfToken: csrfToken
     }
 
     const getUserInstruments = useCallback(async () => {
@@ -200,12 +206,12 @@ const Instruments = () => {
             <div className="flex flex-col flex-grow">
                 {/* Navbar */}
                 <div className="h-16">
-                    <Navbar user={decoded.user} token={token} catalogs={catalogs} csrfToken={csrfToken} />
+                    <Navbar user={decoded.user} tokens={tokens} catalogs={catalogs} />
                 </div>
                 {/* Scrollable content */}
                 <div className="flex-grow overflow-y-auto p-4">
                     <h1 className="text-2xl font-bold mb-4">{translations("instruments.title")}</h1>
-                    <InstrumentTable instruments={instruments} catalogs={catalogs} translations={translations} />
+                    <InstrumentTable instruments={instruments} catalogs={catalogs} translations={translations} tokens={tokens} />
                 </div>
             </div>
         </div>

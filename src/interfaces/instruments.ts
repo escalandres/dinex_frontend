@@ -1,7 +1,9 @@
 export interface AddInstrumentsProps {
     user: object;
-    token: object;
-    csrfToken: string;
+    tokens: {
+        authToken: string;
+        csrfToken: string;
+    };
     currency: {
         id: string;
         name: string;
@@ -11,6 +13,15 @@ export interface AddInstrumentsProps {
         instrumentTypes: Array<{ id: number; name: string; color: string }>;
         instrumentSubtypes: Array<{ id: number; id_instrument_type: number; name: string, color: string }>;
         currencies: Country[];
+    };
+    instrument?: {
+        id: number;
+        currency: string;
+        description: string;
+        idInstrumentType: number;
+        idInstrumentSubtype: number;
+        cutOffDay: number;
+        paymentDueDay: number;
     };
 }
 
