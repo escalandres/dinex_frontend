@@ -125,8 +125,7 @@ export const InstrumentTable = ({ tokens, instruments, catalogs, translations })
                     </span>
                 </td>
                 <td className="px-4 py-2 text-sm text-center space-x-2">
-                    <button type="button" className="!bg-green-500 hover:!bg-green-600 py-2 px-4 text-sm font-medium text-white border border-transparent rounded-lg focus:outline-none">{translations("instruments.actions.view")}</button>
-                    {/* <button type="button" className="!bg-yellow-500 hover:!bg-yellow-600 py-2 px-4 text-sm font-medium text-white border border-transparent rounded-lg focus:outline-none">{translations("instruments.actions.edit")}</button> */}
+                    {/* <button type="button" className="!bg-green-500 hover:!bg-green-600 py-2 px-4 text-sm font-medium text-white border border-transparent rounded-lg focus:outline-none">{translations("instruments.actions.view")}</button> */}
                     <EditInstruments instrument={item} catalogs={catalogs} tokens={tokens} currency={{ id: item.currency, flag_icon: () => getInstrumentCurrency(item.currency) }} />
                     {/* <button type="button" className="!bg-red-500 hover:!bg-red-700 py-2 px-4 text-sm font-medium text-white border border-transparent rounded-lg focus:outline-none">{translations("menus.delete")}</button> */}
                 </td>
