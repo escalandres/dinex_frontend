@@ -17,11 +17,13 @@ interface DecodedToken {
 
 export const decodeToken = () => {
     const token = localStorage.getItem('token');
-    if (!token || token === 'undefined') {
+    const csrfToken = sessionStorage.getItem('csrfToken');
+    if (!token || token === 'undefined' || csrfToken === 'undefined' || !csrfToken) {
+        localStorage.removeItem('token');
+        sessionStorage.removeItem('csrfToken');
         return { decoded: null, token: null, csrfToken: null };
     }
     const decoded: DecodedToken = jwtDecode(token);
-    const csrfToken = sessionStorage.getItem('csrfToken');
 
     return { decoded, token, csrfToken };
 }
