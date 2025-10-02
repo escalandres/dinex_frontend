@@ -2,21 +2,23 @@ import { useState } from 'react';
 import { User, Bell, CreditCard, House } from 'lucide-react';
 import { ThemeToggle } from "../components/ThemeToggle";
 import { Account } from './pages-components/user_settings/Account';
-
+import { useTranslations } from '@translations/translations';
+import { LanguageSelector } from "@pages/components/LanguageSelector";
+import { decodeToken } from '@components/auth';
 import "@pages/assets/css/utils.css";
 
-const Sidebar = ({ activeView, setActiveView }) => {
+const Sidebar = ({ activeView, setActiveView, translations }) => {
   return (
     <div className="sidebar top-0 left-0 z-40 w-70 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
       <div className="h-full px-3 py-4 overflow-y-auto">
-          <h2 className="text-2xl font-semibold mb-8">Settings</h2>
+          <h2 className="text-2xl font-semibold mb-8">{translations("settings.title")}</h2>
           <ul className="space-y-2 font-medium">
               <li>
                   <a href="/dinex" className="flex items-center gap-7 p-2 text-gray-900 rounded-lg group">
                   <span className="flex items-center justify-center w-5 h-5">
                       <House size={20} className="text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                   </span>
-                  <span className="text-l font-medium">Home</span>
+                  <span className="text-l font-medium">{translations("settings.home")}</span>
                   </a>
               </li>
               <p className="text-gray-400 mt-4 mb-2 uppercase text-sm">Manage</p>
@@ -27,7 +29,7 @@ const Sidebar = ({ activeView, setActiveView }) => {
                   <span className="flex items-center justify-center w-5 h-5">
                       <User size={20} className="text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                   </span>
-                  <span className="text-l font-medium">Account</span>
+                  <span className="text-l font-medium">{translations("settings.account.title")}</span>
                   </button>
               </li>
               <li>
@@ -37,7 +39,7 @@ const Sidebar = ({ activeView, setActiveView }) => {
                   <span className="flex items-center justify-center w-5 h-5">
                       <Bell className="text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" size={24} />
                   </span>
-                  <span className="text-l font-medium">Notifications</span>
+                  <span className="text-l font-medium">{translations("settings.notifications.title")}</span>
                   </button>
               </li>
               <li>
@@ -47,12 +49,14 @@ const Sidebar = ({ activeView, setActiveView }) => {
                   <span className="flex items-center justify-center w-5 h-5">
                       <CreditCard size={24} className="text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                   </span>
-                  <span className="text-l font-medium">Billing</span>
+                  <span className="text-l font-medium">{translations("settings.billing.title")}</span>
                   </button>
               </li>
           </ul>
           <hr className="flex-1 mt-8 border-gray-300 dark:border-gray-600" />
           <ThemeToggle />
+          <br />
+          <LanguageSelector />
       </div>
     </div>
   );
@@ -148,49 +152,57 @@ const catalogs = {
   ]
 }
 
-const token = 'Algo';
+// const token = 'Algo';
 
-const user = {
-  uuid: '123e4567-e89b-12d3-a456-426614174000',
-  name: 'Andres',
-  lastname: 'Escala',
-  email: 'andres.escala.344@gmai.com',
-  profile_picture: 'https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  country: {
-    id: 0,
-    name: '',
-    country_iso_code: '',
-    currency: '',
-    currency_symbol: '',
-    currency_code: '',
-    currency_format: '',
-    flag_icon: '',
-    language_code: 'en',
-    timezone: 'America/Mexico_City'
-  }
-}
+// const user = {
+//   uuid: '123e4567-e89b-12d3-a456-426614174000',
+//   name: 'Andres',
+//   lastname: 'Escala',
+//   email: 'andres.escala.344@gmai.com',
+//   profile_picture: 'https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+//   country: {
+//     id: 0,
+//     name: '',
+//     country_iso_code: '',
+//     currency: '',
+//     currency_symbol: '',
+//     currency_code: '',
+//     currency_format: '',
+//     flag_icon: '',
+//     language_code: 'en',
+//     timezone: 'America/Mexico_City'
+//   }
+// }
 
 export default function UserSettings() {
   const [activeView, setActiveView] = useState('account');
-
+  const translations = useTranslations();
+  const { decoded, token, csrfToken } = decodeToken();
+  if (!token) {
+      window.location.href = '/login';
+  }
+  const tokens = {
+      authToken: token,
+      csrfToken: csrfToken
+  }
   const renderContent = () => {
     switch(activeView) {
       case 'account':
         return (
           <div className="max-w-2xl flex-grow overflow-y-auto p-4">
-            <Account user={user} token={token} countries={catalogs.countries} />
+            <Account user={decoded.user} tokens={tokens} countries={catalogs.countries} translations={translations} />
           </div>
         );
       case 'billing':
         return (
           <div className="max-w-2xl flex-grow overflow-y-auto p-4">
-            <Billing />
+            <Billing translations={translations} />
           </div>
         );
       case 'notifications':
         return (
           <div className="max-w-2xl flex-grow overflow-y-auto p-4">
-            <Notifications />
+            <Notifications translations={translations} />
           </div>
         );
       default:
@@ -202,7 +214,7 @@ export default function UserSettings() {
     <div className="text-left content flex h-screen w-full">
       {/* Sidebar */}
       <aside className="w-70 border-r border-gray-200 dark:border-gray-700">
-          <Sidebar activeView={activeView} setActiveView={setActiveView} />
+          <Sidebar activeView={activeView} setActiveView={setActiveView} translations={translations} />
       </aside>
 
       {/* Main Content */}

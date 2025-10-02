@@ -13,6 +13,99 @@
         "logout": "Logout",
         "subscriptions": "Subscriptions"
     },
+    "settings": {
+        "title": "Settings",
+        "home": "Home",
+        "profile": "My profile",
+        "security": "Security",
+        "account": {
+            "title": "Account",
+            "description": "Update your profile and personal details here",
+            "profile": "Profile",
+            "email": "Email",
+            "first_name": "First Name",
+            "last_name": "Last Name",
+            "phone": "Phone Number",
+            "country": "Country",
+            "profile_picture": "Profile Picture",
+            "change_picture": "Change Picture",
+            "save_changes": "Save Changes",
+            "password": {
+                "title": "Change Password",
+                "subtitle": "Secure your account by changing your password regularly",
+                "current_password": "Current Password",
+                "current_password_placeholder": "Enter current password",
+                "new_password_placeholder": "Enter new password",
+                "new_password": "New Password",
+                "confirm_password": "Confirm New Password",
+                "confirm_password_placeholder": "Repeat new password",
+                "requirements": "Password must be at least 8 characters long, including an uppercase letter, a lowercase letter, a number, and a special character.",
+                "password_mismatch": "Passwords do not match.",
+                "change_password": "Change Password"
+            },
+            "upload": {
+                "uploading": "Uploading...",
+                "upload": "Upload",
+                "upload_image": "Upload Image",
+                "upload_drag_drop": "Drag and drop an image",
+                "upload_success": "Image uploaded successfully.",
+                "upload_error": "Error uploading image. Please try again.",
+                "invalid_file_type": "Invalid file type. Please select an image (jpg, png, gif).",
+                "select_file": "Select File",
+                "change_file": "Change File",
+                "remove_file": "Remove File"
+            },
+            "required_field": "This field is required",
+            "danger_zone": {
+                "title": "Danger Zone",
+                "delete_account": "Delete Account",
+                "delete_account_warning": "This action is irreversible. All your data will be lost.",
+                "confirm_delete": "I am sure I want to delete my account",
+                "delete": "Delete Account"
+            },
+            "buttons": {
+                "change_country": "Change Country",
+                "save": "Save",
+                "cancel": "Cancel"
+            }
+        },
+        "preferences": {
+            "title": "Preferences",
+            "description": "Customize your experience by adjusting your preferences",
+            "currency": "Currency",
+            "language": "Language",
+            "time_zone": "Time Zone",
+            "date_format": "Date Format",
+            "time_format": "Time Format",
+            "buttons": {
+                "save_changes": "Save Changes"
+            }
+        },
+        "notifications": {
+            "title": "Notifications",
+            "description": "Manage your notification preferences",
+            "email_notifications": "Email Notifications",
+            "sms_notifications": "SMS Notifications",
+            "push_notifications": "Push Notifications",
+            "marketing_emails": "Marketing Emails",
+            "security_alerts": "Security Alerts",
+            "buttons": {
+                "save_changes": "Save Changes"
+            }
+        },
+        "billing": {
+            "title": "Billing",
+            "description": "Manage your billing information and subscriptions",
+            "payment_method": "Payment Method",
+            "billing_address": "Billing Address",
+            "subscription_plan": "Subscription Plan",
+            "invoices": "Invoices",
+            "buttons": {
+                "update_payment": "Update Payment Method",
+                "view_invoices": "View Invoices"
+            }
+        }
+    },
     "language": {
         "select_language": "Select Language",
         "english": "English",

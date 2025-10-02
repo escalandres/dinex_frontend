@@ -18,6 +18,99 @@
         "english": "Inglés",
         "spanish": "Español"
     },
+    "settings": {
+        "title": "Configuraciones",
+        "home": "Inicio",
+        "profile": "Mi perfil",
+        "security": "Seguridad",
+        "account": {
+            "title": "Cuenta",
+            "description": "Actualiza tu perfil y detalles personales aquí",
+            "profile": "Perfil",
+            "email": "Correo electrónico",
+            "first_name": "Nombre",
+            "last_name": "Apellido",
+            "phone": "Número de teléfono",
+            "country": "País",
+            "profile_picture": "Foto de perfil",
+            "change_picture": "Cambiar foto",
+            "save_changes": "Guardar cambios",
+            "password": {
+                "title": "Cambiar contraseña",
+                "subtitle": "Asegura tu cuenta cambiando tu contraseña regularmente",
+                "current_password": "Contraseña actual",
+                "current_password_placeholder": "Ingresa la contraseña actual",
+                "new_password_placeholder": "Ingresa la nueva contraseña",
+                "new_password": "Nueva contraseña",
+                "confirm_password": "Confirmar nueva contraseña",
+                "confirm_password_placeholder": "Repite la nueva contraseña",
+                "requirements": "La contraseña debe tener al menos 8 caracteres, incluyendo una letra mayúscula, una minúscula, un número y un carácter especial.",
+                "password_mismatch": "Las contraseñas no coinciden.",
+                "change_password": "Cambiar contraseña"
+            },
+            "upload": {
+                "uploading": "Subiendo...",
+                "upload": "Subir",
+                "upload_image": "Subir imagen",
+                "upload_drag_drop": "Arrastra y suelta una imagen",
+                "upload_success": "La imagen se ha subido correctamente.",
+                "upload_error": "Error al subir la imagen. Por favor, inténtalo de nuevo.",
+                "invalid_file_type": "Tipo de archivo inválido. Por favor, selecciona una imagen (jpg, png, gif).",
+                "select_file": "Seleccionar archivo",
+                "change_file": "Cambiar archivo",
+                "remove_file": "Eliminar archivo"
+            },
+            "required_field": "Este campo es obligatorio",
+            "danger_zone": {
+                "title": "Zona de peligro",
+                "delete_account": "Eliminar cuenta",
+                "delete_account_warning": "Esta acción es irreversible. Todos tus datos se perderán.",
+                "confirm_delete": "Estoy seguro de que quiero eliminar mi cuenta",
+                "delete": "Eliminar cuenta"
+            },
+            "buttons": {
+                "change_country": "Cambiar país",
+                "save": "Guardar",
+                "cancel": "Cancelar"
+            }
+        },
+        "preferences": {
+            "title": "Preferencias",
+            "description": "Personaliza tu experiencia ajustando tus preferencias",
+            "currency": "Moneda",
+            "language": "Idioma",
+            "time_zone": "Zona horaria",
+            "date_format": "Formato de fecha",
+            "time_format": "Formato de hora",
+            "buttons": {
+                "save_changes": "Guardar cambios"
+            }
+        },
+        "notifications": {
+            "title": "Notificaciones",
+            "description": "Gestiona tus preferencias de notificación",
+            "email_notifications": "Notificaciones por correo electrónico",
+            "sms_notifications": "Notificaciones por SMS",
+            "push_notifications": "Notificaciones push",
+            "marketing_emails": "Correos electrónicos de marketing",
+            "security_alerts": "Alertas de seguridad",
+            "buttons": {
+                "save_changes": "Guardar cambios"
+            }
+        },
+        "billing": {
+            "title": "Facturación",
+            "description": "Gestiona tu información de facturación y suscripciones",
+            "payment_method": "Método de pago",
+            "billing_address": "Dirección de facturación",
+            "subscription_plan": "Plan de suscripción",
+            "invoices": "Facturas",
+            "buttons": {
+                "update_payment": "Actualizar método de pago",
+                "view_invoices": "Ver facturas"
+            }
+        }
+    },
     "instruments": {
         "buttons": {
             "add_instruments": "Añadir Instrumento",

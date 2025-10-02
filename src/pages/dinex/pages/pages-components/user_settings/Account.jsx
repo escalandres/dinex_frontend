@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 
-export const Account = ({ user, token, countries }) => {
+export const Account = ({ user, tokens, countries, translations }) => {
     const [showCurrentPassword, setShowCurrentPassword] = useState(false);
     const [showNewPassword, setShowNewPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -69,12 +69,12 @@ export const Account = ({ user, token, countries }) => {
 
     return (
         <div className="max-w-2xl flex-grow overflow-y-auto p-4">
-        <h2 className="text-4xl text-left font-semibold mb-2">Account</h2>
-        <p className="text-gray-400 mb-8">Update your profile and personal details here</p>
-        
+        <h2 className="text-4xl text-left font-semibold mb-2">{translations("settings.account.title")}</h2>
+        <p className="text-gray-400 mb-8">{translations("settings.account.description")}</p>
+
         {/* Profile Section */}
         <div className="mb-8">
-            <h2 className="text-lg font-medium mb-6">Profile</h2>
+            <h2 className="text-lg font-medium mb-6">{translations("settings.account.profile")}</h2>
             
             {/* Avatar */}
             <div className="mb-6">
@@ -82,7 +82,7 @@ export const Account = ({ user, token, countries }) => {
             <div className="flex items-center space-x-4 flex-row">
                 <div className="w-16 h-16 bg-gray-600 rounded-full overflow-hidden flex">
                 <img 
-                    src={user.profile_picture}
+                    src={user.profile_picture ? user.profile_picture : '/icons/default-avatar.png'}
                     alt="Profile" 
                     className="w-full h-full object-cover"
                 />
@@ -94,7 +94,7 @@ export const Account = ({ user, token, countries }) => {
             {/* Name Fields */}
             <div className="grid grid-cols-2 gap-4 mb-4">
             <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">First name</label>
+                <label className="block text-sm font-medium text-gray-300 mb-2">{translations("settings.account.first_name")}</label>
                 <input
                 type="text"
                 value={user.name}
@@ -104,7 +104,7 @@ export const Account = ({ user, token, countries }) => {
                 />
             </div>
             <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Last name</label>
+                <label className="block text-sm font-medium text-gray-300 mb-2">{translations("settings.account.last_name")}</label>
                 <input
                 type="text"
                 value={user.lastname}
@@ -117,7 +117,7 @@ export const Account = ({ user, token, countries }) => {
             
             {/* Email */}
             <div className="mb-8">
-            <label className="block text-sm font-medium text-gray-300 mb-2">Email</label>
+            <label className="block text-sm font-medium text-gray-300 mb-2">{translations("settings.account.email")}</label>
             <div className="relative">
                 <input
                 type="email"
@@ -139,22 +139,22 @@ export const Account = ({ user, token, countries }) => {
                 handleOptionClick={handleOptionClick} 
             />
             <button className="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg text-sm font-medium transition-colors mt-8">
-                Change your country
+                {translations("settings.account.buttons.change_country")}
             </button>
         </div>
 
         {/* Password Section */}
         <div className="mb-8">
-            <h2 className="text-lg font-medium mb-6">Password</h2>
+            <h2 className="text-lg font-medium mb-6">{translations("settings.account.password.title")}</h2>
             
             <div className="space-y-4">
             <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Current password</label>
+                <label className="block text-sm font-medium text-gray-300 mb-2">{translations("settings.account.password.current_password")}</label>
                 <div className="relative">
                     <input
                         type={showCurrentPassword ? "text" : "password"}
                         {...register("currentPassword")}
-                        placeholder="Enter current password"
+                        placeholder={translations("settings.account.password.current_password_placeholder")}
                         className={`${errors.currentPassword ? 'field-error' : ''} w-full px-3 py-2 pr-10 border rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                     />
                     <button
@@ -169,12 +169,12 @@ export const Account = ({ user, token, countries }) => {
             </div>
             
             <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">New password</label>
+                <label className="block text-sm font-medium text-gray-300 mb-2">{translations("settings.account.password.new_password")}</label>
                 <div className="relative">
                 <input
                     type={showNewPassword ? "text" : "password"}
                     {...register("newPassword")}
-                    placeholder="Enter new password"
+                    placeholder={translations("settings.account.password.new_password_placeholder")}
                     className={`${errors.newPassword ? 'field-error' : ''} w-full px-3 py-2 pr-10 border rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                 />
                 <button
@@ -188,7 +188,7 @@ export const Account = ({ user, token, countries }) => {
                 {errors.newPassword ? (
                     <legend className="mt-1 text-sm field-error-message">{errors.newPassword.message}</legend>
                 ) : (
-                    <legend className="text-xs text-gray-500 mt-1">Your password must have at least 8 characters, include one uppercase letter, one lowercase letter, one number, and one special character.</legend>
+                    <legend className="text-xs text-gray-500 mt-1">{translations("settings.account.password.requirements")}</legend>
                 )}
             </div>
             <div>
@@ -196,7 +196,7 @@ export const Account = ({ user, token, countries }) => {
                 <input
                     type={showConfirmPassword ? "text" : "password"}
                     {...register("confirmPassword")}
-                    placeholder="Re-type new password"
+                    placeholder={translations("settings.account.password.confirm_password_placeholder")}
                     className={`${errors.confirmPassword ? 'field-error' : ''} w-full px-3 py-2 pr-10 border rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                 />
                 <button
@@ -211,22 +211,22 @@ export const Account = ({ user, token, countries }) => {
             </div>
             
             <button className="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg text-sm font-medium transition-colors">
-                Change password
+                {translations("settings.account.password.change_password")}
             </button>
             </div>
         </div>
 
         {/* Danger Zone */}
         <div>
-            <h2 className="text-lg font-medium mb-6">Danger zone</h2>
+            <h2 className="text-lg font-medium mb-6">{translations("settings.account.danger_zone.title")}</h2>
             <div className="border border-red-600 rounded-lg p-4">
             <div className="flex items-center justify-between">
                 <div>
-                <h3 className="font-medium !text-red-500 mb-1">Delete account</h3>
-                <p className="text-sm text-gray-400">Permanently remove your account. This action is not reversible.</p>
+                <h3 className="font-medium !text-red-500 mb-1">{translations("settings.account.danger_zone.delete_account")}</h3>
+                <p className="text-sm text-gray-400">{translations("settings.account.danger_zone.delete_account_warning")}</p>
                 </div>
                 <button className="px-4 py-2 !bg-red-600 hover:!bg-red-500 rounded-lg text-sm font-medium transition-colors">
-                Delete account
+                {translations("settings.account.danger_zone.delete")}
                 </button>
             </div>
             </div>
