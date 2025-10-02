@@ -18,6 +18,33 @@ export interface AddInstrumentsProps {
         id: number;
         currency: string;
         description: string;
+        type: number;
+        subtype: number;
+        cut_off_day: number;
+        payment_due_day: number;
+    };
+}
+
+export interface EditInstrumentsProps {
+    user: object;
+    tokens: {
+        authToken: string;
+        csrfToken: string;
+    };
+    currency: {
+        id: string;
+        name: string;
+        flag_icon: string;
+    };
+    catalogs: {
+        instrumentTypes: Array<{ id: number; name: string; color: string }>;
+        instrumentSubtypes: Array<{ id: number; id_instrument_type: number; name: string, color: string }>;
+        currencies: Country[];
+    };
+    instrument?: {
+        id: number;
+        currency: string;
+        description: string;
         idInstrumentType: number;
         idInstrumentSubtype: number;
         cutOffDay: number;
