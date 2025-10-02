@@ -41,10 +41,12 @@ export const EditInstruments = ({ tokens, catalogs, instrument}: AddInstrumentsP
         if (isOpen && instrument) {
             // Cargar los datos del instrumento
             setValue('description', instrument.description || '');
-            setValue('idInstrumentType', instrument.idInstrumentType || null);
-            setValue('idInstrumentSubtype', instrument.idInstrumentSubtype || null);
-            setValue('cutOffDay', instrument.cutOffDay || 0);
-            setValue('paymentDueDay', instrument.paymentDueDay || 0);
+            setValue('idInstrumentType', instrument.type || null);
+            setValue('idInstrumentSubtype', instrument.subtype || null);
+            setValue('cutOffDay', instrument.cut_off_day || 0);
+            setValue('paymentDueDay', instrument.payment_due_day || 0);
+            // const idInput = document.getElementById('idInstrument') as HTMLInputElement;
+            // idInput.value = instrument.id.toString();
 
             // Configurar la moneda seleccionada
             // if (instrument.currency) {
@@ -57,9 +59,9 @@ export const EditInstruments = ({ tokens, catalogs, instrument}: AddInstrumentsP
             // }
 
             // Cargar el subtipo basado en el tipo de instrumento
-            if (instrument.idInstrumentType) {
+            if (instrument.type) {
                 const subTypes = catalogs.instrumentSubtypes.filter(
-                    (instrumentSubtype) => instrumentSubtype.id_instrument_type == instrument.idInstrumentType
+                    (instrumentSubtype) => instrumentSubtype.id_instrument_type == instrument.type
                 );
                 setSubtypeCatalog(subTypes || []);
                 setIsTypeSelected(true);
@@ -312,6 +314,8 @@ export const EditInstruments = ({ tokens, catalogs, instrument}: AddInstrumentsP
                                     isCountry={false}
                                 />
                             </div>
+
+                            <input type="hidden" id="idInstrument" value={instrument.id} />
                         </div>
 
                         {/* Footer con botones */}
