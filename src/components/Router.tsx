@@ -15,6 +15,7 @@ import { RequireVerifiedEmail } from './RequireVerifiedEmail';
 import Savings from '@pages/dinex/pages/Savings';
 import Expenses from '@pages/dinex/pages/Expenses';
 import Instruments from '@pages/dinex/pages/Instruments';
+import Incomes from '@pages/dinex/pages/Incomes';
 import UserSettings from '@pages/dinex/pages/UserSettings';
 import VerifyEmail from '@pages/login/VerifyEmail';
 import VerifyRequired from '@pages/login/VerifyRequired';
@@ -83,6 +84,16 @@ const Router = createBrowserRouter(
           <ProtectedRoute>
             <RequireVerifiedEmail>
               <Instruments/>
+            </RequireVerifiedEmail>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/app/incomes",
+        element: ( 
+          <ProtectedRoute>
+            <RequireVerifiedEmail>
+              <Incomes/>
             </RequireVerifiedEmail>
           </ProtectedRoute>
         ),

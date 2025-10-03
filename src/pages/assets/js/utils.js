@@ -79,3 +79,8 @@ export const getBadgeColor = (color) => {
     if (!color) return '!bg-gray-500';
     return `!bg-[${color}]`;
 }
+
+export const formatCurrency = (value, currency = 'USD', language = 'en', country = 'US') => {
+    const locale = `${language}-${country}`;
+    return new Intl.NumberFormat(locale, { style: 'currency', currency }).format(value);
+}

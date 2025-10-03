@@ -24,6 +24,7 @@ export const decodeToken = () => {
         return { decoded: null, token: null, csrfToken: null };
     }
     const decoded: DecodedToken = jwtDecode(token);
+    loadUserPreferences(decoded.user.country);
 
     return { decoded, token, csrfToken };
 }
@@ -106,4 +107,20 @@ export const isEmailVerified = () => {
         localStorage.removeItem('token');
         return false;
     }
+};
+
+const createUserPreferences = (userCountryPreferences) => {
+    const preferences = { country: userCountryPreferences.country_iso_code, language: userCountryPreferences.language_code, currency: { name: userCountryPreferences.currency, code: userCountryPreferences.currency_code, symbol: userCountryPreferences.currency_symbol }, country_icon: userCountryPreferences.flag_icon };
+    localStorage.setItem('userPreferences', JSON.stringify(preferences));
+    return preferences;
+}
+
+const loadUserPreferences = (userCountryPreferences) => {
+    const preferences = localStorage.getItem('userPreferences');
+    if (!preferences) createUserPreferences(userCountryPreferences);
+};
+
+export const getUserPreferences = () => {
+    const preferences = localStorage.getItem('userPreferences');
+    return preferences ? JSON.parse(preferences) : {};
 };

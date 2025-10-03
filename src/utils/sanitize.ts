@@ -1,8 +1,9 @@
 // import * as sanitizeHtml from "sanitize-html";
 import { LoginFormData, SignupFormData } from "@interfaces/auth";
 import { InstrumentFormData } from "@interfaces/instruments";
+import { IncomeFormData } from "@interfaces/incomes";
 
-// Protección contra prototype pollution - verificar keys peligrosos
+// Protection against prototype pollution - check for dangerous keys
 const dangerousKeys = ['__proto__', 'constructor', 'prototype'];
 
 function sanitizeString(input: string): string {
@@ -79,6 +80,24 @@ export function sanitizeInstrumentData(data: InstrumentFormData): InstrumentForm
     idInstrumentSubtype: data.idInstrumentSubtype,
     cutOffDay: data.cutOffDay,
     paymentDueDay: data.paymentDueDay,
+    // currency: sanitizeString(data.currency)
+  };
+}
+
+// ------------- Incomes.tsx -------------
+export function sanitizeIncomeData(data: IncomeFormData): IncomeFormData {
+  // Check if any key is dangerous
+  for (const key of Object.keys(data)) {
+    if (dangerousKeys.some(dangerous => key.toLowerCase().includes(dangerous))) {
+      throw new Error('Invalid property name detected');
+    }
+  }
+
+  return {
+    description: sanitizeString(data.description),
+    amount: data.amount,
+    source: data.source,
+    frequency: data.frequency
     // currency: sanitizeString(data.currency)
   };
 }

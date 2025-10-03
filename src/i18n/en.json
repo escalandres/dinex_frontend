@@ -146,7 +146,7 @@
             }
         },
         "table": {
-            "name": "Name",
+            "name": "Instrument Name",
             "type": "Type",
             "subtype": "Subtype",
             "currency": "Currency"
@@ -163,6 +163,61 @@
             "view": "View",
             "delete": "Delete",
             "confirm_delete": "Are you sure you want to delete this instrument?",
+            "yes": "Yes",
+            "no": "No",
+            "save": "Save",
+            "cancel": "Cancel"
+        }    
+    },
+    "incomes": {
+        "buttons": {
+            "add_incomes": "Add new income",
+            "edit_incomes": "Edit"
+        },
+        "forms": {
+            "title": "Add New Income",
+            "description": "Register a new income to manage your finances.",
+            "fields": {
+                "description": {
+                    "label": "Income Name",
+                    "placeholder": "Enter the name of your income"
+                },
+                "source": {
+                    "label": "Income Type",
+                    "placeholder": "Select a type"
+                },
+                "frequency": {
+                    "label": "Income Frequency",
+                    "placeholder": "Select a subtype"
+                },
+                "amount": {
+                    "label": "Income Amount",
+                    "placeholder": "Enter the income amount"
+                },
+                "currency": {
+                    "label": "Select a currency"
+                }
+            }
+        },
+        "table": {
+            "name": "Income Name",
+            "source": "Source",
+            "amount": "Amount",
+            "frequency": "Frequency",
+            "currency": "Currency"
+        },
+        "required_field": "This field is required",
+        "invalid_number": "Please enter a valid number",
+        "min_value": "This value must be at least {{min}}",
+        "max_value": "This value must be at most {{max}}",
+        "title": "Incomes",
+        "no_incomes": "No incomes found. Please add one.",
+        "actions": {
+            "title": "Actions",
+            "edit": "Edit",
+            "view": "View",
+            "delete": "Delete",
+            "confirm_delete": "Are you sure you want to delete this income?",
             "yes": "Yes",
             "no": "No",
             "save": "Save",

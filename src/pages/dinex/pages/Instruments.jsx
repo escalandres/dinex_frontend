@@ -38,7 +38,7 @@ export const Navbar = ({ tokens, user, catalogs }) => {
     );
 }
 
-export const InstrumentTable = ({ tokens, instruments, catalogs, translations }) => {
+export const InstrumentsTable = ({ tokens, instruments, catalogs, translations }) => {
     const [data, setData] = useState(instruments);
     const [order, setOrder] = useState({ field: null, asc: true });
     const handleSort = (field) => {
@@ -210,7 +210,7 @@ const Instruments = () => {
                 {/* Scrollable content */}
                 <div className="flex-grow overflow-y-auto p-4">
                     <h1 className="text-2xl font-bold mb-4">{translations("instruments.title")}</h1>
-                    <InstrumentTable instruments={instruments} catalogs={catalogs} translations={translations} tokens={tokens} />
+                    <InstrumentsTable instruments={instruments} catalogs={catalogs} translations={translations} tokens={tokens} />
                 </div>
             </div>
         </div>

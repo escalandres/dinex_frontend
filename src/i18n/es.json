@@ -146,7 +146,7 @@
             }
         },
         "table": {
-            "name": "Nombre",
+            "name": "Nombre del instrumento",
             "type": "Tipo",
             "subtype": "Subtipo",
             "currency": "Código de Moneda"
@@ -163,6 +163,61 @@
             "view": "Ver",
             "delete": "Eliminar",
             "confirm_delete": "¿Estás seguro de que deseas eliminar este instrumento?",
+            "yes": "Sí",
+            "no": "No",
+            "save": "Guardar",
+            "cancel": "Cancelar"
+        }    
+    },
+    "incomes": {
+        "buttons": {
+            "add_incomes": "Añadir Ingreso",
+            "edit_incomes": "Editar"
+        },
+        "forms": {
+            "title": "Añadir Nuevo Ingreso",
+            "description": "Registra un nuevo ingreso para gestionar sus finanzas.",
+            "fields": {
+                "description": {
+                    "label": "Nombre del Ingreso",
+                    "placeholder": "Ingrese el nombre de su ingreso"
+                },
+                "source": {
+                    "label": "Tipo de ingreso",
+                    "placeholder": "Seleccione un tipo"
+                },
+                "frequency": {
+                    "label": "Frecuencia de ingreso",
+                    "placeholder": "Seleccione un subtipo"
+                },
+                "amount": {
+                    "label": "Monto del Ingreso",
+                    "placeholder": "Ingrese el monto del ingreso"
+                },
+                "currency": {
+                    "label": "Selecciona una moneda"
+                }
+            }
+        },
+        "table": {
+            "name": "Nombre del Ingreso",
+            "source": "Tipo",
+            "amount": "Monto",
+            "frequency": "Frecuencia",
+            "currency": "Código de Moneda"
+        },
+        "required_field": "Este campo es obligatorio",
+        "invalid_number": "Por favor, introduce un número válido",
+        "min_value": "El valor debe ser al menos {{min}}",
+        "max_value": "El valor debe ser como máximo {{max}}",
+        "title": "Ingresos",
+        "no_incomes": "No hay ingresos disponibles. Por favor, añade uno.",
+        "actions": {
+            "title": "Acciones",
+            "edit": "Editar",
+            "view": "Ver",
+            "delete": "Eliminar",
+            "confirm_delete": "¿Estás seguro de que deseas eliminar este ingreso?",
             "yes": "Sí",
             "no": "No",
             "save": "Guardar",
