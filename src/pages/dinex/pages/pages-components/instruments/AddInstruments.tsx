@@ -2,7 +2,7 @@ import { useState } from 'react';
 import * as Dialog from "@radix-ui/react-dialog";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { alerta, showLoader, hideLoader } from '../../../../assets/js/utils';
+import { alerta, showLoader, hideLoader } from '@pages/assets/js/utils';
 import { Plus } from 'lucide-react';
 import { CountrySelect } from '@pages/components/CountrySelect';
 import { sanitizeInstrumentData } from '@/utils/sanitize';

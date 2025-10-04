@@ -22,6 +22,10 @@ export interface AddIncomesProps {
         frequency: number;
         amount: number;
     };
+    userPreferences: {
+        language: string;
+        country: string;
+    };
 }
 
 export interface EditIncomesProps {

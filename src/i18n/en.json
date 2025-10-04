@@ -111,6 +111,19 @@
         "english": "English",
         "spanish": "Spanish"
     },
+    "currencies": {
+        "select_currency": "Select Currency",
+        "usd": "United States Dollars (USD)",
+        "mxn": "Mexican Pesos (MXN)",
+        "eur": "Euros (EUR)",
+        "gbp": "British Pounds (GBP)",
+        "jpy": "Japanese Yen (JPY)",
+        "aud": "Australian Dollars (AUD)",
+        "cad": "Canadian Dollars (CAD)",
+        "chf": "Swiss Francs (CHF)",
+        "cny": "Chinese Yuan (CNY)",
+        "inr": "Indian Rupees (INR)"
+    },
     "instruments": {
         "buttons": {
             "add_instruments": "Add new instrument",
@@ -184,11 +197,12 @@
                 },
                 "source": {
                     "label": "Income Type",
-                    "placeholder": "Select a type"
+                    "placeholder": "Select a type",
+                    "tooltip": "Select the source of your income."
                 },
                 "frequency": {
                     "label": "Income Frequency",
-                    "placeholder": "Select a subtype"
+                    "placeholder": "Select your income frequency"
                 },
                 "amount": {
                     "label": "Income Amount",

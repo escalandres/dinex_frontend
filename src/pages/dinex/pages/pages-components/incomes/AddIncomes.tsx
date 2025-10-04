@@ -2,23 +2,24 @@ import { useState } from 'react';
 import * as Dialog from "@radix-ui/react-dialog";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { alerta, showLoader, hideLoader } from '../../../../assets/js/utils';
+import { alerta, showLoader, hideLoader, formatCurrency } from '@pages/assets/js/utils';
 import { Plus } from 'lucide-react';
 import { CountrySelect } from '@pages/components/CountrySelect';
 import { sanitizeIncomeData } from '@/utils/sanitize';
 import { BackendResponse, AddIncomesProps, Country, IncomeFormData } from '@interfaces/incomes';
 import { incomeValidator } from '@validations/incomesValidator';
 import { useTranslations } from '@translations/translations';
+import { Info } from 'lucide-react';
 
-export const AddIncomes = ({ tokens, currency, catalogs }: AddIncomesProps) => {
+export const AddIncomes = ({ tokens, currency, catalogs, userPreferences }: AddIncomesProps) => {
     const translations = useTranslations();
     const [isOpen, setIsOpen] = useState(false); // Estado para controlar la apertura y cierre del modal
     const [currencySelected, setCurrencySelected] = useState<Country>({
-        id: currency.id ?? 'MXN',
-        name: currency.name ?? 'Pesos mexicanos',
-        flag_icon: currency.flag_icon ?? 'mx.svg'
+        id: currency.id ?? 'USD',
+        name: currency.name ?? 'Dólares estadounidenses',
+        flag_icon: currency.flag_icon ?? 'us.svg'
     });
-
+    const [tooltipText, setTooltipText] = useState('');
     const handleOptionClick = (option) => {
         setCurrencySelected(option);
     };
@@ -28,6 +29,7 @@ export const AddIncomes = ({ tokens, currency, catalogs }: AddIncomesProps) => {
         handleSubmit,
         formState: { errors },
         reset,
+        getValues,
     } = useForm<IncomeFormData>({
         resolver: yupResolver(incomeValidator),
         mode: "onBlur",
@@ -88,6 +90,21 @@ export const AddIncomes = ({ tokens, currency, catalogs }: AddIncomesProps) => {
         }
     };
 
+    const handleAmountFormatting = () => {
+        const amountInput = getValues("amount");
+        const currencyFormatted = document.getElementById("currencyFormatted") as HTMLElement;
+
+        if (amountInput && currencyFormatted) {
+            currencyFormatted.innerText = formatCurrency(amountInput, currencySelected.id, userPreferences.language, userPreferences.country);
+        }
+    };
+
+    const handleTooltipChange = (e) => {
+        const source = catalogs.incomeSources.find((source) => source.id === parseInt(e.target.value));
+        const text = source ? `${source.source}: ${source.description}` : '';
+        setTooltipText(text);
+    };
+
     return (
         <Dialog.Root open={isOpen} onOpenChange={handleDialogChange}>
             <Dialog.Trigger 
@@ -111,7 +128,7 @@ export const AddIncomes = ({ tokens, currency, catalogs }: AddIncomesProps) => {
                     {/* Header */}
                     <div className="flex items-center justify-between p-6 pb-0">
                         <div>
-                            <Dialog.Title className="text-xl font-semibold text-blue-500 text-center">
+                            <Dialog.Title className="text-xl font-semibold text-blue-500 text-center w-100">
                                 {translations("incomes.forms.title")}
                             </Dialog.Title>
                             <Dialog.Description className="text-sm text-gray-600 mt-1">
@@ -133,14 +150,14 @@ export const AddIncomes = ({ tokens, currency, catalogs }: AddIncomesProps) => {
                             <div className="space-y-2">
                                 <fieldset>
                                     <label htmlFor="instrumentName" className="text-sm font-medium text-gray-700">
-                                        {translations("incomes.forms.fields.name.label")} *
+                                        {translations("incomes.forms.fields.description.label")} *
                                     </label>
                                     <input
                                         id="instrumentName"
                                         type="text"
                                         className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md  placeholder-gray-400 focus:outline-none focus:ring-2"
                                         {...register("description")}
-                                        placeholder={translations("incomes.forms.fields.name.placeholder")}
+                                        placeholder={translations("incomes.forms.fields.description.placeholder")}
                                     />
                                 </fieldset>
                                 {errors.description && (
@@ -148,25 +165,36 @@ export const AddIncomes = ({ tokens, currency, catalogs }: AddIncomesProps) => {
                                 )}
                             </div>
 
-                            {/* Grid for type and subtype */}
+                            {/* Grid for source and frequency */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="space-y-2">
                                     <fieldset>
-                                    <label htmlFor="instrumentType" className="text-sm font-medium text-gray-700">
-                                        {translations("incomes.forms.fields.source.label")} *
-                                    </label>
-                                    <select 
-                                        id="instrumentType" 
-                                        className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md  focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                                        {...register("source")}
-                                    >
-                                        <option value="">{translations("incomes.forms.fields.source.placeholder")}</option>
-                                        {catalogs?.incomeSources && catalogs?.incomeSources.length > 0 &&
-                                            catalogs.incomeSources?.map((item, index) => (
-                                                <option key={index} value={item.id}>{item.description}</option>
-                                            ))
-                                        }
-                                    </select>
+                                        <div className="relative flex items-center">
+                                            <label htmlFor="instrumentType" className="text-sm font-medium text-gray-700">
+                                                {translations("incomes.forms.fields.source.label")} *
+                                            </label>
+
+                                            <div className="group relative ml-4">
+                                                <Info className="text-blue-500 w-5 h-5 cursor-pointer" />
+                                                <div className="absolute left-full top-1/2 transform -translate-y-1/2 ml-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded px-2 py-1 z-10 whitespace-nowrap">
+                                                {tooltipText || translations("incomes.forms.fields.source.tooltip")}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <select 
+                                            id="instrumentType" 
+                                            className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md  focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                            {...register("source", {
+                                                onChange: (event) => handleTooltipChange(event)
+                                            })}
+                                        >
+                                            <option value="">{translations("incomes.forms.fields.source.placeholder")}</option>
+                                            {catalogs?.incomeSources && catalogs?.incomeSources.length > 0 &&
+                                                catalogs.incomeSources?.map((item, index) => (
+                                                    <option key={index} value={item.id}>{item.source}</option>
+                                                ))
+                                            }
+                                        </select>
                                     </fieldset>
                                     {errors.source && (
                                         <legend className="mt-1 text-sm field-error-message">{errors.source.message}</legend>
@@ -199,18 +227,28 @@ export const AddIncomes = ({ tokens, currency, catalogs }: AddIncomesProps) => {
 
                             {/* Grid for amount and currency */}
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <CountrySelect 
+                                    countries={catalogs?.currencies} 
+                                    countrySelected={currencySelected} 
+                                    handleOptionClick={handleOptionClick} 
+                                    isCountry={false}
+                                />
                                 <div className="space-y-2">
                                     <fieldset>
-                                    <label htmlFor="cutOffDay" className="text-sm font-medium text-gray-700">
+                                    <label htmlFor="amount" className="text-sm font-medium text-gray-700">
                                         {translations("incomes.forms.fields.amount.label")}
                                     </label>
                                     <input
-                                        id="cutOffDay"
+                                        id="amount"
                                         type="number"
                                         min={1}
                                         max={31}
                                         className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md  placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                                        {...register("amount")}
+                                        {...register("amount", {
+                                            onChange: () => {
+                                                handleAmountFormatting();
+                                            }
+                                        })}
                                         placeholder={translations("incomes.forms.fields.amount.placeholder")}
                                     />
                                     </fieldset>
@@ -218,13 +256,16 @@ export const AddIncomes = ({ tokens, currency, catalogs }: AddIncomesProps) => {
                                         <legend className="mt-1 text-sm field-error-message">{errors.amount.message}</legend>
                                     )}
                                 </div>
-
-                                <CountrySelect 
-                                    countries={catalogs?.currencies} 
-                                    countrySelected={currencySelected} 
-                                    handleOptionClick={handleOptionClick} 
-                                    isCountry={false}
-                                />
+                                <div className="space-y-2">
+                                    <fieldset>
+                                        <label htmlFor="currency" className="text-sm font-medium text-gray-700">
+                                            {translations("incomes.forms.fields.amount.label")}
+                                        </label>
+                                        <span id="currencyFormatted" className="mt-2 w-full px-3 py-2 rounded-md  placeholder-gray-400 flex items-center">
+                                            
+                                        </span>
+                                    </fieldset>
+                                </div>
                             </div>
                         </div>
 

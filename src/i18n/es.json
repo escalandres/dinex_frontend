@@ -18,6 +18,19 @@
         "english": "Inglés",
         "spanish": "Español"
     },
+    "currencies": {
+        "select_currency": "Seleccionar Moneda",
+        "usd": "Dólares estadounidenses (USD)",
+        "mxn": "Pesos mexicanos (MXN)",
+        "eur": "Euros (EUR)",
+        "gbp": "Libras esterlinas (GBP)",
+        "jpy": "Yenes japoneses (JPY)",
+        "aud": "Dólares australianos (AUD)",
+        "cad": "Dólares canadienses (CAD)",
+        "chf": "Francos suizos (CHF)",
+        "cny": "Yuanes chinos (CNY)",
+        "inr": "Rupias indias (INR)"
+    },
     "settings": {
         "title": "Configuraciones",
         "home": "Inicio",
@@ -184,11 +197,12 @@
                 },
                 "source": {
                     "label": "Tipo de ingreso",
-                    "placeholder": "Seleccione un tipo"
+                    "placeholder": "Seleccione un tipo",
+                    "tooltip": "Selecciona la fuente de tu ingreso."
                 },
                 "frequency": {
                     "label": "Frecuencia de ingreso",
-                    "placeholder": "Seleccione un subtipo"
+                    "placeholder": "Seleccione la frecuencia de su ingreso"
                 },
                 "amount": {
                     "label": "Monto del Ingreso",

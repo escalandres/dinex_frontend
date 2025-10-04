@@ -11,6 +11,8 @@ import { useTranslations } from '@translations/translations';
 import "../dinex.css";
 import "../navbar.css";
 
+const userPreferences = getUserPreferences();
+
 export const Navbar = ({ tokens, user, catalogs }) => {
     const [currency, setCurrency] = useState({ id: user.country.currency_code, name: user.country.currency, flag_icon: user.country.flag_icon });
     return (
@@ -29,7 +31,7 @@ export const Navbar = ({ tokens, user, catalogs }) => {
                     <UserMenu user={user} />
                 </div>
                 <div className="items-center justify-between w-full md:flex md:w-auto md:order-1 grid grid-cols-2 gap-x-3" id="navbar-sticky">
-                    {catalogs?.incomeSources?.length > 0 && <AddIncomes tokens={tokens} currency={currency} catalogs={catalogs} />}
+                    {catalogs?.incomeSources?.length > 0 && <AddIncomes tokens={tokens} currency={currency} catalogs={catalogs} userPreferences={userPreferences} />}
                 </div>
             </div>
         </nav>
@@ -96,7 +98,7 @@ export const IncomesTable = ({ tokens, incomes, catalogs, translations, userPref
                     <th
                         key={field}
                         onClick={() => handleSort(field)}
-                        className="w-[20%] px-4 py-2 text-center text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer select-none"
+                        className="w-[17%] px-4 py-2 text-center text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer select-none"
                     >
                         {/* {field.charAt(0).toUpperCase() + field.slice(1)} {orderIcon(field)} */}
                         {translations(`incomes.table.${field}`)} {orderIcon(field)}
@@ -136,7 +138,7 @@ export const IncomesTable = ({ tokens, incomes, catalogs, translations, userPref
                 </tr>
             ))) : (
                 <tr>
-                    <td colSpan="4" className="px-4 py-2 text-center text-gray-500 dark:text-gray-400">No hay instrumentos disponibles.</td>
+                    <td colSpan="6" className="px-4 py-2 text-center text-gray-500 dark:text-gray-400">{translations("incomes.no_incomes")}</td>
                 </tr>
             )}
             </tbody>
@@ -147,7 +149,6 @@ export const IncomesTable = ({ tokens, incomes, catalogs, translations, userPref
 
 const Incomes = () => {
     const translations = useTranslations();
-    const userPreferences = getUserPreferences();
     const [incomes, setIncomes] = useState([]);
     const [catalogs, setCatalogs] = useState({
         instrumentType: [],
