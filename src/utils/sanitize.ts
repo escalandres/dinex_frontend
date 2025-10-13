@@ -80,6 +80,8 @@ export function sanitizeInstrumentData(data: InstrumentFormData): InstrumentForm
     idInstrumentSubtype: data.idInstrumentSubtype,
     cutOffDay: data.cutOffDay,
     paymentDueDay: data.paymentDueDay,
+    creditLimit: data.creditLimit,
+    currentBalance: data.currentBalance
     // currency: sanitizeString(data.currency)
   };
 }

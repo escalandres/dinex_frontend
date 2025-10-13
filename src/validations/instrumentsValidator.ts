@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import { Asserts } from "yup";
 
 export const instrumentValidator = yup.object({
     description: yup.string()
@@ -21,10 +22,28 @@ export const instrumentValidator = yup.object({
     cutOffDay: yup.number()
         .min(1)
         .max(31)
-        .required("Cut-off day is required"),
+        .default(1), // Día 1 por defecto
 
     paymentDueDay: yup.number()
         .min(1)
         .max(31)
-        .required("Payment due day is required"),
+        .default(1), // Día 1 por defecto
+
+    creditLimit: yup.number()
+        .min(0, "Credit limit cannot be negative")
+        .nullable()
+        .transform((value, originalValue) =>
+            String(originalValue).trim() === "" ? null : value
+        )
+        .default(0), // Valor por defecto
+
+    currentBalance: yup.number()
+        .min(0, "Current balance cannot be negative")
+        .nullable()
+        .transform((value, originalValue) =>
+            String(originalValue).trim() === "" ? null : value
+        )
+        .default(0), // Valor por defecto
 });
+
+export type InstrumentFormData = Asserts<typeof instrumentValidator>;

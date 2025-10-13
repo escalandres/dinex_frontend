@@ -43,20 +43,10 @@ export const EditInstruments = ({ tokens, catalogs, instrument}: AddInstrumentsP
             setValue('description', instrument.description || '');
             setValue('idInstrumentType', instrument.type || null);
             setValue('idInstrumentSubtype', instrument.subtype || null);
-            setValue('cutOffDay', instrument.cut_off_day || 0);
-            setValue('paymentDueDay', instrument.payment_due_day || 0);
-            // const idInput = document.getElementById('idInstrument') as HTMLInputElement;
-            // idInput.value = instrument.id.toString();
-
-            // Configurar la moneda seleccionada
-            // if (instrument.currency) {
-            //     const selectedCurrency = catalogs?.currencies?.find(
-            //         curr => curr.id === instrument.currency
-            //     );
-            //     if (selectedCurrency) {
-            //         setCurrencySelected(selectedCurrency);
-            //     }
-            // }
+            setValue('cutOffDay', instrument.cutOffDay || 0);
+            setValue('paymentDueDay', instrument.paymentDueDay || 0);
+            setValue('creditLimit', instrument.creditLimit || 0);
+            setValue('currentBalance', instrument.currentBalance || 0);
 
             // Cargar el subtipo basado en el tipo de instrumento
             if (instrument.type) {

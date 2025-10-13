@@ -14,14 +14,16 @@ export interface AddInstrumentsProps {
         instrumentSubtypes: Array<{ id: number; id_instrument_type: number; name: string, color: string }>;
         currencies: Country[];
     };
-    instrument?: {
+    instrument: {
         id: number;
         currency: string;
         description: string;
         type: number;
         subtype: number;
-        cut_off_day: number;
-        payment_due_day: number;
+        cutOffDay: number;
+        paymentDueDay: number;
+        creditLimit: number;
+        currentBalance: number;
     };
 }
 
@@ -41,7 +43,7 @@ export interface EditInstrumentsProps {
         instrumentSubtypes: Array<{ id: number; id_instrument_type: number; name: string, color: string }>;
         currencies: Country[];
     };
-    instrument?: {
+    instrument: {
         id: number;
         currency: string;
         description: string;
@@ -49,6 +51,8 @@ export interface EditInstrumentsProps {
         idInstrumentSubtype: number;
         cutOffDay: number;
         paymentDueDay: number;
+        creditLimit: number;
+        currentBalance: number;
     };
 }
 
@@ -59,6 +63,8 @@ export type InstrumentPayload = {
     cut_off_day: number;
     payment_due_day: number;
     currency: string;
+    credit_limit: number;
+    current_balance: number;
 };
 
 export type BackendResponse = {
@@ -78,4 +84,6 @@ export interface InstrumentFormData {
     idInstrumentSubtype: number;
     cutOffDay: number;
     paymentDueDay: number;
+    creditLimit: number;
+    currentBalance: number;
 }

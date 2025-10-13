@@ -155,6 +155,22 @@
                 },
                 "currency": {
                     "label": "Select a currency"
+                },
+                "credit_limit": {
+                    "label": "Credit Limit",
+                    "placeholder": "Enter your card's credit limit"
+                },
+                "current_balance": {
+                    "label": "Current Balance",
+                    "placeholder": "Enter your card's current balance"
+                }
+            },
+            "sections": {
+                "general_info": "General Information",
+                "financial_info": "Financial Information",
+                "credit_card_info": {
+                    "title": "Credit Card Information",
+                    "subtitle": "Field the next information about your credit card."
                 }
             }
         },
