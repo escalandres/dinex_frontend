@@ -132,7 +132,7 @@ export const InstrumentsTable = ({ tokens, instruments, catalogs, translations }
                 </tr>
             ))) : (
                 <tr>
-                    <td colSpan="4" className="px-4 py-2 text-center text-gray-500 dark:text-gray-400">{translations("instruments.no_instruments")}</td>
+                    <td colSpan="5" className="px-4 py-2 text-center text-gray-500 dark:text-gray-400">{translations("instruments.no_instruments")}</td>
                 </tr>
             )}
             </tbody>
@@ -170,7 +170,8 @@ const Instruments = () => {
                 }
             });
             if (!response.ok) {
-                alerta.error('No se pudo obtener sus rastreadores. Inténtelo nuevamente.');
+                alerta.error('Error al obtener sus instrumentos. Inténtelo nuevamente.');
+                console.error('Error fetching instruments:', response.statusText);
                 return [];
             } else {
                 const data = await response.json();

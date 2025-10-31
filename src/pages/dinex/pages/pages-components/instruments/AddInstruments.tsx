@@ -2,7 +2,7 @@ import { useState } from 'react';
 import * as Dialog from "@radix-ui/react-dialog";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { alerta, showLoader, hideLoader } from '@pages/assets/js/utils';
+import { alerta, showLoader, hideLoader, formatCurrency } from '@pages/assets/js/utils';
 import { Plus } from 'lucide-react';
 import { CountrySelect } from '@pages/components/CountrySelect';
 import { sanitizeInstrumentData } from '@/utils/sanitize';
@@ -22,6 +22,8 @@ export const AddInstruments = ({ tokens, currency, catalogs }: AddInstrumentsPro
         name: currency.name ?? 'Pesos mexicanos',
         flag_icon: currency.flag_icon ?? 'mx.svg'
     });
+    const [creditLimitFormatted, setCreditLimitFormatted] = useState('');
+    const [currentBalanceFormatted, setCurrentBalanceFormatted] = useState('');
 
     const handleInstrumentTypeChange = (event) => {
         const instrumentType = event.target.value;
@@ -54,6 +56,9 @@ export const AddInstruments = ({ tokens, currency, catalogs }: AddInstrumentsPro
                 name: currency.name ?? 'Pesos mexicanos',
                 flag_icon: currency.flag_icon ?? 'mx.svg'
             });
+            setShowCreditCardSection(false);
+            setCreditLimitFormatted('');
+            setCurrentBalanceFormatted('');
         }
         setIsOpen(open);
     };
@@ -105,6 +110,28 @@ export const AddInstruments = ({ tokens, currency, catalogs }: AddInstrumentsPro
             alerta.autoError('Error al registrar el instrumento.');
         } finally {
             // setIsSubmitting(false); // Restablece el estado de envío
+        }
+    };
+
+    const handleCreditLimitChange = (value: string) => {
+        const numericValue = parseFloat(value);
+        if (!isNaN(numericValue)) {        
+            const countryPreferences = JSON.parse(localStorage.getItem('userPreferences')).country;
+            const language = localStorage.getItem('lang');
+            const formattedValue = formatCurrency(numericValue, currencySelected.id, language, countryPreferences);
+
+            setCreditLimitFormatted(formattedValue);
+        }
+    };
+
+    const handleCurrentBalanceChange = (value: string) => {
+        const numericValue = parseFloat(value);
+        if (!isNaN(numericValue)) {        
+            const countryPreferences = JSON.parse(localStorage.getItem('userPreferences')).country;
+            const language = localStorage.getItem('lang');
+            const formattedValue = formatCurrency(numericValue, currencySelected.id, language, countryPreferences);
+
+            setCurrentBalanceFormatted(formattedValue);
         }
     };
 
@@ -245,6 +272,7 @@ export const AddInstruments = ({ tokens, currency, catalogs }: AddInstrumentsPro
                                         <span className="block w-full h-px bg-gray-300 dark:bg-black-100"></span>
                                         <p className={`inline-block w-fit text-sm ${isDarkMode ? 'text-white bg-[#2C3339]' : 'bg-[#FBF9FA] text-black'} px-2 absolute -top-2 inset-x-0 mx-auto`}>{translations("instruments.forms.sections.credit_card_info.title")}</p>
                                     </div>
+                                    <br />
                                     {translations("instruments.forms.sections.credit_card_info.subtitle")}
                                     {/* Grid for cut off day and payment due day */}
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
@@ -299,16 +327,21 @@ export const AddInstruments = ({ tokens, currency, catalogs }: AddInstrumentsPro
                                             <input
                                                 id="creditLimit"
                                                 type="number"
-                                                min={1}
-                                                max={31}
+                                                step="0.01"
+                                                min={0}
                                                 className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md  placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                                                {...register("creditLimit")}
+                                                {...register("creditLimit", {
+                                                    onChange: (e) => {
+                                                        handleCreditLimitChange(e.target.value);
+                                                    }
+                                                })}
                                                 placeholder={translations("instruments.forms.fields.credit_limit.placeholder")}
                                             />
                                             </fieldset>
                                             {errors.creditLimit && (
                                                 <legend className="mt-1 text-sm field-error-message">{errors.creditLimit.message}</legend>
                                             )}
+                                            <legend className="mb-1 text-sm">{creditLimitFormatted}</legend>
                                         </div>
 
                                         <div className="space-y-2">
@@ -319,16 +352,21 @@ export const AddInstruments = ({ tokens, currency, catalogs }: AddInstrumentsPro
                                             <input
                                                 id="currentBalance"
                                                 type="number"
-                                                min={1}
-                                                max={31}
+                                                step="0.01"
+                                                min={0}
                                                 className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md  placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                                                {...register("currentBalance")}
+                                                {...register("currentBalance", {
+                                                    onChange: (e) => {
+                                                        handleCurrentBalanceChange(e.target.value);
+                                                    }
+                                                })}
                                                 placeholder={translations("instruments.forms.fields.current_balance.placeholder")}
                                             />
                                             </fieldset>
                                             {errors.currentBalance && (
                                                 <legend className="mt-1 text-sm field-error-message">{errors.currentBalance.message}</legend>
                                             )}
+                                            <legend className="mb-1 text-sm">{currentBalanceFormatted}</legend>
                                         </div>
                                     </div>
                                 </div>

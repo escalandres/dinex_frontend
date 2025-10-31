@@ -22,11 +22,17 @@ export const instrumentValidator = yup.object({
     cutOffDay: yup.number()
         .min(1)
         .max(31)
+        .transform((value, originalValue) =>
+            String(originalValue).trim() === "" ? null : value
+        )
         .default(1), // Día 1 por defecto
 
     paymentDueDay: yup.number()
         .min(1)
         .max(31)
+        .transform((value, originalValue) =>
+            String(originalValue).trim() === "" ? null : value
+        )
         .default(1), // Día 1 por defecto
 
     creditLimit: yup.number()
