@@ -24,7 +24,6 @@ export const AddInstruments = ({ tokens, currency, catalogs }: AddInstrumentsPro
     });
     const [creditLimitFormatted, setCreditLimitFormatted] = useState('');
     const [currentBalanceFormatted, setCurrentBalanceFormatted] = useState('');
-
     const handleInstrumentTypeChange = (event) => {
         const instrumentType = event.target.value;
         const subTypeCatalog = catalogs.instrumentSubtypes.filter((instrumentSubtype) => instrumentSubtype.id_instrument_type == instrumentType);
@@ -84,7 +83,7 @@ export const AddInstruments = ({ tokens, currency, catalogs }: AddInstrumentsPro
                     'X-CSRF-Token': tokens.csrfToken,
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ description: cleanData.description.trim(), type: cleanData.idInstrumentType, subtype: cleanData.idInstrumentSubtype, cut_off_day: cleanData.cutOffDay, payment_due_day: cleanData.paymentDueDay, currency: currencySelected.id }),
+                body: JSON.stringify({ description: cleanData.description.trim(), type: cleanData.idInstrumentType, subtype: cleanData.idInstrumentSubtype, cut_off_day: cleanData.cutOffDay, payment_due_day: cleanData.paymentDueDay, currency: currencySelected.id, credit_limit: cleanData.creditLimit, current_balance: cleanData.currentBalance }),
             });
             hideLoader();
 

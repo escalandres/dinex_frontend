@@ -8,6 +8,16 @@ import { Notification } from "../components/Notification";
 import { AddIncomes } from "./pages-components/Incomes/AddIncomes";
 import { EditIncomes } from "./pages-components/Incomes/EditIncomes";
 import { useTranslations } from '@translations/translations';
+import {
+    getMonthBoundaries,
+  differenceInDays,
+  addDays,
+  isDateInCurrentMonth,
+  getNextOccurrence,
+  hasOccurrenceInMonth
+
+} from '@utils/date';
+
 import "../dinex.css";
 import "../navbar.css";
 
@@ -72,7 +82,7 @@ export const IncomesTable = ({ tokens, incomes, catalogs, translations, userPref
 
     const getIncomeFrequency = (id) => {
         const frequency = catalogs.incomeFrequencies.find((frequency) => frequency.id === id);
-        return frequency ? frequency.name : '';
+        return frequency ? frequency.description : '';
     };
 
     // const getIncomeSourceColor = (id) => {
@@ -113,14 +123,14 @@ export const IncomesTable = ({ tokens, incomes, catalogs, translations, userPref
                 <td className="px-4 py-2 text-sm text-left text-gray-800 dark:text-gray-200">{item.description}</td>
                 <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-200">
                     {/* <span className="font-bold text-white text-center py-1 px-2 text-xs rounded" style={{ backgroundColor: getIncomeSourceColor(item.type) }}>{getIncomeSource(item.type)}</span> */}
-                    <span className="font-bold text-white text-center py-1 px-2 text-xs rounded">{getIncomeSource(item.type)}</span>
+                    <span className="font-bold text-white text-center py-1 px-2 text-xs rounded">{getIncomeSource(item.source)}</span>
                 </td>
                 <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-200">
                     <span className="font-bold text-white text-center py-1 px-2 text-xs rounded">{formatCurrency(item.amount, item.currency, userPreferences.language, userPreferences.country)}</span>
                 </td>
                 <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-200">
                     {/* <span className="font-bold text-white text-center py-1 px-2 text-xs rounded" style={{ backgroundColor: getIncomeFrequencyColor(item.subtype) }}>{getIncomeFrequency(item.subtype)}</span> */}
-                    <span className="font-bold text-white text-center py-1 px-2 text-xs rounded">{getIncomeFrequency(item.subtype)}</span>
+                    <span className="font-bold text-white text-center py-1 px-2 text-xs rounded">{getIncomeFrequency(item.frequency)}</span>
                 </td>
                 <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-200">
                     <div className="inline-block w-6 h-6 mr-1">
@@ -132,7 +142,7 @@ export const IncomesTable = ({ tokens, incomes, catalogs, translations, userPref
                 </td>
                 <td className="px-4 py-2 text-sm text-center space-x-2">
                     {/* <button type="button" className="!bg-green-500 hover:!bg-green-600 py-2 px-4 text-sm font-medium text-white border border-transparent rounded-lg focus:outline-none">{translations("incomes.actions.view")}</button> */}
-                    <EditIncomes instrument={item} catalogs={catalogs} tokens={tokens} currency={{ id: item.currency, flag_icon: () => getIncomeCurrency(item.currency) }} />
+                    <EditIncomes income={item} catalogs={catalogs} tokens={tokens} currency={{ id: item.currency, flag_icon: () => getIncomeCurrency(item.currency) }} />
                     {/* <button type="button" className="!bg-red-500 hover:!bg-red-700 py-2 px-4 text-sm font-medium text-white border border-transparent rounded-lg focus:outline-none">{translations("menus.delete")}</button> */}
                 </td>
                 </tr>
@@ -150,11 +160,9 @@ export const IncomesTable = ({ tokens, incomes, catalogs, translations, userPref
 const Incomes = () => {
     const translations = useTranslations();
     const [incomes, setIncomes] = useState([]);
-    const [catalogs, setCatalogs] = useState({
-        instrumentType: [],
-        instrumentSubtype: [],
-        currencies: []
-    });
+    const [catalogs, setCatalogs] = useState({});
+    const [monthlyTotal, setMonthlyTotal] = useState(0);
+    const [totalIncomes, setTotalIncomes] = useState(0);
     const { decoded, token, csrfToken } = decodeToken();
     if (!token) {
         window.location.href = '/login';
@@ -195,10 +203,74 @@ const Incomes = () => {
             const results = await getUserIncomes();
             setIncomes(results.userIncomes);
             setCatalogs(results.incomesCatalogs);
+
+            if (!incomes.length || !catalogs.incomeFrequencies.length) return;
+
+            const monthlyTotal = calculateThisMonthIncomes();
+            setMonthlyTotal(monthlyTotal);
+
+            const totalIncomes = calculateTotalIncomes();
+            setTotalIncomes(totalIncomes);
         };
 
         fetchData();
-    }, [getUserIncomes, setIncomes, setCatalogs]);
+        
+
+    }, [getUserIncomes]);
+
+    const calculateThisMonthIncomes = () => {
+        if (!incomes?.length || !catalogs?.incomeFrequencies?.length) return null;
+        const freqMap = new Map(catalogs.incomeFrequencies.map(f => [f.id, f.frequency_days]));
+
+        const thisMonthIncomes = incomes.filter(income => {
+            const freqDays = freqMap.get(income.frequency);
+            if (freqDays === undefined) return false;
+
+            const start = new Date(income.application_date);
+            if (isNaN(start.getTime())) return false;
+
+            if (freqDays === 0) {
+                return isDateInCurrentMonth(start);
+            }
+
+            return hasOccurrenceInMonth(start, freqDays);
+        });
+
+        console.log('This month incomes:', thisMonthIncomes);
+
+        const total = thisMonthIncomes.reduce((sum, income) => {
+            const freqDays = freqMap.get(income.frequency);
+            if (freqDays === undefined) return sum;
+
+            const isMultipliable = income.frequency >= 1 && income.frequency <= 3;
+            const multiplier = isMultipliable ? Math.floor(30 / freqDays) : 1;
+
+            return sum + parseFloat(income.amount_converted) * multiplier;
+        }, 0);
+        
+
+        return formatCurrency(
+            total,
+            userPreferences.currency.code,
+            userPreferences.language,
+            userPreferences.country
+        );
+    };
+
+    const calculateTotalIncomes = () => {
+        if (!incomes?.length || !catalogs?.incomeFrequencies?.length) return null;
+        const freqMap = new Map(catalogs.incomeFrequencies.map(f => [f.id, f.frequency_days]));
+        const total = incomes.reduce((sum, income) => {
+            const freqDays = freqMap.get(income.frequency);
+            if (freqDays === undefined) return sum;
+
+            const isMultipliable = income.frequency >= 1 && income.frequency <= 3;
+            const multiplier = isMultipliable ? Math.floor(30 / freqDays) : 1;
+
+            return sum + parseFloat(income.amount_converted) * multiplier;
+        }, 0);
+        return formatCurrency(total, userPreferences.currency.code, userPreferences.language, userPreferences.country);
+    }
 
     return (
         <div className="content-window flex h-screen w-full bg-gray-50 dark:bg-gray-900">
@@ -215,6 +287,12 @@ const Incomes = () => {
                 {/* Scrollable content */}
                 <div className="flex-grow overflow-y-auto p-4">
                     <h1 className="text-2xl font-bold mb-4">{translations("incomes.title")}</h1>
+                    <div className="grid grid-cols-4 gap-4">
+                        <div className="p-4 text-left">{translations("incomes.headers.this_month_incomes")}</div>
+                        <div className="p-4 text-right text-green-700 font-bold">{calculateThisMonthIncomes()}</div>
+                        <div className="p-4 text-left">{translations("incomes.headers.total_incomes")}</div>
+                        <div className="p-4 text-right text-green-700 font-bold">{catalogs != {} ? calculateTotalIncomes() : 0}</div>
+                    </div>
                     <IncomesTable incomes={incomes} catalogs={catalogs} translations={translations} tokens={tokens} userPreferences={userPreferences} />
                 </div>
             </div>

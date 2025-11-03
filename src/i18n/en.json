@@ -106,6 +106,20 @@
             }
         }
     },
+    "months": {
+        "january": "January",
+        "february": "February",
+        "march": "March",
+        "april": "April",
+        "may": "May",
+        "june": "June",
+        "july": "July",
+        "august": "August",
+        "september": "September",
+        "october": "October",
+        "november": "November",
+        "december": "December"
+    },
     "language": {
         "select_language": "Select Language",
         "english": "English",
@@ -203,6 +217,11 @@
             "add_incomes": "Add new income",
             "edit_incomes": "Edit"
         },
+        "headers": {
+            "incomes": "Incomes",
+            "this_month_incomes": "Your incomes this month",
+            "total_incomes": "Total incomes "
+        },
         "forms": {
             "title": "Add New Income",
             "description": "Register a new income to manage your finances.",
@@ -226,6 +245,10 @@
                 },
                 "currency": {
                     "label": "Select a currency"
+                },
+                "application_date": {
+                    "label": "Application Date",
+                    "placeholder": "Select the application date"
                 }
             }
         },

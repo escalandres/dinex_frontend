@@ -99,7 +99,8 @@ export function sanitizeIncomeData(data: IncomeFormData): IncomeFormData {
     description: sanitizeString(data.description),
     amount: data.amount,
     source: data.source,
-    frequency: data.frequency
+    frequency: data.frequency,
+    application_date: data.application_date
     // currency: sanitizeString(data.currency)
   };
 }

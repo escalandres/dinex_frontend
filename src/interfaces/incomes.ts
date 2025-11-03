@@ -78,4 +78,5 @@ export interface IncomeFormData {
     source: number;
     frequency: number;
     amount: number;
+    application_date: Date;
 }

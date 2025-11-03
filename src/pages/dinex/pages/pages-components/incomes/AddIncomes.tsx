@@ -10,8 +10,8 @@ import { BackendResponse, AddIncomesProps, Country, IncomeFormData } from '@inte
 import { incomeValidator } from '@validations/incomesValidator';
 import { useTranslations } from '@translations/translations';
 import { Info } from 'lucide-react';
-
-export const AddIncomes = ({ tokens, currency, catalogs, userPreferences }: AddIncomesProps) => {
+import { formatDateISO } from '@utils/date';
+export const AddIncomes = ({ tokens, currency, catalogs }: AddIncomesProps) => {
     const translations = useTranslations();
     const [isOpen, setIsOpen] = useState(false); // Estado para controlar la apertura y cierre del modal
     const [currencySelected, setCurrencySelected] = useState<Country>({
@@ -19,6 +19,8 @@ export const AddIncomes = ({ tokens, currency, catalogs, userPreferences }: AddI
         name: currency.name ?? 'Dólares estadounidenses',
         flag_icon: currency.flag_icon ?? 'us.svg'
     });
+    const [amountFormatted, setAmountFormatted] = useState('0.00');
+
     const [tooltipText, setTooltipText] = useState('');
     const handleOptionClick = (option) => {
         setCurrencySelected(option);
@@ -54,14 +56,14 @@ export const AddIncomes = ({ tokens, currency, catalogs, userPreferences }: AddI
             const cleanData = await sanitizeIncomeData(data);
             console.log('Sanitized Data:', cleanData);
             
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/incomes`, {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/incomes/`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${tokens.authToken}`,
                     'X-CSRF-Token': tokens.csrfToken,
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ description: cleanData.description.trim(), source: cleanData.source, frequency: cleanData.frequency, amount: cleanData.amount, currency: currencySelected.id }),
+                body: JSON.stringify({ description: cleanData.description.trim(), source: cleanData.source, frequency: cleanData.frequency, amount: cleanData.amount, currency: currencySelected.id, application_date: formatDateISO(cleanData.application_date) }),
             });
             hideLoader();
 
@@ -90,12 +92,14 @@ export const AddIncomes = ({ tokens, currency, catalogs, userPreferences }: AddI
         }
     };
 
-    const handleAmountFormatting = () => {
-        const amountInput = getValues("amount");
-        const currencyFormatted = document.getElementById("currencyFormatted") as HTMLElement;
+    const handleAmountFormatting = (value: string) => {
+        const numericValue = parseFloat(value);
+        if (!isNaN(numericValue)) {        
+            const countryPreferences = JSON.parse(localStorage.getItem('userPreferences')).country;
+            const language = localStorage.getItem('lang');
+            const formattedValue = formatCurrency(numericValue, currencySelected.id, language, countryPreferences);
 
-        if (amountInput && currencyFormatted) {
-            currencyFormatted.innerText = formatCurrency(amountInput, currencySelected.id, userPreferences.language, userPreferences.country);
+            setAmountFormatted(formattedValue);
         }
     };
 
@@ -236,17 +240,17 @@ export const AddIncomes = ({ tokens, currency, catalogs, userPreferences }: AddI
                                 <div className="space-y-2">
                                     <fieldset>
                                     <label htmlFor="amount" className="text-sm font-medium text-gray-700">
-                                        {translations("incomes.forms.fields.amount.label")}
+                                        {translations("incomes.forms.fields.amount.label")} *
                                     </label>
                                     <input
                                         id="amount"
                                         type="number"
+                                        step="0.01"
                                         min={1}
-                                        max={31}
                                         className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md  placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                                         {...register("amount", {
-                                            onChange: () => {
-                                                handleAmountFormatting();
+                                            onChange: (e) => {
+                                                handleAmountFormatting(e.target.value);
                                             }
                                         })}
                                         placeholder={translations("incomes.forms.fields.amount.placeholder")}
@@ -255,15 +259,22 @@ export const AddIncomes = ({ tokens, currency, catalogs, userPreferences }: AddI
                                     {errors.amount && (
                                         <legend className="mt-1 text-sm field-error-message">{errors.amount.message}</legend>
                                     )}
+                                    <legend className="mb-1 text-sm">{amountFormatted}</legend>
                                 </div>
                                 <div className="space-y-2">
                                     <fieldset>
                                         <label htmlFor="currency" className="text-sm font-medium text-gray-700">
-                                            {translations("incomes.forms.fields.amount.label")}
+                                            {translations("incomes.forms.fields.application_date.label")} *
                                         </label>
-                                        <span id="currencyFormatted" className="mt-2 w-full px-3 py-2 rounded-md  placeholder-gray-400 flex items-center">
-                                            
-                                        </span>
+                                        <input
+                                            id="application_date"
+                                            type="date"
+                                            className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md  placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                            {...register("application_date")}
+                                        />
+                                        {errors.application_date && (
+                                            <legend className="mt-1 text-sm field-error-message">{errors.application_date.message}</legend>
+                                        )}
                                     </fieldset>
                                 </div>
                             </div>

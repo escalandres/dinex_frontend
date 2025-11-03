@@ -13,6 +13,20 @@
         "logout": "Cerrar sesión",
         "subscriptions": "Suscripciones"
     },
+    "months": {
+        "january": "Enero",
+        "february": "Febrero",
+        "march": "Marzo",
+        "april": "Abril",
+        "may": "Mayo",
+        "june": "Junio",
+        "july": "Julio",
+        "august": "Agosto",
+        "september": "Septiembre",
+        "october": "Octubre",
+        "november": "Noviembre",
+        "december": "Diciembre"
+    },
     "language": {
         "select_language": "Seleccionar Idioma",
         "english": "Inglés",
@@ -203,6 +217,11 @@
             "add_incomes": "Añadir Ingreso",
             "edit_incomes": "Editar"
         },
+        "headers": {
+            "incomes": "Ingresos",
+            "this_month_incomes": "Sus ingresos de este mes",
+            "total_incomes": "Total de ingresos"
+        },
         "forms": {
             "title": "Añadir Nuevo Ingreso",
             "description": "Registra un nuevo ingreso para gestionar sus finanzas.",
@@ -226,6 +245,14 @@
                 },
                 "currency": {
                     "label": "Selecciona una moneda"
+                },
+                "application_date": {
+                    "label": "Fecha de aplicación",
+                    "placeholder": "Seleccione la fecha de aplicación"
+                },
+                "taxes": {
+                    "label": "Impuestos aplicables",
+                    "placeholder": "Seleccione los impuestos aplicables"
                 }
             }
         },

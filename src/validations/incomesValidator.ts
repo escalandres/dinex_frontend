@@ -21,4 +21,8 @@ export const incomeValidator = yup.object({
     amount: yup.number()
         .min(0.01, "Amount must be at least 0.01")
         .required("Amount is required"),
+
+    application_date: yup.date()
+        .typeError("Application date must be a valid date")
+        .required("Application date is required"),
 });
