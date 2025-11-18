@@ -205,7 +205,7 @@ const Instruments = () => {
             {/* Main content */}
             <div className="flex flex-col flex-grow">
                 {/* Navbar */}
-                <div className="h-16">
+                <div className="h-16 z-1000">
                     <Navbar user={decoded.user} tokens={tokens} catalogs={catalogs} />
                 </div>
                 {/* Scrollable content */}
