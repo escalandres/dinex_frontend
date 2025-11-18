@@ -8,7 +8,7 @@ import { Sidebar } from "../components/Sidebar";
 
 import "../dinex.css";
 
-const Gastos = () => {
+const Expenses = () => {
     // const token = localStorage.getItem('token');
     // const decoded = jwtDecode(token);
 
@@ -25,4 +25,4 @@ const Gastos = () => {
     );
 };
 
-export default Gastos;
+export default Expenses;

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { alerta, showLoader, hideLoader, formatCurrency } from '@pages/assets/js/utils';
+import { alerta, showLoader, hideLoader, formatCurrency, generateColors } from '@pages/assets/js/utils';
 import { decodeToken, getUserPreferences } from '@components/auth';
 import { Sidebar } from "../components/Sidebar";
 import { VARIABLES } from '@pages/assets/js/utils';
@@ -8,6 +8,9 @@ import { Notification } from "../components/Notification";
 import { AddIncomes } from "./pages-components/Incomes/AddIncomes";
 import { EditIncomes } from "./pages-components/Incomes/EditIncomes";
 import { useTranslations } from '@translations/translations';
+import { DonutChart, DonutChartWithFilters } from '@pages/dinex/components/Charts/DonutChart';
+import { HorizontalBarChart } from '@pages/dinex/components/Charts/HorizontalBarChart';
+import { PieChart } from '@pages/dinex/components/Charts/PieChart';
 import {
     getMonthBoundaries,
   differenceInDays,
@@ -15,7 +18,6 @@ import {
   isDateInCurrentMonth,
   getNextOccurrence,
   hasOccurrenceInMonth
-
 } from '@utils/date';
 
 import "../dinex.css";
@@ -120,31 +122,31 @@ export const IncomesTable = ({ tokens, incomes, catalogs, translations, userPref
             <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
             { data && data.length > 0 ? ( data.map((item) => (
                 <tr key={item.id}>
-                <td className="px-4 py-2 text-sm text-left text-gray-800 dark:text-gray-200">{item.description}</td>
-                <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-200">
-                    {/* <span className="font-bold text-white text-center py-1 px-2 text-xs rounded" style={{ backgroundColor: getIncomeSourceColor(item.type) }}>{getIncomeSource(item.type)}</span> */}
-                    <span className="font-bold text-white text-center py-1 px-2 text-xs rounded">{getIncomeSource(item.source)}</span>
-                </td>
-                <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-200">
-                    <span className="font-bold text-white text-center py-1 px-2 text-xs rounded">{formatCurrency(item.amount, item.currency, userPreferences.language, userPreferences.country)}</span>
-                </td>
-                <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-200">
-                    {/* <span className="font-bold text-white text-center py-1 px-2 text-xs rounded" style={{ backgroundColor: getIncomeFrequencyColor(item.subtype) }}>{getIncomeFrequency(item.subtype)}</span> */}
-                    <span className="font-bold text-white text-center py-1 px-2 text-xs rounded">{getIncomeFrequency(item.frequency)}</span>
-                </td>
-                <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-200">
-                    <div className="inline-block w-6 h-6 mr-1">
-                        <img src={getIncomeCurrency(item.currency).flag} alt={item.currency} className="inline-block w-6 h-6 ml-1" />
-                    </div>
-                    <span className="font-bold text-white text-center py-1 px-2 text-xs rounded">
-                        {item.currency}
-                    </span>
-                </td>
-                <td className="px-4 py-2 text-sm text-center space-x-2">
-                    {/* <button type="button" className="!bg-green-500 hover:!bg-green-600 py-2 px-4 text-sm font-medium text-white border border-transparent rounded-lg focus:outline-none">{translations("incomes.actions.view")}</button> */}
-                    <EditIncomes income={item} catalogs={catalogs} tokens={tokens} currency={{ id: item.currency, flag_icon: () => getIncomeCurrency(item.currency) }} />
-                    {/* <button type="button" className="!bg-red-500 hover:!bg-red-700 py-2 px-4 text-sm font-medium text-white border border-transparent rounded-lg focus:outline-none">{translations("menus.delete")}</button> */}
-                </td>
+                    <td className="px-4 py-2 text-sm text-left">{item.description}</td>
+                    <td className="px-4 py-2 text-sm">
+                        {/* <span className="font-bold text-white text-center py-1 px-2 text-xs rounded" style={{ backgroundColor: getIncomeSourceColor(item.type) }}>{getIncomeSource(item.type)}</span> */}
+                        <span className="font-bold text-center py-1 px-2 text-xs rounded">{getIncomeSource(item.source)}</span>
+                    </td>
+                    <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-200">
+                        <span className="text-center py-1 px-2 text-xs rounded">{formatCurrency(item.amount, item.currency, userPreferences.language, userPreferences.country)}</span>
+                    </td>
+                    <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-200">
+                        {/* <span className="font-bold text-white text-center py-1 px-2 text-xs rounded" style={{ backgroundColor: getIncomeFrequencyColor(item.subtype) }}>{getIncomeFrequency(item.subtype)}</span> */}
+                        <span className="text-center py-1 px-2 text-xs rounded">{getIncomeFrequency(item.frequency)}</span>
+                    </td>
+                    <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-200">
+                        <div className="inline-block w-6 h-6 mr-1">
+                            <img src={getIncomeCurrency(item.currency).flag} alt={item.currency} className="inline-block w-6 h-6 ml-1" />
+                        </div>
+                        <span className="font-bold text-center py-1 px-2 text-xs rounded">
+                            {item.currency}
+                        </span>
+                    </td>
+                    <td className="px-4 py-2 text-sm text-center space-x-2">
+                        {/* <button type="button" className="!bg-green-500 hover:!bg-green-600 py-2 px-4 text-sm font-medium text-white border border-transparent rounded-lg focus:outline-none">{translations("incomes.actions.view")}</button> */}
+                        <EditIncomes income={item} catalogs={catalogs} tokens={tokens} currency={{ id: item.currency, flag_icon: () => getIncomeCurrency(item.currency) }} />
+                        {/* <button type="button" className="!bg-red-500 hover:!bg-red-700 py-2 px-4 text-sm font-medium text-white border border-transparent rounded-lg focus:outline-none">{translations("menus.delete")}</button> */}
+                    </td>
                 </tr>
             ))) : (
                 <tr>
@@ -272,6 +274,179 @@ const Incomes = () => {
         return formatCurrency(total, userPreferences.currency.code, userPreferences.language, userPreferences.country);
     }
 
+    const calculateIncomesBySource = () => {
+        if (!incomes?.length || !catalogs?.incomeFrequencies?.length || !catalogs?.incomeSources?.length) {
+            return { series: [], labels: [] };
+        }
+
+        const freqMap = new Map(catalogs.incomeFrequencies.map(f => [f.id, f.frequency_days]));
+        const sourceMap = new Map(catalogs.incomeSources.map(s => [s.id, s.source]));
+
+        // Filter this month incomes only
+        const thisMonthIncomes = incomes.filter(income => {
+            const freqDays = freqMap.get(income.frequency);
+            if (freqDays === undefined) return false;
+            const start = new Date(income.application_date);
+            if (isNaN(start.getTime())) return false;
+            if (freqDays === 0) {
+                return isDateInCurrentMonth(start);
+            }
+            return hasOccurrenceInMonth(start, freqDays);
+        });
+
+        // Group by source and calculate totals
+        const groupedBySources = thisMonthIncomes.reduce((acc, income) => {
+            const sourceId = income.source;
+            const freqDays = freqMap.get(income.frequency);
+            
+            if (freqDays === undefined) return acc;
+
+            // Calcular el monto considerando la frecuencia
+            const isMultipliable = income.frequency >= 1 && income.frequency <= 3;
+            const multiplier = isMultipliable ? Math.floor(30 / freqDays) : 1;
+            const amount = parseFloat(income.amount_converted) * multiplier;
+
+            // Acumular por source
+            if (!acc[sourceId]) {
+                acc[sourceId] = {
+                    total: 0,
+                    label: sourceMap.get(sourceId) || `Source ${sourceId}`
+                };
+            }
+            
+            acc[sourceId].total += amount;
+            
+            return acc;
+        }, {});
+
+        // Convert data into arrays for chart
+        const series = [];
+        const labels = [];
+
+        Object.entries(groupedBySources).forEach(([sourceId, data]) => {
+            // Round to 2 decimals
+            series.push(Math.round(data.total * 100) / 100);
+            labels.push(data.label);
+        });
+
+        return { series, labels };
+    };
+
+    const calculateIndividualIncomes = () => {
+        if (!incomes?.length || !catalogs?.incomeFrequencies?.length || !catalogs?.incomeSources?.length) {
+            return [];
+        }
+        
+        const freqMap = new Map(catalogs.incomeFrequencies.map(f => [f.id, f.frequency_days]));
+        const sourceMap = new Map(catalogs.incomeSources.map(s => [s.id, s.source]));
+        
+        // Filter this month incomes only
+        const thisMonthIncomes = incomes.filter(income => {
+            const freqDays = freqMap.get(income.frequency);
+            if (freqDays === undefined) return false;
+            const start = new Date(income.application_date);
+            if (isNaN(start.getTime())) return false;
+            if (freqDays === 0) {
+                return isDateInCurrentMonth(start);
+            }
+            return hasOccurrenceInMonth(start, freqDays);
+        });
+        
+        // Map each income individual with its calculated amount
+        const individualIncomes = thisMonthIncomes.map(income => {
+            const freqDays = freqMap.get(income.frequency);
+            const sourceName = sourceMap.get(income.source) || `Source ${income.source}`;
+            
+            // Calculate the amount considering the frequency
+            const isMultipliable = income.frequency >= 1 && income.frequency <= 3;
+            const multiplier = isMultipliable ? Math.floor(30 / freqDays) : 1;
+            const amount = parseFloat(income.amount_converted) * multiplier;
+            
+            return {
+                label: income.description, // Use income description
+                value: Math.round(amount * 100) / 100, // Round to 2 decimals
+                source: sourceName, // For if you want to show the source type
+                originalIncome: income // Save the original object in case you need it later
+            };
+        });
+        
+        // Order by amount from highest to lowest
+        individualIncomes.sort((a, b) => b.value - a.value);
+        
+        return individualIncomes;
+    };
+
+    const calculateIncomesByCurrency = () => {
+        if (!incomes?.length || !catalogs?.incomeFrequencies?.length || !catalogs?.currencies?.length) {
+            return { series: [], labels: [] };
+        }
+        
+        const freqMap = new Map(catalogs.incomeFrequencies.map(f => [f.id, f.frequency_days]));
+        const currencyMap = new Map(catalogs.currencies.map(c => [c.id, c.name]));
+        
+        // Filter this month incomes only
+        const thisMonthIncomes = incomes.filter(income => {
+            const freqDays = freqMap.get(income.frequency);
+            if (freqDays === undefined) return false;
+            const start = new Date(income.application_date);
+            if (isNaN(start.getTime())) return false;
+            if (freqDays === 0) {
+                return isDateInCurrentMonth(start);
+            }
+            return hasOccurrenceInMonth(start, freqDays);
+        });
+        
+        // Group by currency and calculate totals (in the converted currency)
+        const groupedByCurrency = thisMonthIncomes.reduce((acc, income) => {
+            const currencyCode = income.currency;
+            const freqDays = freqMap.get(income.frequency);
+            
+            if (freqDays === undefined) return acc;
+            
+            // Calculate the amount considering the frequency
+            const isMultipliable = income.frequency >= 1 && income.frequency <= 3;
+            const multiplier = isMultipliable ? Math.floor(30 / freqDays) : 1;
+            const amount = parseFloat(income.amount_converted) * multiplier;
+            
+            // Accumulate by currency
+            if (!acc[currencyCode]) {
+                acc[currencyCode] = {
+                    total: 0,
+                    label: currencyMap.get(currencyCode) || currencyCode
+                };
+            }
+            
+            acc[currencyCode].total += amount;
+            
+            return acc;
+        }, {});
+        
+        // Calculate the total amount
+        const totalAmount = Object.values(groupedByCurrency).reduce((sum, curr) => sum + curr.total, 0);
+        
+        // Convert to arrays and calculate percentages
+        const series = [];
+        const labels = [];
+        
+        Object.entries(groupedByCurrency).forEach(([currencyCode, data]) => {
+            const percentage = (data.total / totalAmount) * 100;
+            series.push(Math.round(percentage * 100) / 100); // Round to 2 decimals
+            labels.push(`${data.label} (${currencyCode})`);
+        });
+        
+        return { series, labels };
+    };
+
+    const { series, labels } = calculateIncomesBySource();
+
+    const incomeData = calculateIndividualIncomes();
+
+    const { series: seriesCurrency, labels: labelsCurrency } = calculateIncomesByCurrency();
+
+    console.log('Incomes by Source - Series:', series, 'Labels:', labels);
+    console.log('Individual Incomes Data:', incomeData);
+    console.log('Incomes by Currency - Series:', seriesCurrency, 'Labels:', labelsCurrency);
+
     return (
         <div className="content-window flex h-screen w-full bg-gray-50 dark:bg-gray-900">
             {/* Sidebar */}
@@ -281,12 +456,90 @@ const Incomes = () => {
             {/* Main content */}
             <div className="flex flex-col flex-grow">
                 {/* Navbar */}
-                <div className="h-16">
+                <div className="h-16 z-1000">
                     <Navbar user={decoded.user} tokens={tokens} catalogs={catalogs} />
                 </div>
                 {/* Scrollable content */}
                 <div className="flex-grow overflow-y-auto p-4">
                     <h1 className="text-2xl font-bold mb-4">{translations("incomes.title")}</h1>
+                    <div className="grid grid-cols-2 gap-4 mb-4">
+                        <DonutChart
+                            title={translations("incomes.headers.this_month_incomes")}
+                            series={series}
+                            labels={labels}
+                            colors={generateColors(series.length)}
+                            totalLabel={translations("incomes.headers.total_incomes")}
+                            valueFormatter={(value) => formatCurrency(
+                                value,
+                                userPreferences.currency.code,
+                                userPreferences.language,
+                                userPreferences.country
+                            )}
+                            totalFormatter={(sum) => formatCurrency(
+                                sum,
+                                userPreferences.currency.code,
+                                userPreferences.language,
+                                userPreferences.country
+                            )}
+                            timeRangeLabel="This month"
+                            actionLabel="Full Report"
+                            onDownload={() => alert('Downloading sales data...')}
+                            onActionClick={() => alert('Opening full report...')}
+                        />
+                        {/* <DonutChartWithFilters
+                            title="Website Traffic"
+                            defaultSeries={[35.1, 23.5, 2.4, 5.4]}
+                            labels={["Direct", "Sponsor", "Affiliate", "Email"]}
+                            colors={["#1C64F2", "#16BDCA", "#FDBA8C", "#E74694"]}
+                            totalLabel="Unique visitors"
+                            valueFormatter={(value) => `${value}k`}
+                            totalFormatter={(sum) => `$${sum}k`}
+                            filters={[
+                                { id: 'desktop', label: 'Desktop', series: [15.1, 22.5, 4.4, 8.4] },
+                                { id: 'tablet', label: 'Tablet', series: [25.1, 26.5, 1.4, 3.4] },
+                                { id: 'mobile', label: 'Mobile', series: [45.1, 27.5, 8.4, 2.4] }
+                            ]}
+                            timeRangeLabel="Last 7 days"
+                            actionLabel="Traffic Analysis"
+                            onFilterChange={(filterId, series) => {
+                                console.log('Filter changed:', filterId, series);
+                            }}
+                            onDownload={(series, filter) => {
+                                alert(`Downloading data for filter: ${filter || 'all'}`);
+                            }}
+                        /> */}
+                        <PieChart
+                            title="Ingresos por Divisa"
+                            series={seriesCurrency}
+                            labels={labelsCurrency}
+                            colors={generateColors(seriesCurrency.length, true)}
+                            timeRangeLabel="Mes actual"
+                            actionLabel="Ver detalles"
+                            showPercentage={true}
+                        />
+                        <HorizontalBarChart
+                            title="Ingresos de Noviembre"
+                            data={incomeData}
+                            colors={generateColors(incomeData.length)}
+                            valueFormatter={(value) => formatCurrency(
+                                value,
+                                userPreferences.currency.code,
+                                userPreferences.language,
+                                userPreferences.country
+                            )}
+                            timeRangeLabel="Mes actual"
+                            actionLabel="Ver todos los ingresos"
+                            onBarClick={(item, index) => {
+                                console.log('Clicked on:', item);
+                                alert(`Seleccionaste: ${item.label} - ${formatCurrency(item.value)}`);
+                            }}
+                            onDownload={(data) => {
+                                console.log('Downloading data:', data);
+                                alert('Descargando datos...');
+                            }}
+                            className="lg:col-span-2"
+                            />
+                    </div>
                     <div className="grid grid-cols-4 gap-4">
                         <div className="p-4 text-left">{translations("incomes.headers.this_month_incomes")}</div>
                         <div className="p-4 text-right text-green-700 font-bold">{calculateThisMonthIncomes()}</div>

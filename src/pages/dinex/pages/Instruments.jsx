@@ -120,7 +120,7 @@ export const InstrumentsTable = ({ tokens, instruments, catalogs, translations }
                     <div className="inline-block w-6 h-6 mr-1">
                         <img src={getInstrumentCurrency(item.currency).flag} alt={item.currency} className="inline-block w-6 h-6 ml-1" />
                     </div>
-                    <span className="font-bold text-white text-center py-1 px-2 text-xs rounded">
+                    <span className="font-bold text-center py-1 px-2 text-xs rounded">
                         {item.currency}
                     </span>
                 </td>
