@@ -12,12 +12,8 @@ import { DonutChart, DonutChartWithFilters } from '@pages/dinex/components/Chart
 import { HorizontalBarChart } from '@pages/dinex/components/Charts/HorizontalBarChart';
 import { PieChart } from '@pages/dinex/components/Charts/PieChart';
 import {
-    getMonthBoundaries,
-  differenceInDays,
-  addDays,
-  isDateInCurrentMonth,
-  getNextOccurrence,
-  hasOccurrenceInMonth
+    isDateInCurrentMonth,
+    hasOccurrenceInMonth
 } from '@utils/date';
 
 import "../dinex.css";
@@ -486,28 +482,6 @@ const Incomes = () => {
                             onDownload={() => alert('Downloading sales data...')}
                             onActionClick={() => alert('Opening full report...')}
                         />
-                        {/* <DonutChartWithFilters
-                            title="Website Traffic"
-                            defaultSeries={[35.1, 23.5, 2.4, 5.4]}
-                            labels={["Direct", "Sponsor", "Affiliate", "Email"]}
-                            colors={["#1C64F2", "#16BDCA", "#FDBA8C", "#E74694"]}
-                            totalLabel="Unique visitors"
-                            valueFormatter={(value) => `${value}k`}
-                            totalFormatter={(sum) => `$${sum}k`}
-                            filters={[
-                                { id: 'desktop', label: 'Desktop', series: [15.1, 22.5, 4.4, 8.4] },
-                                { id: 'tablet', label: 'Tablet', series: [25.1, 26.5, 1.4, 3.4] },
-                                { id: 'mobile', label: 'Mobile', series: [45.1, 27.5, 8.4, 2.4] }
-                            ]}
-                            timeRangeLabel="Last 7 days"
-                            actionLabel="Traffic Analysis"
-                            onFilterChange={(filterId, series) => {
-                                console.log('Filter changed:', filterId, series);
-                            }}
-                            onDownload={(series, filter) => {
-                                alert(`Downloading data for filter: ${filter || 'all'}`);
-                            }}
-                        /> */}
                         <PieChart
                             title="Ingresos por Divisa"
                             series={seriesCurrency}
@@ -517,6 +491,8 @@ const Incomes = () => {
                             actionLabel="Ver detalles"
                             showPercentage={true}
                         />
+                    </div>
+                    <div className="grid grid-cols-1 mb-4">
                         <HorizontalBarChart
                             title="Ingresos de Noviembre"
                             data={incomeData}
@@ -540,12 +516,12 @@ const Incomes = () => {
                             className="lg:col-span-2"
                             />
                     </div>
-                    <div className="grid grid-cols-4 gap-4">
+                    {/* <div className="grid grid-cols-4 gap-4">
                         <div className="p-4 text-left">{translations("incomes.headers.this_month_incomes")}</div>
                         <div className="p-4 text-right text-green-700 font-bold">{calculateThisMonthIncomes()}</div>
                         <div className="p-4 text-left">{translations("incomes.headers.total_incomes")}</div>
                         <div className="p-4 text-right text-green-700 font-bold">{catalogs != {} ? calculateTotalIncomes() : 0}</div>
-                    </div>
+                    </div> */}
                     <IncomesTable incomes={incomes} catalogs={catalogs} translations={translations} tokens={tokens} userPreferences={userPreferences} />
                 </div>
             </div>
