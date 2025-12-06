@@ -185,6 +185,10 @@
                 "credit_card_info": {
                     "title": "Información de la Tarjeta de Crédito",
                     "subtitle": "Llena la siguiente información de tu tarjeta de crédito."
+                },
+                "saving_account": {
+                    "title": "Información de la Cuenta de Ahorro",
+                    "subtitle": "Llena la siguiente información de tu cuenta de ahorro."
                 }
             }
         },

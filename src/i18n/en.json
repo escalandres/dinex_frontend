@@ -184,7 +184,11 @@
                 "financial_info": "Financial Information",
                 "credit_card_info": {
                     "title": "Credit Card Information",
-                    "subtitle": "Field the next information about your credit card."
+                    "subtitle": "Fill the next information about your credit card."
+                },
+                "saving_account": {
+                    "title": "Saving Account Information",
+                    "subtitle": "Fill the next info about your saving account."
                 }
             }
         },

@@ -10,12 +10,24 @@ import { BackendResponse, AddInstrumentsProps, Country, InstrumentFormData } fro
 import { instrumentValidator } from '@validations/instrumentsValidator';
 import { useTranslations } from '@translations/translations';
 
+const INSTRUMENT_TYPES = {
+    SAVINGS: {
+        ID: 1,
+        SAVING_ACCOUNT: 1
+    },
+    EXPENSES: {
+        ID: 2,
+        CREDIT_CARD: 4
+    }
+}
+
 export const AddInstruments = ({ tokens, currency, catalogs }: AddInstrumentsProps) => {
     const translations = useTranslations();
     const [subTypeCatalog, setSubtypeCatalog] = useState([]);
     const [isTypeSelected, setIsTypeSelected] = useState(false);
     const [isOpen, setIsOpen] = useState(false); // Estado para controlar la apertura y cierre del modal
     const [showCreditCardSection, setShowCreditCardSection] = useState(false);
+    const [showSavingAccountSection, setShowSavingAccountSection] = useState(false);
     const [isDarkMode, setIsDarkMode] = useState(localStorage.theme === 'dark');
     const [currencySelected, setCurrencySelected] = useState<Country>({
         id: currency.id ?? 'MXN',
@@ -56,6 +68,7 @@ export const AddInstruments = ({ tokens, currency, catalogs }: AddInstrumentsPro
                 flag_icon: currency.flag_icon ?? 'mx.svg'
             });
             setShowCreditCardSection(false);
+            setShowCreditCardSection(false);
             setCreditLimitFormatted('');
             setCurrentBalanceFormatted('');
         }
@@ -64,8 +77,12 @@ export const AddInstruments = ({ tokens, currency, catalogs }: AddInstrumentsPro
 
     const handleInstrumentSubtypeChange = () => {
         // const instrumentSubtype = event.target.value;
-        if(Number.parseInt((document.getElementById('instrumentType') as HTMLSelectElement).value) === 2 && Number.parseInt((document.getElementById('instrumentSubtype') as HTMLSelectElement).value) === 4) {
+        if(Number.parseInt((document.getElementById('instrumentType') as HTMLSelectElement).value) === INSTRUMENT_TYPES.EXPENSES.ID && Number.parseInt((document.getElementById('instrumentSubtype') as HTMLSelectElement).value) === INSTRUMENT_TYPES.EXPENSES.CREDIT_CARD) {
             setShowCreditCardSection(true);
+        }
+
+        if(Number.parseInt((document.getElementById('instrumentType') as HTMLSelectElement).value) === INSTRUMENT_TYPES.SAVINGS.ID && Number.parseInt((document.getElementById('instrumentSubtype') as HTMLSelectElement).value) === INSTRUMENT_TYPES.SAVINGS.SAVING_ACCOUNT) {
+            setShowSavingAccountSection(true);
         }
     };
 
@@ -264,12 +281,119 @@ export const AddInstruments = ({ tokens, currency, catalogs }: AddInstrumentsPro
                                 </div>
                             </div>
 
-                            { /* Solo mostrar si el tipo de instrumento es tarjeta de crédito (id = 2) */
+                            { /* Solo mostrar si el tipo de instrumento es tarjeta de crédito */
                             (showCreditCardSection) && (
                                 <div className="p-4 space-y-4">
                                     <div className="relative">
                                         <span className="block w-full h-px bg-gray-300 dark:bg-black-100"></span>
                                         <p className={`inline-block w-fit text-sm ${isDarkMode ? 'text-white bg-[#2C3339]' : 'bg-[#FBF9FA] text-black'} px-2 absolute -top-2 inset-x-0 mx-auto`}>{translations("instruments.forms.sections.credit_card_info.title")}</p>
+                                    </div>
+                                    <br />
+                                    {translations("instruments.forms.sections.credit_card_info.subtitle")}
+                                    {/* Grid for cut off day and payment due day */}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                                        <div className="space-y-2">
+                                            <fieldset>
+                                            <label htmlFor="cutOffDay" className="text-sm font-medium text-gray-700">
+                                                {translations("instruments.forms.fields.cut_off_day.label")}
+                                            </label>
+                                            <input
+                                                id="cutOffDay"
+                                                type="number"
+                                                min={1}
+                                                max={31}
+                                                className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md  placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                                {...register("cutOffDay")}
+                                                placeholder={translations("instruments.forms.fields.cut_off_day.placeholder")}
+                                            />
+                                            </fieldset>
+                                            {errors.cutOffDay && (
+                                                <legend className="mt-1 text-sm field-error-message">{errors.cutOffDay.message}</legend>
+                                            )}
+                                        </div>
+
+                                        <div className="space-y-2">
+                                            <fieldset>
+                                            <label htmlFor="paymentDueDay" className="text-sm font-medium text-gray-700">
+                                                {translations("instruments.forms.fields.payment_due_day.label")}
+                                            </label>
+                                            <input
+                                                id="paymentDueDay"
+                                                type="number"
+                                                min={1}
+                                                max={31}
+                                                className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md  placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                                {...register("paymentDueDay")}
+                                                placeholder={translations("instruments.forms.fields.payment_due_day.placeholder")}
+                                            />
+                                            </fieldset>
+                                            {errors.paymentDueDay && (
+                                                <legend className="mt-1 text-sm field-error-message">{errors.paymentDueDay.message}</legend>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    {/* Grid for credit limit and current balance */}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div className="space-y-2">
+                                            <fieldset>
+                                            <label htmlFor="creditLimit" className="text-sm font-medium text-gray-700">
+                                                {translations("instruments.forms.fields.credit_limit.label")}
+                                            </label>
+                                            <input
+                                                id="creditLimit"
+                                                type="number"
+                                                step="0.01"
+                                                min={0}
+                                                className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md  placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                                {...register("creditLimit", {
+                                                    onChange: (e) => {
+                                                        handleCreditLimitChange(e.target.value);
+                                                    }
+                                                })}
+                                                placeholder={translations("instruments.forms.fields.credit_limit.placeholder")}
+                                            />
+                                            </fieldset>
+                                            {errors.creditLimit && (
+                                                <legend className="mt-1 text-sm field-error-message">{errors.creditLimit.message}</legend>
+                                            )}
+                                            <legend className="mb-1 text-sm">{creditLimitFormatted}</legend>
+                                        </div>
+
+                                        <div className="space-y-2">
+                                            <fieldset>
+                                            <label htmlFor="currentBalance" className="text-sm font-medium text-gray-700">
+                                                {translations("instruments.forms.fields.current_balance.label")}
+                                            </label>
+                                            <input
+                                                id="currentBalance"
+                                                type="number"
+                                                step="0.01"
+                                                min={0}
+                                                className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md  placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                                {...register("currentBalance", {
+                                                    onChange: (e) => {
+                                                        handleCurrentBalanceChange(e.target.value);
+                                                    }
+                                                })}
+                                                placeholder={translations("instruments.forms.fields.current_balance.placeholder")}
+                                            />
+                                            </fieldset>
+                                            {errors.currentBalance && (
+                                                <legend className="mt-1 text-sm field-error-message">{errors.currentBalance.message}</legend>
+                                            )}
+                                            <legend className="mb-1 text-sm">{currentBalanceFormatted}</legend>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            { /* Solo mostrar si el tipo de instrumento es cuenta de ahorros */
+                            (showSavingAccountSection) && (
+                                <div className="p-4 space-y-4">
+                                    <div className="relative">
+                                        <span className="block w-full h-px bg-gray-300 dark:bg-black-100"></span>
+                                        <p className={`inline-block w-fit text-sm ${isDarkMode ? 'text-white bg-[#2C3339]' : 'bg-[#FBF9FA] text-black'} px-2 absolute -top-2 inset-x-0 mx-auto`}>{translations("instruments.forms.sections.saving_account.title")}</p>
                                     </div>
                                     <br />
                                     {translations("instruments.forms.sections.credit_card_info.subtitle")}
